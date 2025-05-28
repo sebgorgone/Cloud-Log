@@ -1,0 +1,34 @@
+@font-face {
+   font-family: 'L1';
+   src: url(../public/Alata-Regular.ttf);
+}
+
+#inputDashboard {
+   display: flex;
+   margin: 0;
+   font-family: 'Inter';
+   justify-content: space-around;
+
+}
+
+.inputContainer {
+   border: 0;
+   display: flex;
+   flex-flow: column;
+   align-items: left;
+   justify-content: space-evenly;
+   vertical-align: top;
+   max-width: 17vw;
+   text-align-last: center;
+
+}
+
+input{
+   max-width: 14vw;
+   margin: 2px;
+   border-radius: 3vw;
+   border: none
+}
+h3 {
+   text-align: center;
+}
