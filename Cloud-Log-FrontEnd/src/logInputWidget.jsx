@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import './style/logInputWidget.css'
+
 
 function LogInputWidget() {
 
@@ -67,7 +68,7 @@ function LogInputWidget() {
   }
 
   function handleAddJumpAircraftChange (e) {
-    setAddJumpRig(e.target.value);
+    setAddJumpAircraft(e.target.value);
   }
 
   function handleAddJumpRigChange (e) {
@@ -187,13 +188,16 @@ function LogInputWidget() {
 
   //Color Pallette vv
 
-  const pallette = [
-    '#f3e8ee', 
-    '#bacdb0', 
-    '#729b79',
-    '#475b63',
-    '#2e2c2f'
-  ]
+  const pallette  = [
+  '#f3e8ee',
+  '#bacdb0',
+  '#729b79',
+  '#475b63',
+  '#2e2c2f'
+];  
+  console.log(
+    pallette
+  )
 
   //color Pallette ^^
 
@@ -203,7 +207,7 @@ function LogInputWidget() {
     
   const widgetStyle = {
     background: pallette[2],
-    borderColor: pallette[3],
+    borderColor: pallette[1],
     border: "solid",
     padding: "2em",
     borderRadius: ".75em"
@@ -423,3 +427,16 @@ function LogInputWidget() {
 }
 
 export default LogInputWidget;
+
+export function getPallette(){
+
+    const pallette  = [
+      '#f3e8ee',
+      '#bacdb0',
+      '#729b79',
+      '#475b63',
+      '#2e2c2f'
+    ];  
+  return(pallette)
+}
+
