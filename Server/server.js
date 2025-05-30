@@ -1,8 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path');
-const crypto = require('crypto')
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+
 
 
  const app = express();
@@ -84,10 +87,11 @@ db.query(query, [identifier], (err, results) => {
     console.log("❌ Bad password for", identifier);
     return res.status(401).json({ error: 'Invalid credentials' });
   }
+  const payload = { id: user.id, name: user.name, email: user.email };
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' });
 
   console.log("✅ Logged in:", user.name);
-  res.status(200).json({ message: 'Login successful', userId: user.id , userRef: {id : user.id, name : user.name, email: user.email}
-  });
+  res.status(200).json({ message: 'Login successful', token , user: payload});
 });
 });
 

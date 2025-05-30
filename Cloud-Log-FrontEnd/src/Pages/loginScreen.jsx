@@ -12,8 +12,10 @@ function LoginScreen () {
    const { login } = useAuth();
 
    //pallette v
-   const pallette = getPallette()
-   console.log("LOGIN PALLETTE:" + [...pallette])
+   const pallette = getPallette();
+   console.log("LOGIN PALLETTE:" + [...pallette]);
+
+   //styles vv
    const loginContainer = {
       background: pallette[2],
       border: "solid 0.3em",
@@ -23,7 +25,6 @@ function LoginScreen () {
       margin: "auto",
    }
 
-   //styles vv
    const headerStyle = {
       color: pallette[4],
       fontFamily: "L1",
@@ -54,34 +55,39 @@ function LoginScreen () {
    }
 
 
-   const handleLogin = async () => {
-      try {
-      const response = await fetch("http://localhost:5009/login", {
-         method: "POST",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({ identifier: ident, password: psky }),
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: ident, password: psky }),
       });
 
-      const contentType = response.headers.get("content-type");
-
+      const contentType = response.headers.get('content-type');
       let returnedData;
-      if (contentType && contentType.includes("application/json")) {
-         returnedData = await response.json();
+      if (contentType && contentType.includes('application/json')) {
+        returnedData = await response.json();
       } else {
-         returnedData = await response.text(); // fallback if server sent plain text
+        returnedData = await response.text();
       }
 
       if (response.ok) {
-         console.log("✅ Login Successful", returnedData.userRef);
-         handleLoginSuccess(returnedData.userRef);
+        // returnedData = { message, token, user }
+        console.log('✅ Login successful, got token');
+        handleLoginSuccess({
+          token: returnedData.token,
+          user: returnedData.user
+        });
       } else {
-         console.error("❌ Login Failed", returnedData);
+        console.error('❌ Login failed:', returnedData);
+        // Optionally show an error message in UI
       }
-
-   } catch (err) {
-      console.error("🔥 Server Error", err);
-   }
-   };
+    } catch (err) {
+      console.error('🔥 Server error:', err);
+      // Optionally show an error message in UI
+    }
+  };
+  
    function handleIdentField(e) {
       setIdent(e.target.value);
    }
