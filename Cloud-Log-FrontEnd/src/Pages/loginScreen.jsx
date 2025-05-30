@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {getPallette} from "../logInputWidget"
 import '../style/loginScreen.css'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from '../contexts/authContext';
 
 
@@ -9,8 +9,13 @@ import { useAuth } from '../contexts/authContext';
 function LoginScreen () {
 
    const nav = useNavigate();
-   const { login } = useAuth();
+   const { login, user } = useAuth();
 
+   const [ident, setIdent] = useState("");
+   const [psky, setPsky] = useState("");
+   if (user) {
+      return <Navigate to="/" replace />
+   }
    //pallette v
    const pallette = getPallette();
    console.log("LOGIN PALLETTE:" + [...pallette]);
@@ -39,10 +44,6 @@ function LoginScreen () {
       display: "block",
    }
 
-   //state hooks
-
-   const [ident, setIdent] = useState("");
-   const [psky, setPsky] = useState("");
    
 
 
@@ -72,7 +73,7 @@ function LoginScreen () {
       }
 
       if (response.ok) {
-        // returnedData = { message, token, user }
+        
         console.log('✅ Login successful, got token');
         handleLoginSuccess({
           token: returnedData.token,
@@ -80,14 +81,14 @@ function LoginScreen () {
         });
       } else {
         console.error('❌ Login failed:', returnedData);
-        // Optionally show an error message in UI
+        alert(returnedData.error || returnedData.message || 'login failed')
       }
     } catch (err) {
       console.error('🔥 Server error:', err);
-      // Optionally show an error message in UI
+      alert('Cannot connect to server. Try again later.');
     }
   };
-  
+
    function handleIdentField(e) {
       setIdent(e.target.value);
    }

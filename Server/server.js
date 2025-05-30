@@ -43,8 +43,8 @@ app.post('/register', (req, res) => {
   const { hash,salt } = hashPassword(password);
 
   db.query(
-    'INSERT INTO users (name, email, password, salt) VALUES (?, ?, ?)',
-    [name, hash, salt],
+    'INSERT INTO users (name, email, password, salt) VALUES (?, ?, ?, ?)',
+    [name, email, hash, salt],
     (err, result) => {
       if (err) return res.status(500).json({message: 'Registration failed'});
       res.status(201).json({message: 'User registered'});
