@@ -2,11 +2,14 @@ import {useState} from 'react';
 import {getPallette} from "../logInputWidget"
 import '../style/loginScreen.css'
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../contexts/authContext';
 
 
-function loginScreen () {
+
+function LoginScreen () {
 
    const nav = useNavigate();
+   const { login } = useAuth();
 
    //pallette v
    const pallette = getPallette()
@@ -44,7 +47,8 @@ function loginScreen () {
 
    //handlers vv
 
-   const handleLoginSuccess = () => {
+   const handleLoginSuccess = (data) => {
+      login(data);
       nav('/');
 
    }
@@ -68,8 +72,8 @@ function loginScreen () {
       }
 
       if (response.ok) {
-         console.log("✅ Login Successful", returnedData);
-         handleLoginSuccess();
+         console.log("✅ Login Successful", returnedData.userRef);
+         handleLoginSuccess(returnedData.userRef);
       } else {
          console.error("❌ Login Failed", returnedData);
       }
@@ -110,4 +114,4 @@ function loginScreen () {
    )
 }
 
-export default loginScreen;
+export default LoginScreen;

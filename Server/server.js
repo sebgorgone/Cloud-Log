@@ -86,11 +86,12 @@ db.query(query, [identifier], (err, results) => {
   }
 
   console.log("✅ Logged in:", user.name);
-  res.status(200).json({ message: 'Login successful', userId: user.id });
+  res.status(200).json({ message: 'Login successful', userId: user.id , userRef: {id : user.id, name : user.name, email: user.email}
+  });
 });
 });
 
  app.listen(port, ()=> {
    console.log('listening')
- });
+ }); 
 
