@@ -40,28 +40,54 @@ app.post('/register', (req, res) => {
   const { hash,salt } = hashPassword(password);
 
   db.query(
-    'INSERT INTO users (username, pasword, salt) VALUES (?, ?, ?)',
+    'INSERT INTO users (name, email, password, salt) VALUES (?, ?, ?)',
     [name, hash, salt],
     (err, result) => {
-      if (err) return res.status(500).send('Registration failed');
-      res.status(201).send('User registered');
+      if (err) return res.status(500).json({message: 'Registration failed'});
+      res.status(201).json({message: 'User registered'});
     }
   );
 });
 
 //login route
 app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
-    if (err) return res.status(500).send('Login error');
-    if (results.length === 0) return res.status(401).send('User not found');
+  const { identifier, password } = req.body; // "identifier" = username OR email
 
-    const user = results[0];
-    const { hash } = hashPassword(password, user.salt);
-    if (hash !== user.password) return res.status(401).send('Invalid credentials');
+  // Check if input is an email (simple regex)
+  const isEmail = identifier.includes('@');
 
-    res.status(200).json({ message: 'Login successful', userId: user.id });
-  });
+  const query = isEmail 
+    ? 'SELECT * FROM users WHERE email = ?'
+    : 'SELECT * FROM users WHERE name = ?';
+
+
+console.log("Login attempt from:", identifier);
+
+db.query(query, [identifier], (err, results) => {
+  if (err) {
+    console.error("DB error:", err);
+    return res.status(500).json({ error: 'Login error' });
+  }
+
+  if (results.length === 0) {
+    console.log("No user found for identifier:", identifier);
+    return res.status(401).json({ error: 'User not found' });
+  }
+
+  const user = results[0];
+  console.log("User retrieved:", user);
+
+  const { hash } = hashPassword(password, user.salt);
+  console.log("Hash comparison:", { enteredHash: hash, storedHash: user.password });
+
+  if (hash !== user.password) {
+    console.log("❌ Bad password for", identifier);
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+
+  console.log("✅ Logged in:", user.name);
+  res.status(200).json({ message: 'Login successful', userId: user.id });
+});
 });
 
  app.listen(port, ()=> {

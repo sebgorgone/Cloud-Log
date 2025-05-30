@@ -1,0 +1,11 @@
+input {
+   border-radius: 1em;
+   padding: 1.5vw;
+   text-align-last: center;   
+   transition:  300ms;
+}
+
+input:hover {
+   opacity: 85%;
+   border-radius: 1.5em;
+}
