@@ -16,9 +16,17 @@ function loginScreen () {
       fontFamily: "L1",
    }
 
+   const inputStyle = {
+      fontFamily: "L1",
+      margin: "0 auto",
+      minWidth: "75%",
+      display: "block",
+   }
+
    return(
       <div style={loginContainer}>
          <h3 style={headerStyle}>Please Log In</h3>
+         <input style={inputStyle} type="text" placeholder="User" />
 
       </div>
    )

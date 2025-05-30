@@ -29,19 +29,19 @@ const crypto = require('crypto')
 });
 
 function hashPassword(password, salt = crypto.randomBytes(16).toString('hex')) {
-  const hash = crypto.pbkdf2Sync(password, salt, 100000, 64, 'sha512').tostring('hex');
+  const hash = crypto.pbkdf2Sync(password, salt, 100000, 64, 'sha512').toString('hex');
   return{hash, salt};
 }
 
 //register route
 
 app.post('/register', (req, res) => {
-  const { username,password } = req.body;
+  const { name, email, password } = req.body;
   const { hash,salt } = hashPassword(password);
 
   db.query(
-    'INSTERT INTO users (username, pasword, salt) VALUES (?, ?, ?)',
-    [username, hash, salt],
+    'INSERT INTO users (username, pasword, salt) VALUES (?, ?, ?)',
+    [name, hash, salt],
     (err, result) => {
       if (err) return res.status(500).send('Registration failed');
       res.status(201).send('User registered');
@@ -49,7 +49,7 @@ app.post('/register', (req, res) => {
   );
 });
 
-//download route
+//login route
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
