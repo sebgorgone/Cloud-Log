@@ -35,7 +35,20 @@ function LogInputWidget() {
 
   const [tagsPage, setTagsPage] = useState(true);
 
+
+              //tags dropdown
   const [jumpTypeTagsPage, setJumpTypeTagsPage] = useState(false);
+
+  const [openCharTagsPage, setOpenCharTagsPage] = useState(false);
+
+  const [liscTagsPage, setLiscTagsPage] = useState(false);
+
+  const [altTagsPage, setAltTagsPage] = useState(false);
+
+  const [evnTagsPage, setEvnTagsPage] = useState(false);
+
+  const [groupTagsPage, setGroupTagsPage] = useState(false);
+
 
 
 //newjump variables
@@ -60,25 +73,49 @@ function LogInputWidget() {
   //functional elements vv
 //page elements
   function handleEquipmentForm() {
-    setEqpmPage(!eqpmPage)
+    setEqpmPage(!eqpmPage);
   }
 
   function handleAircraftForm() {
-    setAircraftPage(!aircraftPage)
+    setAircraftPage(!aircraftPage);
   }
 
   function handleTagsForm(e) {
       e.preventDefault();
-    setTagsPage(!tagsPage)
+    setTagsPage(!tagsPage);
   }
 
+
+        //tags pages
   function handleJumpTypeTagsForm(e) {
       e.preventDefault();
-    setJumpTypeTagsPage(!jumpTypeTagsPage)
+    setJumpTypeTagsPage(!jumpTypeTagsPage);
   }
 
-  
+  function handleOpenCharTagsForm(e) {
+    e.preventDefault();
+    setOpenCharTagsPage(!openCharTagsPage);
+  }
 
+  function handleLiscTagsForm(e) {
+    e.preventDefault();
+    setLiscTagsPage(!liscTagsPage);
+  }
+
+  function handleAltTagsForm(e) {
+    e.preventDefault();
+    setAltTagsPage(!altTagsPage);
+  }
+
+  function handleEvnTagsForm(e) {
+    e.preventDefault();
+    setEvnTagsPage(!evnTagsPage);
+  }
+
+    function handleGroupTagsForm(e) {
+    e.preventDefault();
+    setGroupTagsPage(!evnTagsPage);
+  }
 
 //string elements
   function handleJumpNumChange (e) {
@@ -228,9 +265,9 @@ function LogInputWidget() {
   //tags state and logic VV
 
   //states
-//'Belly', 'Freefly', '', 'base', 'Hop & Pop',
- //   'Swoop', 'CRW', 'VFS', 'MFS', 'FS', 'Angle', 'Tracking',
-   // 'Solo', 'Tandem', 'Altitude', 'Big-way', 'ZOO!'
+
+
+                      //JUMPTYPES
   const [tagBellyJTT, setTagBellyJTT] = useState(true);
   const [tagFreeFlyJTT, setTagFreeflyJTT] = useState(true);
   const [tagWingsuitJTT, setTagWingsuitJTT] = useState(true);
@@ -250,7 +287,8 @@ function LogInputWidget() {
   const [tagZooJTT, setTagZooJTT] = useState(true);
 
 
-
+                    //OPENINGS
+  
 
 
    //handlers
@@ -330,21 +368,29 @@ function LogInputWidget() {
   //button styles
   const tagButtonOff = {
     fontFamily: "L1",
+    paddingLeft: "1.5vw",
+    paddingRight: "1.5vw",
+    fontSize: "max(1.6vh,1.4vw)",
+    marginTop: "1vh",
     display:"block",
     backgroundColor: pallette[4],
     color: pallette[0],
-    border: "solid .3vw",
-    borderRadius: "1.1vw"
+    border: "solid .3vh",
+    borderRadius: "1.1vh"
   }
 
   const tagButtonOn = {
     fontFamily: "L1",
+    paddingLeft: "1.5vw",
+    paddingRight: "1.5vw",
+    fontSize: "1.6vh",
+    marginTop: "1vh",
     display:"block",
     backgroundColor: pallette[1],
     color: pallette[4],
-    border: "solid .3vw",
+    border: "solid .3vh",
     borderColor: pallette[4],
-    borderRadius: "1.1vw"
+    borderRadius: "1.1vh"
   }
   //tags and state logic ^^
 
@@ -429,8 +475,8 @@ function LogInputWidget() {
     overflowY: "scroll",
     right: "5%",
     top: "5%",
-    color: pallette[1],
-    backgroundColor: pallette[3],
+    color: pallette[4],
+    backgroundColor: pallette[1],
     border: "solid .15em",
     borderColor: pallette[4],
     borderRadius: ".25em",
@@ -451,24 +497,78 @@ function LogInputWidget() {
 
   const tagShellStyle= {
     display: "flex",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    borderRadius: "3vw",
+    margin: "1em",
+    background: pallette[2],
   }
 
   const tagListStyle = {
-    justifyContent: "left"
+    justifyContent: "left",
+    margin: "1em"
+
   }
   
-  const tagListButtonStyle={
+  const tagListButtonStyleJT={
+    fontFamily: "L1",
+    fontSize: "1.7vw",
     background: pallette[1],
     border: "solid .1em",
     borderColor: pallette[4],
     borderRadius: "1.5vw",
     padding: ".5vw",
-    fontFamily: "L1",
   }
 
+  const tagListButtonStyleOC={
+    fontFamily: "L1",
+    fontSize: "1.8vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
 
+  const tagListButtonStyleLI={
+    fontFamily: "L1",
+    fontSize: "1.55vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
+
+  const tagListButtonStyleALT = {
+    fontFamily: "L1",
+    fontSize: "1.6vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
+
+  const tagListButtonStyleEVN = {
+    fontFamily: "L1",
+    fontSize: "1.65vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
   
+  const tagListButtonStyleGRP = {
+    fontFamily: "L1",
+    fontSize: "1.55vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
+
   //inline styles ^^
 
   return(
@@ -542,7 +642,7 @@ function LogInputWidget() {
 
         </form>
 
-        <button style={headerButtonStyle} onClick={handleTagsForm}>Tags{!tagsPage ? ' (show)' : ' (hide)'}</button>
+        <button style={headerButtonStyle} onClick={handleTagsForm}>Tags{tagsPage ? ' (show)' : ' (hide)'}</button>
 
         <form style={tagsPage ? overlayStyle : {display: "none"}}>
           <h3 style={tagsHeaderStyle}>Select Tags</h3>
@@ -550,33 +650,91 @@ function LogInputWidget() {
 
           <div style={tagShellStyle}>
 
+
             <div style={tagListStyle}>
 
-              <button onClick={handleJumpTypeTagsForm} style={tagListButtonStyle}>Jump Types{!jumpTypeTagsPage ? ' (show)' : ' (hide)'}</button>
+              <button onClick={handleJumpTypeTagsForm} style={tagListButtonStyleJT}>Jump Types{!jumpTypeTagsPage ? ' (show)' : ' (hide)'}</button>
 
-              <div style={!jumpTypeTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+              <div style={jumpTypeTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
 
                 <button style={tagBellyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTbelly}>Belly</button>
                 <button style={tagFreeFlyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFreeFly}>Freefly</button>
                 <button style={tagWingsuitJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTWingsuit}>Wingsuit</button>
                 <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Base</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>HnP</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Swoop</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>CRW</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>VFS</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>MFS</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>FS</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Angle</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Tracking</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Solo</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Tandem</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Altitude</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Big Way</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Zoo</button>
+                <button style={tagHnPJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHnP}>Hop n Pop</button>
+                <button style={tagSwoopJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSwoop}>Swoop</button>
+                <button style={tagCrwJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTCrw}>CRW</button>
+                <button style={tagVfsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTVfs}>VFS</button>
+                <button style={tagMfsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTMfs}>MFS</button>
+                <button style={tagFsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFs}>FS</button>
+                <button style={tagAngleJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTAngle}>Angle</button>
+                <button style={tagTrackingJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTracking}>Tracking</button>
+                <button style={tagSoloJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSolo}>Solo</button>
+                <button style={tagTandemJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTandem}>Tandem</button>
+                <button style={tagAltJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTAlt}>Altitude</button>
+                <button style={tagBigwayJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBigway}>Big Way</button>
+                <button style={tagZooJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTZoo}>Zoo</button>
                 
 
-              </div>
+              </div>            
             </div>
+
+            <div style={tagListStyle}>
+
+              <button onClick={handleOpenCharTagsForm} style={tagListButtonStyleOC}>Openings{!openCharTagsPage ? ' (show)' : ' (hide)'}</button>
+
+              <div style={openCharTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+              </div>
+
+            </div>
+
+            <div style={tagListStyle}>
+
+              <button onClick={handleLiscTagsForm} style={tagListButtonStyleLI}>Liscensces <br />and ratings{!liscTagsPage ? ' (show)' : ' (hide)'}</button>
+
+              <div style={liscTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <div style={tagShellStyle}>
+
+            <div style={tagListStyle}>
+
+              <button onClick={handleAltTagsForm} style={tagListButtonStyleALT}>Altituted{!altTagsPage ? ' (show)' : ' (hide)'}</button>
+
+              <div style={altTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+
+            </div>
+
+
+            </div>
+
+            <div style={tagListStyle}>
+
+              <button onClick={handleEvnTagsForm} style={tagListButtonStyleEVN}>Events{!evnTagsPage ? ' (show)' : ' (hide)'}</button>
+
+              <div style={evnTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+
+            </div> 
+
+
+            </div>
+
+            <div style={tagListStyle}>
+
+              <button onClick={handleGroupTagsForm} style={tagListButtonStyleGRP}>group Size{!groupTagsPage ? ' (show)' : ' (hide)'}</button>
+
+              <div style={groupTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+
+            </div> 
+
+
+            </div>
+
 
           </div>
           
