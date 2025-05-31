@@ -31,6 +31,12 @@ function LogInputWidget() {
 //dropdown states
   const [eqpmPage, setEqpmPage] = useState(true);
 
+  const [aircraftPage, setAircraftPage] = useState(true);
+
+  const [tagsPage, setTagsPage] = useState(true);
+
+  const [jumpTypeTagsPage, setJumpTypeTagsPage] = useState(false);
+
 
 //newjump variables
   const [newJumpNum, setNewJumpNum] = useState(null);
@@ -47,6 +53,8 @@ function LogInputWidget() {
 
   const [newJumpDur, setNewJumpDur] = useState(null);
 
+  const [newJumpTagList, setNewJumpTagList] = useState([]);
+
   //state hooks ^^
   
   //functional elements vv
@@ -54,6 +62,24 @@ function LogInputWidget() {
   function handleEquipmentForm() {
     setEqpmPage(!eqpmPage)
   }
+
+  function handleAircraftForm() {
+    setAircraftPage(!aircraftPage)
+  }
+
+  function handleTagsForm(e) {
+      e.preventDefault();
+    setTagsPage(!tagsPage)
+  }
+
+  function handleJumpTypeTagsForm(e) {
+      e.preventDefault();
+    setJumpTypeTagsPage(!jumpTypeTagsPage)
+  }
+
+  
+
+
 //string elements
   function handleJumpNumChange (e) {
     setNewJumpNum(e.target.value);
@@ -184,8 +210,6 @@ function LogInputWidget() {
 
   //rendered lists ^^
 
-
-
   //Color Pallette vv
 
   const pallette  = [
@@ -200,6 +224,129 @@ function LogInputWidget() {
   )
 
   //color Pallette ^^
+
+  //tags state and logic VV
+
+  //states
+//'Belly', 'Freefly', '', 'base', 'Hop & Pop',
+ //   'Swoop', 'CRW', 'VFS', 'MFS', 'FS', 'Angle', 'Tracking',
+   // 'Solo', 'Tandem', 'Altitude', 'Big-way', 'ZOO!'
+  const [tagBellyJTT, setTagBellyJTT] = useState(true);
+  const [tagFreeFlyJTT, setTagFreeflyJTT] = useState(true);
+  const [tagWingsuitJTT, setTagWingsuitJTT] = useState(true);
+  const [tagBaseJTT, setTagBaseJTT] = useState(true);
+  const [tagHnPJTT, setTagHnPJTT] = useState(true);
+  const [tagSwoopJTT, setTagSwoopJTT] = useState(true);
+  const [tagCrwJTT, setTagCrwJTT] = useState(true);
+  const [tagVfsJTT, setTagVfsJTT] = useState(true);
+  const [tagMfsJTT, setTagMfsJTT] = useState(true);
+  const [tagFsJTT, setTagFsJTT] = useState(true);
+  const [tagAngleJTT, setTagAngleJTT] = useState(true);
+  const [tagTrackingJTT, setTagTrackingJTT] = useState(true);
+  const [tagSoloJTT, setTagSoloJTT] = useState(true);
+  const [tagTandemJTT, setTagTandemJTT] = useState(true);
+  const [tagAltJTT, setTagAltJTT] = useState(true);
+  const [tagBigwayJTT, setTagBigwayJTT] = useState(true);
+  const [tagZooJTT, setTagZooJTT] = useState(true);
+
+
+
+
+
+   //handlers
+
+  const tagHandler = { 
+    JTbelly: (e) => {
+      e.preventDefault();
+      setTagBellyJTT(!tagBellyJTT);
+      console.log('belly tag is ', tagBellyJTT);
+    },
+    JTFreeFly: (e) => {
+      e.preventDefault();
+      setTagFreeflyJTT(!tagFreeFlyJTT);
+    },
+    JTWingsuit: (e) => {
+      e.preventDefault();
+      setTagWingsuitJTT(!tagWingsuitJTT);
+    },
+    JTBase: (e) => {
+      e.preventDefault();
+      setTagBaseJTT(!tagBaseJTT);
+    },
+    JTHnP: (e) => {
+      e.preventDefault();
+      setTagHnPJTT(!tagHnPJTT);
+    },
+    JTSwoop: (e) => {
+      e.preventDefault();
+      setTagSwoopJTT(!tagSwoopJTT);
+    },
+    JTCrw: (e) => {
+      e.preventDefault();
+      setTagCrwJTT(!tagCrwJTT);
+    },
+    JTVfs: (e) => {
+      e.preventDefault();
+      setTagVfsJTT(!tagVfsJTT);
+    },
+    JTMfs: (e) => {
+      e.preventDefault();
+      setTagMfsJTT(!tagMfsJTT);
+    },
+    JTFs: (e) => {
+      e.preventDefault();
+      setTagFsJTT(!tagFsJTT);
+    },
+    JTAngle: (e) => {
+      e.preventDefault();
+      setTagAngleJTT(!tagAngleJTT);
+    },
+    JTTracking: (e) => {
+      e.preventDefault();
+      setTagTrackingJTT(!tagTrackingJTT);
+    },
+    JTSolo: (e) => {
+      e.preventDefault();
+      setTagSoloJTT(!tagSoloJTT);
+    },
+    JTTandem: (e) => {
+      e.preventDefault();
+      setTagTandemJTT(!tagTandemJTT);
+    },
+    JTAlt: (e) => {
+      e.preventDefault();
+      setTagAltJTT(!tagAltJTT);
+    },
+    JTBigway: (e) => {
+      e.preventDefault();
+      setTagBigwayJTT(!tagBigwayJTT);
+    },
+    JTZoo: (e) => {
+      e.preventDefault();
+      setTagZooJTT(!tagZooJTT);
+    },
+  }
+  
+  //button styles
+  const tagButtonOff = {
+    fontFamily: "L1",
+    display:"block",
+    backgroundColor: pallette[4],
+    color: pallette[0],
+    border: "solid .3vw",
+    borderRadius: "1.1vw"
+  }
+
+  const tagButtonOn = {
+    fontFamily: "L1",
+    display:"block",
+    backgroundColor: pallette[1],
+    color: pallette[4],
+    border: "solid .3vw",
+    borderColor: pallette[4],
+    borderRadius: "1.1vw"
+  }
+  //tags and state logic ^^
 
 
 
@@ -254,6 +401,13 @@ function LogInputWidget() {
     fontSize: "1.4vw"
   };
 
+    const formHiddenStyle = {
+    display: "none", 
+    textAlignLast: "left", 
+    fontFamily: "L1", 
+    fontSize: "1.4vw"
+  };
+
   const previewStyle ={
     marginTop: "2vh",
     padding: "2vw",
@@ -261,6 +415,59 @@ function LogInputWidget() {
     display: "flex",
     justifyContent: "space-evenly"
   }
+
+  const tagsHeaderStyle = {
+    fontFamily: "L1",
+    postion: "absolute"
+  }
+
+  const overlayStyle = {
+    position: "fixed",
+    zIndex: "2",
+    width: "80%",
+    height: "50%",
+    overflowY: "scroll",
+    right: "5%",
+    top: "5%",
+    color: pallette[1],
+    backgroundColor: pallette[3],
+    border: "solid .15em",
+    borderColor: pallette[4],
+    borderRadius: ".25em",
+
+  }
+
+  const xButtonStyle ={
+    position: "absolute",
+    fontSize: "1.2em",
+    fontWieght: "Bold",
+    top: "1vw",
+    right: "1vw",
+    backgroundColor: pallette[0],
+    border: "solid .15em",
+    borderColor: pallette[4],
+    borderRadius: ".25em",
+  }
+
+  const tagShellStyle= {
+    display: "flex",
+    justifyContent: "space-around"
+  }
+
+  const tagListStyle = {
+    justifyContent: "left"
+  }
+  
+  const tagListButtonStyle={
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+    fontFamily: "L1",
+  }
+
+
   
   //inline styles ^^
 
@@ -308,11 +515,11 @@ function LogInputWidget() {
         
       </div>
 
-      <div style={alignTop}>
+      <div className="inputContainer">
 
-        <h3 style={headerStyle}>Aircraft<p style={{display: "inline-block", margin: "0", marginLeft: "1vw"}}></p></h3>
+        <button onClick={handleAircraftForm}style={headerButtonStyle}>Aircraft{aircraftPage ? ' (show)' : ' (hide)'}</button>
 
-        <form style={formStyle}>
+        <form style={!aircraftPage ? formStyle : formHiddenStyle}>
 
           <p style={headerStyle}>
             select your aircraft 
@@ -334,12 +541,52 @@ function LogInputWidget() {
           </div>
 
         </form>
+
+        <button style={headerButtonStyle} onClick={handleTagsForm}>Tags{!tagsPage ? ' (show)' : ' (hide)'}</button>
+
+        <form style={tagsPage ? overlayStyle : {display: "none"}}>
+          <h3 style={tagsHeaderStyle}>Select Tags</h3>
+          <button style={xButtonStyle} onClick={handleTagsForm}>X</button>
+
+          <div style={tagShellStyle}>
+
+            <div style={tagListStyle}>
+
+              <button onClick={handleJumpTypeTagsForm} style={tagListButtonStyle}>Jump Types{!jumpTypeTagsPage ? ' (show)' : ' (hide)'}</button>
+
+              <div style={!jumpTypeTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+
+                <button style={tagBellyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTbelly}>Belly</button>
+                <button style={tagFreeFlyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFreeFly}>Freefly</button>
+                <button style={tagWingsuitJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTWingsuit}>Wingsuit</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Base</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>HnP</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Swoop</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>CRW</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>VFS</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>MFS</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>FS</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Angle</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Tracking</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Solo</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Tandem</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Altitude</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Big Way</button>
+                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Zoo</button>
+                
+
+              </div>
+            </div>
+
+          </div>
+          
+        </form>
  
       </div>
 
       <div className="inputContainer">
         <div>
-          <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment</button>
+          <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
           <form style ={eqpmPage ? {display: "none"} : {display: "block", border: "solid", borderRadius: "1.5vw"}}>
             {rigList}
             <div>
