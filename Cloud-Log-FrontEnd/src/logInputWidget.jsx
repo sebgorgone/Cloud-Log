@@ -4,6 +4,7 @@ import './style/logInputWidget.css'
 
 function LogInputWidget() {
 
+
   //state hooks vv
 
 //list states
@@ -43,12 +44,15 @@ function LogInputWidget() {
 
   const [liscTagsPage, setLiscTagsPage] = useState(false);
 
-  const [altTagsPage, setAltTagsPage] = useState(false);
-
-  const [evnTagsPage, setEvnTagsPage] = useState(false);
-
   const [groupTagsPage, setGroupTagsPage] = useState(false);
 
+  const [cnpyTagsPage, setCnpyTagsPage] = useState(false);
+
+  const [exitTagsPage, setExitTagsPage] = useState(false);
+
+  const [emergencyTagsPage, setEmergencyTagsPage] = useState(false);
+
+  const [malfunctionTagsPage, setMalfunctionTagsPage] = useState(false);
 
 
 //newjump variables
@@ -102,19 +106,29 @@ function LogInputWidget() {
     setLiscTagsPage(!liscTagsPage);
   }
 
-  function handleAltTagsForm(e) {
+  function handleGroupTagsForm(e) {
     e.preventDefault();
-    setAltTagsPage(!altTagsPage);
+    setGroupTagsPage(!groupTagsPage);
   }
 
-  function handleEvnTagsForm(e) {
+  function handleCnpyTagsForm(e) {
     e.preventDefault();
-    setEvnTagsPage(!evnTagsPage);
+    setCnpyTagsPage(!cnpyTagsPage);
   }
 
-    function handleGroupTagsForm(e) {
+  function handleExitTagsForm(e) {
     e.preventDefault();
-    setGroupTagsPage(!evnTagsPage);
+    setExitTagsPage(!exitTagsPage);
+  }
+
+  function handleEmergencyTagsForm(e) {
+    e.preventDefault();
+    setEmergencyTagsPage(!emergencyTagsPage);
+  }
+
+  function handleMalfunctionTagsForm(e) {
+    e.preventDefault();
+    setMalfunctionTagsPage(!malfunctionTagsPage);
   }
 
 //string elements
@@ -144,6 +158,10 @@ function LogInputWidget() {
 
   function handleAddJumpDurChange (e) {
     setNewJumpDur(e.target.value);
+  }
+
+  function handleGroupSizeChange (e) {
+    setTagGroupSize(e.target.value);
   }
 //buttons
   function handleDZInput (e) {
@@ -256,9 +274,6 @@ function LogInputWidget() {
   '#475b63',
   '#2e2c2f'
 ];  
-  console.log(
-    pallette
-  )
 
   //color Pallette ^^
 
@@ -285,11 +300,70 @@ function LogInputWidget() {
   const [tagAltJTT, setTagAltJTT] = useState(true);
   const [tagBigwayJTT, setTagBigwayJTT] = useState(true);
   const [tagZooJTT, setTagZooJTT] = useState(true);
+  const [tagNightJTT, setTagNightJTT] = useState(true);
+  const [tagHighPullJTT, setTagHighPullJTT] = useState(true);
+  const [tagFullJTT, setTagFullJTT] = useState(true);
+  const [tagHighJTT, setTagHighJTT] = useState(true);
 
 
                     //OPENINGS
-  
+  const [tagGoodOC, setTagGoodOC] = useState(true);
+  const [tagHardOC, setTagHardOC] = useState(true);
+  const [tagOffHeadingOC, setTagOffHeadingOC] = useState(true);
+  const [tagOnHeadingOC, setTagOnHeadingOC] = useState(true);
+  const [tagPCDelayOC, setTagPCDelayOC] = useState(true);
+  const [tagLineBreakOC, setTagLineBreakOC] = useState(true);
+  const [tagStableOC, setTagStableOC] = useState(true);
+  const [tagUnstableOC, setTagUnstableOC] = useState(true);
 
+                    //Liscensing and work 
+  const [tagTILSC, setTagTILSC] = useState(true);
+  const [tagVideoLSC, setTagVideoLSC] = useState(true);
+  const [tagAffiLSC, setTagAffiLSC] = useState(true);
+  const [tagCoachLSC, setTagCoachLSC] = useState(true);
+  const [tagOrganizerLSC, setTagOrganizerLSC] = useState(true);
+  const [tagJumpMasterLSC, setTagJumpMasterLSC] = useState(true);
+  const [tagCheckLSC, setTagCheckLSC] = useState(true);
+  const [tagRecurrencyLSC, setTagRecurrencyLSC] = useState(true);
+  const [tagStudentLSC, setTagStudentLSC] = useState(true);
+
+                      //groupsize
+  const [tagGroupSize, setTagGroupSize] = useState(null);
+
+                    //Canopy and weather
+  const [tagHighWindWTHR, setTagHighWindWTHR] = useState(true);
+  const [tagLowWindWTHR, setTagLowWindWTHR] = useState(true);
+  const [tagUpWindWTHR, setTagUpWindWTHR] = useState(true);
+  const [tagDownWindWTHR, setTagDownWindWTHR] = useState(true);
+  const [tagCrossWindWTHR, setTagCrossWindWTHR] = useState(true);
+  const [tagLongSpotWTHR, setTagLongSpotWTHR] = useState(true);
+  const [tagRainWTHR, setTagRainWTHR] = useState(true);
+  const [tagSnowWTHR, setTagSnowWTHR] = useState(true);
+
+
+                    //Emergencies
+  const [tagCutAwayEMR, setTagCutAwayEMR] = useState(true);
+  const [tagOffLandingEMR, setTagOffLandingEMR] = useState(true);
+  const [tagAircraftEMR, setTagAircraftEMR] = useState(true);
+  const [tagInjuryEMR, setTagInjuryEMR] = useState(true);
+
+
+                    //MAL
+  const [tagEvaMAL, setTagEvaMAL] = useState(true);
+  const [tagBiPlaneMAL, setTagBiPlaneMAL] = useState(true);
+  const [tagDownPlaneMAL, setTagDownPlaneMAL] = useState(true);
+  const [tagLineOverMAL, setTagLineOverMAL] = useState(true);
+  const [tagSideBySideMAL, setTagSideBySideMAL] = useState(true);
+  const [tagStuckSliderMAL, setTagStuckSliderMAL] = useState(true);
+  const [tagPCInTowMAL, setTagPCInTowMAL] = useState(true);
+  const [tagStreamerMAL, setTagStreamerMAL] = useState(true);
+  const [tagHorshoeMAL, setTagHorshoeMAL] = useState(true);
+  const [tagPrematureMAL, setTagPrematureMAL] = useState(true);
+  const [tagHardPullMAL, setTagHardPullMAL] = useState(true);
+  const [tagToggleLockMAL, setTagToggleLockMAL] = useState(true);
+  const [tagToggleFireMAL, setTagToggleFireMAL] = useState(true);
+  const [tagDivingLineTwistMAL, setTagDivingLineTwistMAL] = useState(true);
+  const [tagTensionKnotMAL, setTagTensionKnotMAL] = useState(true);
 
    //handlers
 
@@ -363,6 +437,199 @@ function LogInputWidget() {
       e.preventDefault();
       setTagZooJTT(!tagZooJTT);
     },
+    JTNight: (e) => {
+      e.preventDefault();
+      setTagNightJTT(!tagNightJTT);
+    },
+    JTHighPull: (e) => {
+      e.preventDefault();
+      setTagHighPullJTT(!tagHighPullJTT);
+    },
+    JTFull: (e) => {
+      e.preventDefault();
+      setTagFullJTT(!tagFullJTT);
+    },
+    JTHigh: (e) => {
+      e.preventDefault();
+      setTagHighJTT(!tagHighJTT);
+    },
+    OCGood: (e) => {
+      e.preventDefault();
+      setTagGoodOC(!tagGoodOC);
+    },
+    OCHard: (e) => {
+      e.preventDefault();
+      setTagHardOC(!tagHardOC);
+    },
+    OCOffHeading: (e) => {
+      e.preventDefault();
+      setTagOffHeadingOC(!tagOffHeadingOC);
+    },
+    OCOnHeading: (e) => {
+      e.preventDefault();
+      setTagOnHeadingOC(!tagOnHeadingOC);
+    },
+    OCPCDelay: (e) => {
+      e.preventDefault();
+      setTagPCDelayOC(!tagPCDelayOC);
+    },
+    OCLineBreak: (e) => {
+      e.preventDefault();
+      setTagLineBreakOC(!tagLineBreakOC);
+    },
+    OCStable: (e) => {
+      e.preventDefault();
+      setTagStableOC(!tagStableOC);
+    },
+    OCUnstable: (e) => {
+      e.preventDefault();
+      setTagUnstableOC(!tagUnstableOC);
+    },
+    LSCTI: (e) => {
+      e.preventDefault();
+      setTagTILSC(!tagTILSC);
+    },
+    LSCVideographer: (e) => {
+      e.preventDefault();
+      setTagVideoLSC(!tagVideoLSC);
+    },
+    LSCAffi: (e) => {
+      e.preventDefault();
+      setTagAffiLSC(!tagAffiLSC);
+    },
+    LSCCoach: (e) => {
+      e.preventDefault();
+      setTagCoachLSC(!tagCoachLSC);
+    },
+    LSCOrganizer: (e) => {
+      e.preventDefault();
+      setTagOrganizerLSC(!tagOrganizerLSC);
+    },
+    LSCJumpMaster: (e) => {
+      e.preventDefault();
+      setTagJumpMasterLSC(!tagJumpMasterLSC);
+    },
+    LSCCheck: (e) => {
+      e.preventDefault();
+      setTagCheckLSC(!tagCheckLSC);
+    },
+    LSCRecurrency: (e) => {
+      e.preventDefault();
+      setTagRecurrencyLSC(!tagRecurrencyLSC);
+    },
+    LSCStudent: (e) => {
+      e.preventDefault();
+      setTagStudentLSC(!tagStudentLSC);
+    },
+    WTHRHighWind: (e) => {
+      e.preventDefault();
+      setTagHighWindWTHR(!tagHighWindWTHR);
+    },
+    WTHRLowWind: (e) => {
+      e.preventDefault();
+      setTagLowWindWTHR(!tagLowWindWTHR);
+    },
+    WTHRUpWind: (e) => {
+      e.preventDefault();
+      setTagUpWindWTHR(!tagUpWindWTHR);
+    },
+    WTHRDownWind: (e) => {
+      e.preventDefault();
+      setTagDownWindWTHR(!tagDownWindWTHR);
+    },
+    WTHRCrossWind: (e) => {
+      e.preventDefault();
+      setTagCrossWindWTHR(!tagCrossWindWTHR);
+    },
+    WTHRLongSpot: (e) => {
+      e.preventDefault();
+      setTagLongSpotWTHR(!tagLongSpotWTHR);
+    },
+    WTHRRain: (e) => {
+      e.preventDefault();
+      setTagRainWTHR(!tagRainWTHR);
+    },
+    WTHRSnow: (e) => {
+      e.preventDefault();
+      setTagSnowWTHR(!tagSnowWTHR);
+    },
+    EMRCutAway: (e) => {
+      e.preventDefault();
+      setTagCutAwayEMR(!tagCutAwayEMR);
+    },
+    EMROffLanding: (e) => {
+      e.preventDefault();
+      setTagOffLandingEMR(!tagOffLandingEMR);
+    },
+    EMRAircraft: (e) => {
+      e.preventDefault();
+      setTagAircraftEMR(!tagAircraftEMR);
+    },
+    EMRInjury: (e) => {
+      e.preventDefault();
+      setTagInjuryEMR(!tagInjuryEMR);
+    },
+    MALEva: (e) => {
+      e.preventDefault();
+      setTagEvaMAL(!tagEvaMAL);
+    },
+    MALBiPlane: (e) => {
+      e.preventDefault();
+      setTagBiPlaneMAL(!tagBiPlaneMAL);
+    },
+    MALDownPlane: (e) => {
+      e.preventDefault();
+      setTagDownPlaneMAL(!tagDownPlaneMAL);
+    },
+    MALLineOver: (e) => {
+      e.preventDefault();
+      setTagLineOverMAL(!tagLineOverMAL);
+    },
+    MALPCInTow: (e) => {
+      e.preventDefault();
+      setTagPCInTowMAL(!tagPCInTowMAL);
+    },
+    MALSideBySIde: (e) => {
+      e.preventDefault();
+      setTagSideBySideMAL(!tagSideBySideMAL);
+    },
+    MALStuckSlider: (e) => {
+      e.preventDefault();
+      setTagStuckSliderMAL(!tagStuckSliderMAL);
+    },
+    MALHorshoe: (e) => {
+      e.preventDefault();
+      setTagHorshoeMAL(!tagHorshoeMAL);
+    },
+    MALPremature: (e) => {
+      e.preventDefault();
+      setTagPrematureMAL(!tagPrematureMAL);
+    },
+    MALHardPull: (e) => {
+      e.preventDefault();
+      setTagHardPullMAL(!tagHardPullMAL);
+    },
+    MALStreamer: (e) => {
+      e.preventDefault();
+      setTagStreamerMAL(!tagStreamerMAL);
+    },
+    MALToggleLock: (e) => {
+      e.preventDefault();
+      setTagToggleLockMAL(!tagToggleLockMAL);
+    },
+    MALDivingLineTwist: (e) => {
+      e.preventDefault();
+      setTagDivingLineTwistMAL(!tagDivingLineTwistMAL);
+    },
+    MALTensionKnot: (e) => {
+      e.preventDefault();
+      setTagTensionKnotMAL(!tagTensionKnotMAL);
+    },
+    MALToggleFire: (e) => {
+      e.preventDefault();
+      setTagToggleFireMAL(!tagToggleFireMAL);
+    },
+    
   }
   
   //button styles
@@ -495,9 +762,15 @@ function LogInputWidget() {
     borderRadius: ".25em",
   }
 
+  const GsizeInpStye = {
+    fontFamily: "L1",
+    fontSize: "2vh",
+    height: "1.5vh"
+  }
+
   const tagShellStyle= {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     borderRadius: "3vw",
     margin: "1em",
     background: pallette[2],
@@ -569,7 +842,86 @@ function LogInputWidget() {
     padding: ".5vw",
   }
 
+  const tagListButtonStyleCNPY = {
+    fontFamily: "L1",
+    fontSize: "1.45vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
+
+  const tagListButtonStyleEXIT = {
+    fontFamily: "L1",
+    fontSize: "1.7vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
+
+  const tagListButtonStyleEMER = {
+    fontFamily: "L1",
+    fontSize: "1.35vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
+
+  const tagListButtonStyleMAL = {fontFamily: "L1",
+    fontSize: "1.5vw",
+    background: pallette[1],
+    border: "solid .1em",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+  }
+
   //inline styles ^^
+
+  //function to gather selected tags
+  function gatherTags() {
+
+    setTagsPreview([
+      !tagBellyJTT && `belly`,
+      !tagFreeFlyJTT && `Freefly`,
+      !tagWingsuitJTT && 'Wingsuit',
+      !tagBaseJTT && 'Base',
+      !tagHnPJTT && 'HnP',
+      !tagSwoopJTT && 'Swoop',
+      !tagCrwJTT && 'Crw',
+      !tagVfsJTT && 'VFS',
+      !tagMfsJTT && 'MFS',
+      !tagFsJTT && 'FS',
+      !tagAngleJTT && 'Angle',
+      !tagTrackingJTT && 'Tracking',
+      !tagSoloJTT && 'Sol0',
+      !tagTandemJTT && 'Tandem',
+      !tagAltJTT && 'Altitude',
+      !tagBigwayJTT && 'Bigway',
+      !tagZooJTT && 'Zoo',
+      !tagNightJTT && 'Night',
+      !tagHighPullJTT && 'High Pull', 
+      !tagFullJTT && 'Full Altitude',
+      !tagHighJTT && 'High Altitude',           
+      tagGroupSize && `(${tagGroupSize} Way)`
+    ]);
+
+  }
+
+  const [tagsPreview, setTagsPreview] = useState(null);
+
+      //useEffects
+  useEffect(() => {
+    gatherTags();
+  },[tagsPage]);
+
+
+
 
   return(
     <>
@@ -674,8 +1026,10 @@ function LogInputWidget() {
                 <button style={tagAltJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTAlt}>Altitude</button>
                 <button style={tagBigwayJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBigway}>Big Way</button>
                 <button style={tagZooJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTZoo}>Zoo</button>
-                
-
+                <button style={tagNightJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTNight}>Night</button>
+                <button style={tagHighPullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHighPull}>High Pull</button>
+                <button style={tagFullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFull}>Full</button>
+                <button style={tagHighJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHigh}>High</button>
               </div>            
             </div>
 
@@ -684,6 +1038,16 @@ function LogInputWidget() {
               <button onClick={handleOpenCharTagsForm} style={tagListButtonStyleOC}>Openings{!openCharTagsPage ? ' (show)' : ' (hide)'}</button>
 
               <div style={openCharTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+
+                <button style={tagGoodOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCGood}>Good Opening</button>
+                <button style={tagHardOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCHard}>Hard Opening</button>
+                <button style={tagOffHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOffHeading}>Off Heading Opening</button>
+                <button style={tagOnHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOnHeading}>On Heading Opening</button>
+                <button style={tagPCDelayOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCPCDelay}>Pilot Chute Hesitation</button>
+                <button style={tagLineBreakOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCLineBreak}>Broken Line</button>
+                <button style={tagStableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCStable}>Stable Deployment</button>
+                <button style={tagUnstableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCUnstable}>Unstable Opening</button>
+
               </div>
 
             </div>
@@ -693,6 +1057,16 @@ function LogInputWidget() {
               <button onClick={handleLiscTagsForm} style={tagListButtonStyleLI}>Liscensces <br />and ratings{!liscTagsPage ? ' (show)' : ' (hide)'}</button>
 
               <div style={liscTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+                <button style={tagTILSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCTI}>Tandem Instructor</button>
+                <button style={tagVideoLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCVideographer}>Videogrpaher</button>
+                <button style={tagAffiLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCAffi}>AFFI</button>
+                <button style={tagCoachLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCoach}>Coach </button>
+                <button style={tagOrganizerLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCOrganizer}>Organizer</button>
+                <button style={tagJumpMasterLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCJumpMaster}>Jump Master</button>
+                <button style={tagCheckLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCheck}>Check Dive</button>
+                <button style={tagRecurrencyLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCRecurrency}>Recurrency</button>
+                <button style={tagStudentLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCStudent}>Student</button>
+
               </div>
 
             </div>
@@ -700,41 +1074,71 @@ function LogInputWidget() {
 
           </div>
 
+
           <div style={tagShellStyle}>
 
-            <div style={tagListStyle}>
-
-              <button onClick={handleAltTagsForm} style={tagListButtonStyleALT}>Altituted{!altTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={altTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-
-            </div>
-
-
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleEvnTagsForm} style={tagListButtonStyleEVN}>Events{!evnTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={evnTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-
-            </div> 
-
-
-            </div>
 
             <div style={tagListStyle}>
 
               <button onClick={handleGroupTagsForm} style={tagListButtonStyleGRP}>group Size{!groupTagsPage ? ' (show)' : ' (hide)'}</button>
 
               <div style={groupTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+              <input 
+                style={GsizeInpStye}
+                type="number" 
+                value={tagGroupSize} 
+                onChange={handleGroupSizeChange}
+                placeholder="Group Size (num)"
+                />
 
             </div> 
 
 
             </div>
 
+            <div style={tagListStyle}>
+
+              <button onClick={handleCnpyTagsForm} style={tagListButtonStyleCNPY}>Canopy <br /> weather{!cnpyTagsPage ? ' (show)' : ' (hide)'}</button>
+
+              <div style={cnpyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+                <button style={tagHighWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRHighWind}>High Winds</button>
+                <button style={tagLowWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLowWind}>Low Winds</button>
+                <button style={tagUpWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRUpWind}>Up Wind Landing</button>
+                <button style={tagDownWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRDownWind}>Down Wind Landing</button>
+                <button style={tagCrossWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRCrossWind}>Cross Wind Landing</button>
+                <button style={tagLongSpotWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLongSpot}>Long Spot</button>
+                <button style={tagRainWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRRain}>Rain</button>
+                <button style={tagSnowWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRSnow}>Snow</button>
+              </div> 
+          </div>
+
+
+          </div>
+
+
+          <div style={tagShellStyle}>
+
+          <div style={tagListStyle}>
+
+            <button onClick={handleEmergencyTagsForm} style={tagListButtonStyleEMER}>Emergencies{!emergencyTagsPage ? ' (show)' : ' (hide)'}</button>
+
+            <div style={emergencyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+              <button style={tagCutAwayEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRCutAway}>Cut Away</button>
+              <button style={tagOffLandingEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMROffLanding}>Off Landing</button>
+              <button style={tagAircraftEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRAircraft}>Aircraft Emergency</button>
+              <button style={tagInjuryEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRInjury}>Injury</button>
+
+            </div> 
+          </div>
+
+          <div style={tagListStyle}>
+
+              <button onClick={handleMalfunctionTagsForm} style={tagListButtonStyleMAL}>Malfunctions{!malfunctionTagsPage ? ' (show)' : ' (hide)'}</button>
+
+              <div style={malfunctionTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+
+            </div> 
+          </div>
 
           </div>
           
@@ -817,6 +1221,12 @@ function LogInputWidget() {
       <div className="inputContainer">
         <p>Aircraft: {newJumpAircraft}</p>
         <p>Rig: {newJumpRig}</p>
+        <p>tags:</p>
+        <ol>
+          {tagsPreview && tagsPreview.filter(Boolean).map((tag, idx) => (
+            <li key={idx}>{tag}</li>
+          ))}
+        </ol>
       </div>
 
       <div className="inputContainer">
