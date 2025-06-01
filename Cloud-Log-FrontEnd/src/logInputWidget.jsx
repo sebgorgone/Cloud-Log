@@ -1,21 +1,21 @@
-import {useState, useEffect, useContext} from 'react';
+import {useState, useEffect, } from 'react';
 import './style/logInputWidget.css'
+import { useAuth } from './contexts/authContext';
 
 
 function LogInputWidget() {
+
+  //get user data
+  const userData = useAuth();
+  console.log('Fetched User Data: ',userData.user.id)
 
 
   //state hooks vv
 
 //list states
-  const [planes, setPlanes] = useState(['cessna182', 
-    'Cessna 206', 
-    'cessna 208 "caravan"',
-    'DHC-6 "Twin Otter"',
-    'SC-7 "Skyvan"',
-  ])
+  const [planes, setPlanes] = useState([])
 
-  const [rigs, setRigs] = useState(['v350, strom170', 'v350, strom190']);
+  const [rigs, setRigs] = useState([]);
 
   const [DZs, setDZs] = useState(['CPI', 'The Ranch'])
 
@@ -70,6 +70,8 @@ function LogInputWidget() {
 
   const [newJumpDur, setNewJumpDur] = useState(null);
 
+  const [newJumpSigUpload, setNewJumpSigUpload] = useState(null);
+
   const [newJumpTagList, setNewJumpTagList] = useState([]);
 
   //state hooks ^^
@@ -114,11 +116,6 @@ function LogInputWidget() {
   function handleCnpyTagsForm(e) {
     e.preventDefault();
     setCnpyTagsPage(!cnpyTagsPage);
-  }
-
-  function handleExitTagsForm(e) {
-    e.preventDefault();
-    setExitTagsPage(!exitTagsPage);
   }
 
   function handleEmergencyTagsForm(e) {
@@ -167,9 +164,8 @@ function LogInputWidget() {
   function handleDZInput (e) {
     e.preventDefault()
     if (addJumpDZ.trim() !== ""){
-      const previousDZs = [...DZs];
-      console.log('previous DZs - '[previousDZs])
-      setDZs([...previousDZs, addJumpDZ]);
+      storeDZ(addJumpDZ)
+      getDZs();
       setAddJumpDZ("")
     }
 
@@ -180,10 +176,9 @@ function LogInputWidget() {
   function handleAircraftInput (e) {
     e.preventDefault()
     if (addJumpAircraft.trim() !== ""){
-      const previousAircraft = [...planes];
-      console.log('previous planes - '[previousAircraft])
-      setPlanes([...previousAircraft, addJumpAircraft]);
-      setAddJumpAircraft("")
+      storePlane(addJumpAircraft);
+      getPlanes();
+      setAddJumpAircraft("");
     }
 
   }
@@ -191,10 +186,9 @@ function LogInputWidget() {
   function handleRigInput (e) {
     e.preventDefault()
     if (addJumpRig.trim() !== ""){
-      const previousRigs = [...rigs];
-      console.log('previous rigs - '[previousRigs])
-      setRigs([...previousRigs, addJumpRig]);
-      setAddJumpRig("")
+      storeRig(addJumpRig);
+      getRigs();
+      setAddJumpRig("");
     }
 
   }
@@ -213,6 +207,24 @@ function LogInputWidget() {
     console.log("Clicked Rig value:", e.target.value);
     setNewJumpRig(e.target.value);
   }
+
+//file upload
+
+  const handleSigFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.type !== 'application/pdf') {
+      setPdfFile(null);
+      console.log('file uploaded was not a PDF------')
+      return;
+    }
+
+    setNewJumpSigUpload(file)
+
+    console.log('uploaded PDF-', file)
+    
+    
+  };
 
   //functional elements ^^
 
@@ -267,17 +279,13 @@ function LogInputWidget() {
 
   //Color Pallette vv
 
-  const pallette  = [
-  '#f3e8ee',
-  '#bacdb0',
-  '#729b79',
-  '#475b63',
-  '#2e2c2f'
-];  
+  const pallette  = ["#22223b", "#4a4e69", "#9a8c98", "#c9ada7", "#f2e9e4"].reverse();  
+
+//
 
   //color Pallette ^^
 
-  //tags state and logic VV
+  //tags state and logic VV   (info: info bundled b tagBulder() - state variables for selector buttons and output check hbt f3ß2)
 
   //states
 
@@ -650,7 +658,7 @@ function LogInputWidget() {
     fontFamily: "L1",
     paddingLeft: "1.5vw",
     paddingRight: "1.5vw",
-    fontSize: "1.6vh",
+    fontSize: "max(1.6vh,1.4vw)",
     marginTop: "1vh",
     display:"block",
     backgroundColor: pallette[1],
@@ -738,7 +746,7 @@ function LogInputWidget() {
     position: "fixed",
     zIndex: "2",
     width: "80%",
-    height: "50%",
+    height: "max(65%, 180px)",
     overflowY: "scroll",
     right: "5%",
     top: "5%",
@@ -811,26 +819,6 @@ function LogInputWidget() {
     borderRadius: "1.5vw",
     padding: ".5vw",
   }
-
-  const tagListButtonStyleALT = {
-    fontFamily: "L1",
-    fontSize: "1.6vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
-    borderRadius: "1.5vw",
-    padding: ".5vw",
-  }
-
-  const tagListButtonStyleEVN = {
-    fontFamily: "L1",
-    fontSize: "1.65vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
-    borderRadius: "1.5vw",
-    padding: ".5vw",
-  }
   
   const tagListButtonStyleGRP = {
     fontFamily: "L1",
@@ -884,43 +872,290 @@ function LogInputWidget() {
   //inline styles ^^
 
   //function to gather selected tags
-  function gatherTags() {
 
-    setTagsPreview([
-      !tagBellyJTT && `belly`,
-      !tagFreeFlyJTT && `Freefly`,
-      !tagWingsuitJTT && 'Wingsuit',
-      !tagBaseJTT && 'Base',
-      !tagHnPJTT && 'HnP',
-      !tagSwoopJTT && 'Swoop',
-      !tagCrwJTT && 'Crw',
-      !tagVfsJTT && 'VFS',
-      !tagMfsJTT && 'MFS',
-      !tagFsJTT && 'FS',
-      !tagAngleJTT && 'Angle',
-      !tagTrackingJTT && 'Tracking',
-      !tagSoloJTT && 'Sol0',
-      !tagTandemJTT && 'Tandem',
-      !tagAltJTT && 'Altitude',
-      !tagBigwayJTT && 'Bigway',
-      !tagZooJTT && 'Zoo',
-      !tagNightJTT && 'Night',
-      !tagHighPullJTT && 'High Pull', 
-      !tagFullJTT && 'Full Altitude',
-      !tagHighJTT && 'High Altitude',           
-      tagGroupSize && `(${tagGroupSize} Way)`
-    ]);
+function tagBundler() {
+  const tagBundleAll = [
+    !tagBellyJTT       ? { name: 'Belly',            cat: 'JTT' } : null,
+    !tagFreeFlyJTT     ? { name: 'FreeFly',          cat: 'JTT' } : null,
+    !tagWingsuitJTT    ? { name: 'Wingsuit',         cat: 'JTT' } : null,
+    !tagBaseJTT        ? { name: 'Base',             cat: 'JTT' } : null,
+    !tagHnPJTT         ? { name: 'HnP',              cat: 'JTT' } : null,
+    !tagSwoopJTT       ? { name: 'Swoop',            cat: 'JTT' } : null,
+    !tagCrwJTT         ? { name: 'Crw',              cat: 'JTT' } : null,
+    !tagVfsJTT         ? { name: 'Vfs',              cat: 'JTT' } : null,
+    !tagMfsJTT         ? { name: 'Mfs',              cat: 'JTT' } : null,
+    !tagFsJTT          ? { name: 'Fs',               cat: 'JTT' } : null,
+    !tagAngleJTT       ? { name: 'Angle',            cat: 'JTT' } : null,
+    !tagTrackingJTT    ? { name: 'Tracking',         cat: 'JTT' } : null,
+    !tagSoloJTT        ? { name: 'Solo',             cat: 'JTT' } : null,
+    !tagTandemJTT      ? { name: 'Tandem',           cat: 'JTT' } : null,
+    !tagAltJTT         ? { name: 'Alt',              cat: 'JTT' } : null,
+    !tagBigwayJTT      ? { name: 'Bigway',           cat: 'JTT' } : null,
+    !tagZooJTT         ? { name: 'Zoo',              cat: 'JTT' } : null,
+    !tagNightJTT       ? { name: 'Night',            cat: 'JTT' } : null,
+    !tagHighPullJTT    ? { name: 'HighPull',         cat: 'JTT' } : null,
+    !tagFullJTT        ? { name: 'Full',             cat: 'JTT' } : null,
+    !tagHighJTT        ? { name: 'High',             cat: 'JTT' } : null,
 
-  }
+    !tagGoodOC         ? { name: 'Good',             cat: 'OC'  } : null,
+    !tagHardOC         ? { name: 'Hard',             cat: 'OC'  } : null,
+    !tagOffHeadingOC   ? { name: 'OffHeading',       cat: 'OC'  } : null,
+    !tagOnHeadingOC    ? { name: 'OnHeading',        cat: 'OC'  } : null,
+    !tagPCDelayOC      ? { name: 'PCDelay',          cat: 'OC'  } : null,
+    !tagLineBreakOC    ? { name: 'LineBreak',        cat: 'OC'  } : null,
+    !tagStableOC       ? { name: 'Stable',           cat: 'OC'  } : null,
+    !tagUnstableOC     ? { name: 'Unstable',         cat: 'OC'  } : null,
 
-  const [tagsPreview, setTagsPreview] = useState(null);
+    !tagTILSC          ? { name: 'TI',               cat: 'LSC' } : null,
+    !tagVideoLSC       ? { name: 'Video',            cat: 'LSC' } : null,
+    !tagAffiLSC        ? { name: 'Affi',             cat: 'LSC' } : null,
+    !tagCoachLSC       ? { name: 'Coach',            cat: 'LSC' } : null,
+    !tagOrganizerLSC   ? { name: 'Organizer',        cat: 'LSC' } : null,
+    !tagJumpMasterLSC  ? { name: 'JumpMaster',       cat: 'LSC' } : null,
+    !tagCheckLSC       ? { name: 'Check',            cat: 'LSC' } : null,
+    !tagRecurrencyLSC  ? { name: 'Recurrency',       cat: 'LSC' } : null,
+    !tagStudentLSC     ? { name: 'Student',          cat: 'LSC' } : null,
+
+    !tagHighWindWTHR   ? { name: 'HighWind',         cat: 'WTHR'} : null,
+    !tagLowWindWTHR    ? { name: 'LowWind',          cat: 'WTHR'} : null,
+    !tagUpWindWTHR     ? { name: 'UpWind',           cat: 'WTHR'} : null,
+    !tagDownWindWTHR   ? { name: 'DownWind',         cat: 'WTHR'} : null,
+    !tagCrossWindWTHR  ? { name: 'CrossWind',        cat: 'WTHR'} : null,
+    !tagLongSpotWTHR   ? { name: 'LongSpot',         cat: 'WTHR'} : null,
+    !tagRainWTHR       ? { name: 'Rain',             cat: 'WTHR'} : null,
+    !tagSnowWTHR       ? { name: 'Snow',             cat: 'WTHR'} : null,
+
+    !tagCutAwayEMR     ? { name: 'CutAway',          cat: 'EMR' } : null,
+    !tagOffLandingEMR  ? { name: 'OffLanding',       cat: 'EMR' } : null,
+    !tagAircraftEMR    ? { name: 'Aircraft',         cat: 'EMR' } : null,
+    !tagInjuryEMR      ? { name: 'Injury',           cat: 'EMR' } : null,
+
+    !tagEvaMAL         ? { name: 'Eva',              cat: 'MAL' } : null,
+    !tagBiPlaneMAL     ? { name: 'BiPlane',          cat: 'MAL' } : null,
+    !tagDownPlaneMAL   ? { name: 'DownPlane',        cat: 'MAL' } : null,
+    !tagLineOverMAL    ? { name: 'LineOver',         cat: 'MAL' } : null,
+    !tagSideBySideMAL  ? { name: 'SideBySide',       cat: 'MAL' } : null,
+    !tagStuckSliderMAL ? { name: 'StuckSlider',      cat: 'MAL' } : null,
+    !tagPCInTowMAL     ? { name: 'PCInTow',          cat: 'MAL' } : null,
+    !tagStreamerMAL    ? { name: 'Streamer',         cat: 'MAL' } : null,
+    !tagHorshoeMAL     ? { name: 'Horshoe',          cat: 'MAL' } : null,
+    !tagPrematureMAL   ? { name: 'Premature',        cat: 'MAL' } : null,
+    !tagHardPullMAL    ? { name: 'HardPull',         cat: 'MAL' } : null,
+    !tagToggleLockMAL  ? { name: 'ToggleLock',       cat: 'MAL' } : null,
+    !tagToggleFireMAL  ? { name: 'ToggleFire',       cat: 'MAL' } : null,
+    !tagDivingLineTwistMAL ? { name: 'DivingLineTwist',   cat: 'MAL' } : null,
+    !tagTensionKnotMAL ? { name: 'TensionKnot',      cat: 'MAL' } : null,
+
+    tagGroupSize > 1   ? { name: `GroupSize${tagGroupSize}`, value: tagGroupSize,        cat: 'GROUP' } : null
+  ];
+  const filteredNullBundle = tagBundleAll.filter(item => item !== null);
+  const filteredBundle = filteredNullBundle.map(item => item.name);
+  setNewJumpTagList([...tagBundleAll.filter(item => item !== null)]);
+  setTagsPreview(tagBundleAll.filter(item => item !== null).map((tag, idx) => {
+    return(
+      <div key={idx}>
+        <p>{tag.name === 'GroupSize' && tagGroupSize > 1 && tagGroupSize + ' Way Group'}</p>
+        <p>{tag.name !== 'GroupSize' && tag.name}</p>
+
+      </div>
+    )
+  }))
+  // console.log('tags html output: ', tagsPreview);
+  return tagBundleAll.filter(item => item !== null);
+}
+
+const [tagsPreview, setTagsPreview] = useState(null);
 
       //useEffects
   useEffect(() => {
-    gatherTags();
-  },[tagsPage]);
+    tagBundler();
+    setNewJumpTagList(tagBundler());
+  },
+  [tagBellyJTT,
+tagFreeFlyJTT,
+tagWingsuitJTT,
+tagBaseJTT,
+tagHnPJTT,
+tagSwoopJTT,
+tagCrwJTT,
+tagVfsJTT,
+tagMfsJTT,
+tagFsJTT,
+tagAngleJTT,
+tagTrackingJTT,
+tagSoloJTT,
+tagTandemJTT,
+tagAltJTT,
+tagBigwayJTT,
+tagZooJTT,
+tagNightJTT,
+tagHighPullJTT,
+tagFullJTT,
+tagHighJTT,
+tagGoodOC,
+tagHardOC,
+tagOffHeadingOC,
+tagOnHeadingOC,
+tagPCDelayOC,
+tagLineBreakOC,
+tagStableOC,
+tagUnstableOC,
+tagTILSC,
+tagVideoLSC,
+tagAffiLSC,
+tagCoachLSC,
+tagOrganizerLSC,
+tagJumpMasterLSC,
+tagCheckLSC,
+tagRecurrencyLSC,
+tagStudentLSC,
+tagHighWindWTHR,
+tagLowWindWTHR,
+tagUpWindWTHR,
+tagDownWindWTHR,
+tagCrossWindWTHR,
+tagLongSpotWTHR,
+tagRainWTHR,
+tagSnowWTHR,
+tagCutAwayEMR,
+tagOffLandingEMR,
+tagAircraftEMR,
+tagInjuryEMR,
+tagEvaMAL,
+tagBiPlaneMAL,
+tagDownPlaneMAL,
+tagLineOverMAL,
+tagSideBySideMAL,
+tagStuckSliderMAL,
+tagPCInTowMAL,
+tagStreamerMAL,
+tagHorshoeMAL,
+tagPrematureMAL,
+tagHardPullMAL,
+tagToggleLockMAL,
+tagToggleFireMAL,
+tagDivingLineTwistMAL,
+tagTensionKnotMAL,
+tagGroupSize,]);
 
+useEffect(() => {
+  getRigs()
+  getPlanes();
+  getDZs();
+}, [])
 
+//api calls
+
+  const getRigs = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getrigs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userData.user.id}),
+      });
+      const returnedData = await response.json();
+      if(response.ok){
+        let foundRigs = [];
+        for (let rig of returnedData.results) {
+          foundRigs.push(rig.name);
+        }
+      console.log('succesfully got user Rigs', foundRigs);
+        setRigs([...foundRigs]);
+      } else{
+        console.error('no rigs imported', response);
+      }
+    } catch (err) {
+      console.error('client failed getting rigs', err);
+    }
+  };
+
+  const storeRig = async (newRigString) => {
+    try {
+      const response = await fetch('http://localhost:5009/storerigs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userData.user.id, name: `${newRigString}` }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        alert(returnedDATA.message)
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing rig', err);}
+  };
+
+  const getPlanes = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getplanes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userData.user.id}),
+      });
+      const returnedData = await response.json();
+      if(response.ok){
+        let foundPlanes = [];
+        for (let plane of returnedData.results) {
+          foundPlanes.push(plane.name);
+        }
+      console.log('succesfully got user Planes', foundPlanes);
+        setPlanes([...foundPlanes]);
+      } else{
+        console.error('no Planes imported', response);
+      }
+    } catch (err) {
+      console.error('client failed plane rigs', err)
+    }
+  };
+
+  const storePlane = async (newPlaneString) => {
+    try {
+      const response = await fetch('http://localhost:5009/storeplanes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userData.user.id, name: `${newPlaneString}` }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        alert(returnedDATA.message)
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing plane', err);}
+  }
+
+  const getDZs = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getdzs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userData.user.id}),
+      });
+      const returnedData = await response.json();
+      if(response.ok){
+        let foundDZs = [];
+        for (let dz of returnedData.results) {
+          foundDZs.push(dz.name);
+        }
+      console.log('succesfully got user DZ', foundDZs);
+        setDZs([...foundDZs]);
+      } else{
+        console.error('no DZs imported', response);
+      }
+    } catch (err) {
+      console.error('client failed getting DZs', err);
+    }
+  };
+
+  const storeDZ = async (newRigString) => {
+    try {
+      const response = await fetch('http://localhost:5009/storedz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userData.user.id, name: `${newRigString}` }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        alert(returnedDATA.message)
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing rig', err);}
+  };
 
 
   return(
@@ -996,7 +1231,7 @@ function LogInputWidget() {
 
         <button style={headerButtonStyle} onClick={handleTagsForm}>Tags{tagsPage ? ' (show)' : ' (hide)'}</button>
 
-        <form style={tagsPage ? overlayStyle : {display: "none"}}>
+        <form style={!tagsPage ? overlayStyle : {display: "none"}}>
           <h3 style={tagsHeaderStyle}>Select Tags</h3>
           <button style={xButtonStyle} onClick={handleTagsForm}>X</button>
 
@@ -1200,7 +1435,13 @@ function LogInputWidget() {
             Log-book Signature Upload
             <sub style={{display: "block", fontSize: ".5em"}}>(upload entire logbook entery for this jump)</sub>
           </h3>
-          <input type="file" style={inputButtonStyle}/>
+          <input 
+            type="file" 
+            accept="application/pdf"
+            style={inputButtonStyle}
+            onChange={handleSigFileUpload}
+
+          />
         </div>
 
 
@@ -1222,11 +1463,9 @@ function LogInputWidget() {
         <p>Aircraft: {newJumpAircraft}</p>
         <p>Rig: {newJumpRig}</p>
         <p>tags:</p>
-        <ol>
-          {tagsPreview && tagsPreview.filter(Boolean).map((tag, idx) => (
-            <li key={idx}>{tag}</li>
-          ))}
-        </ol>
+        
+          {tagsPreview}
+        
       </div>
 
       <div className="inputContainer">
@@ -1245,13 +1484,7 @@ export default LogInputWidget;
 
 export function getPallette(){
 
-    const pallette  = [
-      '#f3e8ee',
-      '#bacdb0',
-      '#729b79',
-      '#475b63',
-      '#2e2c2f'
-    ];  
+    const pallette  = ["#22223b", "#4a4e69", "#9a8c98", "#c9ada7", "#f2e9e4"].reverse();  
   return(pallette)
 }
 

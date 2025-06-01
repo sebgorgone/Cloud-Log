@@ -28,14 +28,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     console.log('AuthProvider initializing, reading token...');
     const t = localStorage.getItem('token');
-    console.log('AuthProvider token from localStorage:', t);
     if (!t) {
       setLoading(false);
       return;
     }
 
     const decoded = parseJwt(t);
-    console.log('AuthProvider decoded JWT payload:', decoded);
     if (decoded && decoded.exp * 1000 > Date.now()) {
       setUser({ id: decoded.id, name: decoded.name, email: decoded.email });
       setToken(t);
@@ -48,7 +46,6 @@ export function AuthProvider({ children }) {
 
   // login with { token, user }
   const login = ({ token: t, user: u }) => {
-    console.log('AuthProvider login, saving token and user:', t, u);
     setUser(u);
     setToken(t);
     localStorage.setItem('token', t);
@@ -70,4 +67,9 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
   return useContext(AuthContext);
+}
+
+export function getUser ()  {
+  const data = useContext(AuthContext);
+  return({name: data.user.name, ID: data.user.id})
 }

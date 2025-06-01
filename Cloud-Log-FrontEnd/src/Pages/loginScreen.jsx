@@ -22,25 +22,40 @@ function LoginScreen () {
 
    //styles vv
    const loginContainer = {
-      background: pallette[2],
+      background: pallette[4],
       border: "solid 0.3em",
-      borderColor: pallette[3],
+      borderColor: pallette[2],
       padding: "1vw",
       maxWidth: "75%",
       margin: "auto",
    }
 
    const headerStyle = {
-      color: pallette[4],
+      color: pallette[0],
       fontFamily: "L1",
    }
 
    const inputStyle = {
       fontFamily: "L1",
-      color: pallette[4],
-      background: pallette[1],
+      color: pallette[0],
+      background: pallette[3],
       margin: "8vh auto",
       minWidth: "75%",
+      display: "block",
+   }
+
+   const signupPageButton = {
+      color: pallette[0],
+      fontFamily: "L1",
+   }
+
+   const loginButton = {
+      fontFamily: "L1",
+      border: "none",
+      color: pallette[0],
+      background: pallette[3],
+      margin: "0",
+      minWidth: "40%",
       display: "block",
    }
 
@@ -114,7 +129,12 @@ function LoginScreen () {
             value={psky}
             onChange={handlePskyField}
          />
-         <button onClick={handleLogin}>Log In</button>
+         <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center", marginBottom: "3vh"}}>
+            <button onClick={handleLogin} style={loginButton}>Log In</button>
+            <a style={signupPageButton}>Create New Account</a>
+
+         </div>
+         
 
 
       </div>

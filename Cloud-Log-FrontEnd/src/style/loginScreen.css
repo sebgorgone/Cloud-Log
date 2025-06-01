@@ -1,6 +1,5 @@
 input {
    border-radius: 1em;
-   padding: 1.5vw;
    text-align-last: center;   
    transition:  300ms;
 }
@@ -8,4 +7,14 @@ input {
 input:hover {
    opacity: 85%;
    border-radius: 1.5em;
+}
+
+button {
+   box-shadow: 4px 5px #000000;
+   transition: .3s;
+}
+
+button:hover {
+   box-shadow: 3px 3.5px #000000;
+
 }
