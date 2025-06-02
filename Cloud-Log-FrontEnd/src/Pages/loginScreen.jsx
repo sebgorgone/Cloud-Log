@@ -26,7 +26,7 @@ function LoginScreen () {
       border: "solid 0.3em",
       borderColor: pallette[2],
       padding: "1vw",
-      maxWidth: "75%",
+      maxWidth: "28em",
       margin: "auto",
    }
 

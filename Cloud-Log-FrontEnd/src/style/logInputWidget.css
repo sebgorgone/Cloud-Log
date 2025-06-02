@@ -5,25 +5,15 @@
 
 #inputDashboard {
    display: flex;
+   flex-direction: column ;
    margin: 0;
-   font-family: 'Inter';
+   font-family: 'L1';
    justify-content: space-around;
 
 }
 
 .inputContainer {
-   border-left: solid .1em;
-   border-right: solid .1em;
-   padding-left: 2.5vw;
-   padding-right: 2.5vw;   
-   display: flex;
-   flex-flow: column;
-   align-items: left;
-   justify-content: space-evenly;
-   vertical-align: top;
-   max-width: 17vw;
-   text-align-last: center;
-   transition: 200ms;
+
 
 }
 

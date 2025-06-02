@@ -675,10 +675,10 @@ function LogInputWidget() {
     
   const widgetStyle = {
     background: pallette[2],
-    borderColor: pallette[1],
     border: "solid",
     padding: "2em",
-    borderRadius: ".75em"
+    borderRadius: ".75em",
+    justifyContent: "center"
   }
 
   const alignTop = {
@@ -722,7 +722,7 @@ function LogInputWidget() {
     fontSize: "1.4vw"
   };
 
-    const formHiddenStyle = {
+  const formHiddenStyle = {
     display: "none", 
     textAlignLast: "left", 
     fontFamily: "L1", 
@@ -833,16 +833,6 @@ function LogInputWidget() {
   const tagListButtonStyleCNPY = {
     fontFamily: "L1",
     fontSize: "1.45vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
-    borderRadius: "1.5vw",
-    padding: ".5vw",
-  }
-
-  const tagListButtonStyleEXIT = {
-    fontFamily: "L1",
-    fontSize: "1.7vw",
     background: pallette[1],
     border: "solid .1em",
     borderColor: pallette[4],
@@ -1159,10 +1149,13 @@ useEffect(() => {
 
 
   return(
-    <>
+    <div >
+    <br/>
+    <br/>
     <div id="inputDashboard" style={widgetStyle}>
+      //first row
+      <div>
 
-      <div className="inputContainer">
         <div>
           <h3 style={headerStyle}>Jump Number</h3>
           <input 
@@ -1181,25 +1174,7 @@ useEffect(() => {
             onChange={handleJumpDateChange}
           />
         </div>
-        
-        <div>
-          <h3 style={headerStyle}>Drop-Zone</h3>
-          <form style={formStyle}>
-            {DZList}
-            <p style={headerStyle}>Add Drop-Zone</p>
-            <input 
-              id="newDZ"
-              type="text" 
-              placeholder="new DZ"
-              value={addJumpDZ}
-              onChange={handleAddJumpDZChange}
-            />
-            <button style={headerButtonStyle} onClick={handleDZInput}>add DZ</button>
-          </form>
-          
-          
-        </div>
-        
+        //second row
       </div>
 
       <div className="inputContainer">
@@ -1226,6 +1201,25 @@ useEffect(() => {
             /> 
             <button style={headerButtonStyle} onClick={handleAircraftInput}>Add Aircraft</button>
           </div>
+
+          <div>
+          <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
+          <form style ={eqpmPage ? {display: "none"} : {display: "block", border: "solid", borderRadius: "1.5vw"}}>
+            {rigList}
+            <div>
+              <h3 style={headerStyle}>add rig</h3>
+              <input 
+                type="text" 
+                placeholder="new rig"
+                value={addJumpRig}
+                onChange={handleAddJumpRigChange}
+              />
+              <button style={headerButtonStyle} onClick={handleRigInput}>Add Rig</button>
+
+            </div>
+          </form>
+                    
+        </div>
 
         </form>
 
@@ -1382,23 +1376,23 @@ useEffect(() => {
       </div>
 
       <div className="inputContainer">
+        //third row
         <div>
-          <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
-          <form style ={eqpmPage ? {display: "none"} : {display: "block", border: "solid", borderRadius: "1.5vw"}}>
-            {rigList}
-            <div>
-              <h3 style={headerStyle}>add rig</h3>
-              <input 
-                type="text" 
-                placeholder="new rig"
-                value={addJumpRig}
-                onChange={handleAddJumpRigChange}
-              />
-              <button style={headerButtonStyle} onClick={handleRigInput}>Add Rig</button>
-
-            </div>
+          <h3 style={headerStyle}>Drop-Zone</h3>
+          <form style={formStyle}>
+            {DZList}
+            <p style={headerStyle}>Add Drop-Zone</p>
+            <input 
+              id="newDZ"
+              type="text" 
+              placeholder="new DZ"
+              value={addJumpDZ}
+              onChange={handleAddJumpDZChange}
+            />
+            <button style={headerButtonStyle} onClick={handleDZInput}>add DZ</button>
           </form>
-                    
+          
+          
         </div>
 
         <div>
@@ -1475,7 +1469,7 @@ useEffect(() => {
       </div>
 
     </div>
-    </>
+    </div>
   )
 
 }

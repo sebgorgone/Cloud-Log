@@ -20,7 +20,8 @@ function HomePage() {
       setShowAddWidget(!showAddWidget)
    }
    //inline styles
-   const homePageShell = {}
+   const homePageShell = {
+   }
    const headerStyle ={
       position: "fixed",
       top: "0",
