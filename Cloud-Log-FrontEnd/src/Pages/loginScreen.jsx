@@ -42,6 +42,8 @@ function LoginScreen () {
       margin: "8vh auto",
       minWidth: "75%",
       display: "block",
+      border: "none",
+
    }
 
    const signupPageButton = {
@@ -117,7 +119,9 @@ function LoginScreen () {
    return(
       <div style={loginContainer}>
          <h3 style={headerStyle}>Please Log In</h3>
-         <input style={inputStyle} 
+         <input 
+            className="loginInput"
+            style={inputStyle} 
             type="text" 
             placeholder="Email or Username"
             value={ident}
@@ -125,6 +129,7 @@ function LoginScreen () {
           />
          <input style={inputStyle} 
             type="text" 
+            className="loginInput"
             placeholder="password" 
             value={psky}
             onChange={handlePskyField}

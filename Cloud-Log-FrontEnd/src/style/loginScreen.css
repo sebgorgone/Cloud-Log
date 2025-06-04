@@ -1,12 +1,11 @@
-input {
-   border-radius: 1em;
+.loginInput {
+   height: 2.5em;
    text-align-last: center;   
    transition:  300ms;
 }
 
-input:hover {
+.loginInput:hover {
    opacity: 85%;
-   border-radius: 1.5em;
 }
 
 button {

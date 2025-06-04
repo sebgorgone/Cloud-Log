@@ -12,14 +12,9 @@
 
 }
 
-.inputContainer {
-
-
-}
-
 
 input{
-   max-width: 11.5vw;
+   max-width: 11em;
    margin-bottom: 1vh;
    border-radius: 3vw;
    border: none
