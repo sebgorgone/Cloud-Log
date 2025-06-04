@@ -1,6 +1,7 @@
 import {useState, useEffect, } from 'react';
 import './style/logInputWidget.css'
 import { useAuth } from './contexts/authContext';
+import JumpWidget from './components/JumpWidget.jsx'
 
 
 function LogInputWidget() {
@@ -50,7 +51,7 @@ function LogInputWidget() {
 
   const [cnpyTagsPage, setCnpyTagsPage] = useState(false);
 
-  const [exitTagsPage, setExitTagsPage] = useState(false);
+  const [preReqTagsPage, setPreReqTagsPage] = useState(false);
 
   const [emergencyTagsPage, setEmergencyTagsPage] = useState(false);
 
@@ -136,6 +137,11 @@ function LogInputWidget() {
     setMalfunctionTagsPage(!malfunctionTagsPage);
   }
 
+  function handlePreReqTagsForm(e) {
+    e.preventDefault();
+    setPreReqTagsPage(!preReqTagsPage);
+  }
+
 //string elements
   function handleJumpNumChange (e) {
     setNewJumpNum(e.target.value);
@@ -167,6 +173,10 @@ function LogInputWidget() {
 
   function handleGroupSizeChange (e) {
     setTagGroupSize(e.target.value);
+  }
+
+  function handleComForm (e) {
+    setNewJumpCom(e.target.value)
   }
 //buttons
   function handleDZInput (e) {
@@ -293,7 +303,7 @@ function LogInputWidget() {
 
   //color Pallette ^^
 
-  //tags state and logic VV   (info: info bundled b tagBulder() - state variables for selector buttons and output check hbt f3ß2)
+  //tags state and logic VV   (info: info bundled b tagBulder() - state variables for selector buttons and output check)
 
   //states
 
@@ -380,6 +390,14 @@ function LogInputWidget() {
   const [tagToggleFireMAL, setTagToggleFireMAL] = useState(true);
   const [tagDivingLineTwistMAL, setTagDivingLineTwistMAL] = useState(true);
   const [tagTensionKnotMAL, setTagTensionKnotMAL] = useState(true);
+
+                    //Pre reqs
+  const [tagAcc33REQ, setTagAcc33REQ] = useState(true);
+  const [tagAcc7REQ, setTagAcc7REQ] = useState(true);
+  const [tagDemoREQ, setTagDemoREQ] = useState(true);
+  const [tagWaterREQ, setTagWaterREQ] = useState(true);
+  const [tagNightREQ, setTagNightREQ] = useState(true);
+
 
    //handlers
 
@@ -645,7 +663,26 @@ function LogInputWidget() {
       e.preventDefault();
       setTagToggleFireMAL(!tagToggleFireMAL);
     },
-    
+    REQAcc33: (e) => {
+      e.preventDefault();
+      setTagAcc33REQ(!tagAcc33REQ);
+    },
+    REQAcc7: (e) => {
+      e.preventDefault();
+      setTagAcc7REQ(!tagAcc7REQ);
+    },
+    REQDemo: (e) => {
+      e.preventDefault();
+      setTagDemoREQ(!tagDemoREQ);
+    },
+    REQWater: (e) => {
+      e.preventDefault();
+      setTagWaterREQ(!tagWaterREQ);
+    },
+    REQNight: (e) => {
+      e.preventDefault();
+      setTagNightREQ(!tagNightREQ);
+    },
   }
   
   //button styles
@@ -681,24 +718,6 @@ function LogInputWidget() {
 
   //inline styles vv
     
-  const widgetStyle = {
-    background: pallette[2],
-    border: "solid",
-    padding: "2em",
-    borderRadius: ".75em",
-    justifyContent: "center"
-  }
-
-  const alignTop = {
-   border: "0",
-   marginTop: "25px",
-   display: "flex",
-   flexFlow: "column",
-   alignItems: "left",
-   verticalAlign: "top",
-   maxWidth: "17vw",
-   textAlignLast: "center",
-  }
 
   const formHiddenStyle = {
     display: "none", 
@@ -727,7 +746,7 @@ function LogInputWidget() {
     height: "max(65%, 180px)",
     overflowY: "scroll",
     right: "5%",
-    top: "5%",
+    top: "13%",
     color: pallette[4],
     backgroundColor: pallette[1],
     border: "solid .15em",
@@ -740,7 +759,7 @@ function LogInputWidget() {
     position: "absolute",
     fontSize: "1.2em",
     fontWieght: "Bold",
-    top: "1vw",
+    top: "1vh",
     right: "1vw",
     backgroundColor: pallette[0],
     border: "solid .15em",
@@ -895,7 +914,7 @@ function tagBundler() {
 
     !tagCutAwayEMR     ? { name: 'CutAway',          cat: 'EMR' } : null,
     !tagOffLandingEMR  ? { name: 'OffLanding',       cat: 'EMR' } : null,
-    !tagAircraftEMR    ? { name: 'Aircraft',         cat: 'EMR' } : null,
+    !tagAircraftEMR    ? { name: 'Aircraft Emergency',         cat: 'EMR' } : null,
     !tagInjuryEMR      ? { name: 'Injury',           cat: 'EMR' } : null,
 
     !tagEvaMAL         ? { name: 'Eva',              cat: 'MAL' } : null,
@@ -914,6 +933,13 @@ function tagBundler() {
     !tagDivingLineTwistMAL ? { name: 'DivingLineTwist',   cat: 'MAL' } : null,
     !tagTensionKnotMAL ? { name: 'TensionKnot',      cat: 'MAL' } : null,
 
+    !tagAcc33REQ ? {name: 'Accuracy Within 33ft',      cat: 'REQ'} : null,
+    !tagAcc7REQ ? {name: 'Accuracy Within 7ft', cat: 'REQ'} : null,
+    !tagDemoREQ ? {name: 'Demo Jump', cat: 'REQ'} : null,
+    !tagWaterREQ ? {name: 'Intentional Water Landing ', cat: 'REQ'} : null,
+    !tagNightREQ ? {name: 'Night Jump',      cat: 'REQ'} : null,
+
+
     tagGroupSize > 1   ? { name: `GroupSize${tagGroupSize}`, value: tagGroupSize,        cat: 'GROUP' } : null
   ];
   const filteredNullBundle = tagBundleAll.filter(item => item !== null);
@@ -921,7 +947,7 @@ function tagBundler() {
   setNewJumpTagList([...tagBundleAll.filter(item => item !== null)]);
   setTagsPreview(tagBundleAll.filter(item => item !== null).map((tag, idx) => {
     return(
-      <div key={idx}>
+      <div style={{margin: "0", fontSize: ".6em", padding: "0"}}key={idx}>
         <p>{tag.name === 'GroupSize' && tagGroupSize > 1 && tagGroupSize + ' Way Group'}</p>
         <p>{tag.name !== 'GroupSize' && tag.name}</p>
 
@@ -939,7 +965,8 @@ const [tagsPreview, setTagsPreview] = useState(null);
     tagBundler();
     setNewJumpTagList(tagBundler());
   },
-  [tagBellyJTT,
+  [tagsPage,
+tagBellyJTT,
 tagFreeFlyJTT,
 tagWingsuitJTT,
 tagBaseJTT,
@@ -1004,6 +1031,11 @@ tagToggleLockMAL,
 tagToggleFireMAL,
 tagDivingLineTwistMAL,
 tagTensionKnotMAL,
+tagAcc7REQ,
+tagAcc33REQ,
+tagDemoREQ,
+tagWaterREQ,
+tagNightREQ,
 tagGroupSize,]);
 
 useEffect(() => {
@@ -1013,6 +1045,8 @@ useEffect(() => {
 }, [])
 
 //api calls
+
+//input info
 
   const getRigs = async () => {
     try {
@@ -1125,14 +1159,24 @@ useEffect(() => {
     } catch (err) {console.error('client failed storing rig', err);}
   };
 
+//store jump route
+
   //revised Div Styles
 
   const shell = {
-  }
+    background: pallette[0],
+    borderRadius: "1em",
+    padding: "1em"
+  };
 
     const headerStyle = {
     fontFamily: "L1",
-  }
+    fontSize: "1.2em",
+    color: pallette[4],
+    background: pallette[2],
+    borderRadius: "1em",
+    padding: ".3em",
+  };
 
   const headerButtonStyle = {
     background: pallette[0],
@@ -1141,7 +1185,8 @@ useEffect(() => {
     borderRadius: "1.5vw",
     padding: ".5vw",
     fontFamily: "L1",
-  }
+    color: pallette[4],
+  };
 
   const inputButtonStyle = {
       color: pallette[0],
@@ -1151,14 +1196,32 @@ useEffect(() => {
       padding: "0",
       margin: "0",
      fontFamily: "L1",
-  }
+     color: pallette[4],
+  };
 
   const formStyle = {
     display: "block", 
     textAlignLast: "center", 
     fontFamily: "L1", 
+    color: pallette[4],
     fontSize: "1.4vw"
   };
+
+  const inputSection = {
+    display: "flex",
+    flexFlow: "column",
+    justifyContent: "space-evenly"
+  };
+
+  const rowStyle = {
+    display: "flex", 
+    justifyContent: "space-evenly", 
+    margin: "1vh", padding: ".5em", 
+    background: pallette[1], 
+    borderRadius:".3em" 
+  };
+
+  
 
 
   return(
@@ -1166,338 +1229,17 @@ useEffect(() => {
     <br/>
     <br/>
 
+    <div style={shell}>
 
-    <div id="inputDashboard" style={widgetStyle}>
-      //first row
-      <div>
-
-        <div>
-          <h3 style={headerStyle}>Jump Number</h3>
-          <input 
-            type="number" 
-            placeholder="Jump #"
-            value={newJumpNum}
-            onChange={handleJumpNumChange}
-          />
-        </div>
-        
-        <div>
-          <h3 style={headerStyle}>Jump Date</h3>
-          <input 
-            type="date" 
-            value={newJumpDate}
-            onChange={handleJumpDateChange}
-          />
-        </div>
-        //second row
+      {/* title */}
+      <div style={rowStyle}>
+        <h1 style={{fontFamily: "L1", padding: "1em", color: pallette[4],fontSize: "2.5em"}}>Add Jump</h1>
       </div>
-
-      <div className="inputContainer">
-
-        <button onClick={handleAircraftForm}style={headerButtonStyle}>Aircraft{aircraftPage ? ' (show)' : ' (hide)'}</button>
-
-        <form style={!aircraftPage ? formStyle : formHiddenStyle}>
-
-          <p style={headerStyle}>
-            select your aircraft 
-          </p>
-
-          {planeList}
-
-          <div>
-            <p style={headerStyle}>
-              add aircraft
-            </p>
-            <input 
-              type="text" 
-              placeholder="New Aircraft" 
-              value={addJumpAircraft}
-              onChange={handleAddJumpAircraftChange}
-            /> 
-            <button style={headerButtonStyle} onClick={handleAircraftInput}>Add Aircraft</button>
-          </div>
-
-          </form>
-
-          <div>
-          <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
-          <form style ={eqpmPage ? {display: "none"} : {display: "block", border: "solid", borderRadius: "1.5vw"}}>
-            {rigList}
-            <div>
-              <h3 style={headerStyle}>add rig</h3>
-              <input 
-                type="text" 
-                placeholder="new rig"
-                value={addJumpRig}
-                onChange={handleAddJumpRigChange}
-              />
-              <button style={headerButtonStyle} onClick={handleRigInput}>Add Rig</button>
-
-            </div>
-          </form>
-                    
-        </div>
-
-        
-
-        <button style={headerButtonStyle} onClick={handleTagsForm}>Tags{tagsPage ? ' (show)' : ' (hide)'}</button>
-
-        <form style={!tagsPage ? overlayStyle : {display: "none"}}>
-          <h3 style={tagsHeaderStyle}>Select Tags</h3>
-          <button style={xButtonStyle} onClick={handleTagsForm}>X</button>
-
-          <div style={tagShellStyle}>
-
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleJumpTypeTagsForm} style={tagListButtonStyleJT}>Jump Types{!jumpTypeTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={jumpTypeTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-
-                <button style={tagBellyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTbelly}>Belly</button>
-                <button style={tagFreeFlyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFreeFly}>Freefly</button>
-                <button style={tagWingsuitJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTWingsuit}>Wingsuit</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Base</button>
-                <button style={tagHnPJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHnP}>Hop n Pop</button>
-                <button style={tagSwoopJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSwoop}>Swoop</button>
-                <button style={tagCrwJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTCrw}>CRW</button>
-                <button style={tagVfsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTVfs}>VFS</button>
-                <button style={tagMfsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTMfs}>MFS</button>
-                <button style={tagFsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFs}>FS</button>
-                <button style={tagAngleJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTAngle}>Angle</button>
-                <button style={tagTrackingJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTracking}>Tracking</button>
-                <button style={tagSoloJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSolo}>Solo</button>
-                <button style={tagTandemJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTandem}>Tandem</button>
-                <button style={tagAltJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTAlt}>Altitude</button>
-                <button style={tagBigwayJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBigway}>Big Way</button>
-                <button style={tagZooJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTZoo}>Zoo</button>
-                <button style={tagNightJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTNight}>Night</button>
-                <button style={tagHighPullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHighPull}>High Pull</button>
-                <button style={tagFullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFull}>Full</button>
-                <button style={tagHighJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHigh}>High</button>
-              </div>            
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleOpenCharTagsForm} style={tagListButtonStyleOC}>Openings{!openCharTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={openCharTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-
-                <button style={tagGoodOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCGood}>Good Opening</button>
-                <button style={tagHardOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCHard}>Hard Opening</button>
-                <button style={tagOffHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOffHeading}>Off Heading Opening</button>
-                <button style={tagOnHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOnHeading}>On Heading Opening</button>
-                <button style={tagPCDelayOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCPCDelay}>Pilot Chute Hesitation</button>
-                <button style={tagLineBreakOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCLineBreak}>Broken Line</button>
-                <button style={tagStableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCStable}>Stable Deployment</button>
-                <button style={tagUnstableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCUnstable}>Unstable Opening</button>
-
-              </div>
-
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleLiscTagsForm} style={tagListButtonStyleLI}>Liscensces <br />and ratings{!liscTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={liscTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-                <button style={tagTILSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCTI}>Tandem Instructor</button>
-                <button style={tagVideoLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCVideographer}>Videogrpaher</button>
-                <button style={tagAffiLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCAffi}>AFFI</button>
-                <button style={tagCoachLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCoach}>Coach </button>
-                <button style={tagOrganizerLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCOrganizer}>Organizer</button>
-                <button style={tagJumpMasterLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCJumpMaster}>Jump Master</button>
-                <button style={tagCheckLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCheck}>Check Dive</button>
-                <button style={tagRecurrencyLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCRecurrency}>Recurrency</button>
-                <button style={tagStudentLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCStudent}>Student</button>
-
-              </div>
-
-            </div>
-
-
-          </div>
-
-
-          <div style={tagShellStyle}>
-
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleGroupTagsForm} style={tagListButtonStyleGRP}>group Size{!groupTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={groupTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-              <input 
-                style={GsizeInpStye}
-                type="number" 
-                value={tagGroupSize} 
-                onChange={handleGroupSizeChange}
-                placeholder="Group Size (num)"
-                />
-
-            </div> 
-
-
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleCnpyTagsForm} style={tagListButtonStyleCNPY}>Canopy <br /> weather{!cnpyTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={cnpyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-                <button style={tagHighWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRHighWind}>High Winds</button>
-                <button style={tagLowWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLowWind}>Low Winds</button>
-                <button style={tagUpWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRUpWind}>Up Wind Landing</button>
-                <button style={tagDownWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRDownWind}>Down Wind Landing</button>
-                <button style={tagCrossWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRCrossWind}>Cross Wind Landing</button>
-                <button style={tagLongSpotWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLongSpot}>Long Spot</button>
-                <button style={tagRainWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRRain}>Rain</button>
-                <button style={tagSnowWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRSnow}>Snow</button>
-              </div> 
-          </div>
-
-
-          </div>
-
-
-          <div style={tagShellStyle}>
-
-          <div style={tagListStyle}>
-
-            <button onClick={handleEmergencyTagsForm} style={tagListButtonStyleEMER}>Emergencies{!emergencyTagsPage ? ' (show)' : ' (hide)'}</button>
-
-            <div style={emergencyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-              <button style={tagCutAwayEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRCutAway}>Cut Away</button>
-              <button style={tagOffLandingEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMROffLanding}>Off Landing</button>
-              <button style={tagAircraftEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRAircraft}>Aircraft Emergency</button>
-              <button style={tagInjuryEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRInjury}>Injury</button>
-
-            </div> 
-          </div>
-
-          <div style={tagListStyle}>
-
-              <button onClick={handleMalfunctionTagsForm} style={tagListButtonStyleMAL}>Malfunctions{!malfunctionTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={malfunctionTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-
-            </div> 
-          </div>
-
-          </div>
-          
-        </form>
- 
-      </div>
-
-      <div className="inputContainer">
-        //third row
-        <div>
-          <h3 style={headerStyle}>Drop-Zone</h3>
-          <form style={formStyle}>
-            {DZList}
-            <p style={headerStyle}>Add Drop-Zone</p>
-            <input 
-              id="newDZ"
-              type="text" 
-              placeholder="new DZ"
-              value={addJumpDZ}
-              onChange={handleAddJumpDZChange}
-            />
-            <button style={headerButtonStyle} onClick={handleDZInput}>add DZ</button>
-          </form>
-          
-          
-        </div>
-
-        <div>
-          <h3 style={headerStyle}>
-            Exit Altitude
-            <sub>(ft)</sub>
-          </h3>
-          <input 
-            type="number" 
-            placeholder="altitutde"
-            value={newJumpAlt}
-            onChange={handleAddJumpAltChange}
-          />
-        </div>
-
-        <div>
-          <h3 style={headerStyle}>
-            Freefall Time 
-            <sub>(s)</sub>
-          </h3>
-          <input 
-            type="number" 
-            placeholder="time"
-            value={newJumpDur} 
-            onChange={handleAddJumpDurChange}
-          />
-
-        </div>
-      </div>
-
-      <div className="inputContainer">
-        <div>
-          <h3 style={headerStyle}>
-            Log-book Signature Upload
-            <sub style={{display: "block", fontSize: ".5em"}}>(upload entire logbook entery for this jump)</sub>
-          </h3>
-          <input 
-            type="file" 
-            accept="application/pdf"
-            style={inputButtonStyle}
-            onChange={handleSigFileUpload}
-
-          />
-        </div>
-
-
-        
-
-      </div>
-      
-    </div>
-
-
-    <div className="outputPreview" style={previewStyle}>
-      <div className="inputContainer">
-        <p>Jump # {newJumpNum}</p>
-        <p>Jump Date: {newJumpDate}</p>
-        <p>DZ: {newJumpDZ}</p>
-      </div>
-
-      <div className="inputContainer">
-        <p>Aircraft: {newJumpAircraft}</p>
-        <p>Rig: {newJumpRig}</p>
-        <p>tags:</p>
-        
-          {tagsPreview}
-        <p>comments: {newJumpCom}</p>
-        
-      </div>
-
-      <div className="inputContainer">
-        <p>Exit Alt: {newJumpAlt}</p>
-        <p>Freefall Time: {newJumpDur}</p>
-        <p>Signature Upload: {}</p>
-        
-      </div>
-
-    </div>
-
-        
-        
-        
-        <div style={shell}>
 
           {/* first row*/}
-          <div style={{display: "flex", justifyContent: "space-evenly", margin: "2vh" }}>
+          <div style={rowStyle}>
             {/* jump num */}
-            <div>
+            <div style={inputSection}>
               <h3 style={headerStyle}>Jump Number</h3>
                 <input 
                   type="number" 
@@ -1508,7 +1250,7 @@ useEffect(() => {
             </div>
 
           {/* jump date */}
-          <div>
+          <div style={inputSection}>
             <h3 style={headerStyle}>Jump Date</h3>
               <input 
                 type="date" 
@@ -1521,9 +1263,9 @@ useEffect(() => {
           </div>
 
           {/* second row */}
-          <div style={{display: "flex",  justifyContent: "space-evenly", margin: "2vh"}}>
+          <div style={rowStyle}>
             {/* DZ */}
-          <div>
+          <div style={inputSection}>
               <button onClick={handleDzForm}style={headerButtonStyle}>Drop-Zone</button>
               <form style={!dzPage ? formStyle : {display: "none"}}>
                 {DZList}
@@ -1541,7 +1283,7 @@ useEffect(() => {
 
 
             {/* Aircraft */}
-          <div>
+          <div style={inputSection}>
           <button onClick={handleAircraftForm}style={headerButtonStyle}>Aircraft{aircraftPage ? ' (show)' : ' (hide)'}</button>
 
           <form style={!aircraftPage ? formStyle : formHiddenStyle}>
@@ -1570,7 +1312,7 @@ useEffect(() => {
 
 
             {/* equipment */}
-          <div>
+          <div style={inputSection}>
             <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
           <form style ={eqpmPage ? {display: "none"} : {display: "block", border: "solid", borderRadius: "1.5vw"}}>
             {rigList}
@@ -1594,7 +1336,7 @@ useEffect(() => {
 
 
           {/* third row */}
-        <div style={{display: "flex",  justifyContent: "space-evenly", margin: "2vh"}}>
+        <div style={rowStyle}>
 
           {/*Exit alt*/}
           <div>
@@ -1629,30 +1371,33 @@ useEffect(() => {
 
           
           {/* fourth row */}
-        <div style={{display: "flex",  justifyContent: "space-evenly", margin: "2vh"}}>
+        <div style={rowStyle}>
           
 
           {/* notes */}
-          <div>
+          <div style={inputSection}>
             <h3 style={headerStyle}>
             Notes
           </h3>
           <textarea 
             type="number" 
             placeholder="notes"
+            rows="10"
+            cols="25"
+            maxLength="250"
             value={newJumpCom}
-            onChange={handleAddJumpAltChange}
+            onChange={handleComForm}
           />
           </div>
 
 
           {/* tags */}
-          <div>
+          <div style={inputSection}>
             <button style={headerButtonStyle} onClick={handleTagsForm}>Tags{tagsPage ? ' (show)' : ' (hide)'}</button>
           </div>
 
         <form style={!tagsPage ? overlayStyle : {display: "none"}}>
-          <h3 style={tagsHeaderStyle}>Select Tags</h3>
+          <h3 style={tagsHeaderStyle}>Select Tags for This Jump</h3>
           <button style={xButtonStyle} onClick={handleTagsForm}>X</button>
 
           <div style={tagShellStyle}>
@@ -1743,7 +1488,6 @@ useEffect(() => {
                 type="number" 
                 value={tagGroupSize} 
                 onChange={handleGroupSizeChange}
-                placeholder="Group Size (num)"
                 />
 
             </div> 
@@ -1791,6 +1535,33 @@ useEffect(() => {
               <button onClick={handleMalfunctionTagsForm} style={tagListButtonStyleMAL}>Malfunctions{!malfunctionTagsPage ? ' (show)' : ' (hide)'}</button>
 
               <div style={malfunctionTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+                <button style={tagEvaMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALEva}>Bag Lock</button>
+                <button style={tagBiPlaneMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>2 out (bi-plane)</button>
+                <button style={tagLineOverMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>Line Over</button>
+                <button style={tagSideBySideMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALSideBySIde}>2 out (Side by Side)</button>
+                <button style={tagStuckSliderMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStuckSlider}>Hung Slider</button>
+                <button style={tagPCInTowMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPCInTow}>Piolot Chute in Tow</button>
+                <button style={tagStreamerMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStreamer}>Streamer</button>
+                <button style={tagHorshoeMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHorshoe}>Horshoe</button>
+                <button style={tagPrematureMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPremature}>Premature Deployment</button>
+                <button style={tagHardPullMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHardPull}>Hard Pull</button>
+                <button style={tagToggleLockMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleLock}>Toggle Lock</button>
+                <button style={tagToggleFireMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleFire}>Toggle Fire</button>
+                <button style={tagDivingLineTwistMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALDivingLineTwist}>Diving Line Twist</button>
+                <button style={tagTensionKnotMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALTensionKnot}>Tension knot</button>
+            </div> 
+          </div>
+
+          <div style={tagListStyle}>
+
+            <button onClick={handlePreReqTagsForm} style={tagListButtonStyleEMER}>Emergencies{!emergencyTagsPage ? ' (show)' : ' (hide)'}</button>
+
+            <div style={preReqTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+              <button style={tagAcc33REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc33}>Accuracy Landing (within 33ft)</button>
+              <button style={tagAcc7REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc7}>Accuracy Landing (within 7ft)</button>
+              <button style={tagDemoREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQDemo}>Demo Jump</button>
+              <button style={tagWaterREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQWater}>Intentional Water Landing</button>
+              <button style={tagNightREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQNight}>Night Jump</button>
 
             </div> 
           </div>
@@ -1804,11 +1575,11 @@ useEffect(() => {
 
 
         {/* final */}
-        <div style={{display: "flex",  justifyContent: "space-evenly", margin: "2vh",}}>
+        <div style={rowStyle}>
 
 
           {/* LB signature */}
-          <div>
+          <div style={{marginRight: "1.5em"}}>
             <h3 style={headerStyle}>
             Log-book Signature Upload
             <sub style={{display: "block", fontSize: ".5em"}}>(upload entire logbook entery for this jump)</sub>
@@ -1824,15 +1595,40 @@ useEffect(() => {
 
           {/* upload skydive */}
 
-          <div>
+          <div style={inputSection}>
             <button style={headerButtonStyle}>Upload Skydive</button>
           </div>
 
 
         </div>
 
+        {/* output */}
+
+        <p style={headerStyle}>Output Preview</p>
+
+          <div>
+      <JumpWidget 
+            jumpNum={newJumpNum}
+            jumpDate={newJumpDate}
+            dz={newJumpDZ}
+            aircraft={newJumpAircraft}
+            rig={newJumpRig}
+            exitAlt={newJumpAlt}
+            time={newJumpDur}
+            notes={newJumpCom}
+            signature={newJumpSigUpload}
+            tags={tagsPreview}
+        
+          />
+        </div>
+        
+
+    
+
 
         </div>
+
+  
     </div>
 
 
