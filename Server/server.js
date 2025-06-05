@@ -259,7 +259,11 @@ app.post('/storejump', (req, res) => {
                 res.status(500).json({ message: 'Failed to commit transaction' });
               });
             }
-            res.status(200).json({ message: 'Jump stored with no tags', jump_id: newJumpId });
+            res.status(200).json({ 
+              message: 'Jump stored with no tags',     
+              jump_id: newJumpId,
+              ok: true
+             });
           });
         }
 
@@ -302,7 +306,8 @@ app.post('/storejump', (req, res) => {
                 }
                 res.status(200).json({
                   message: 'Jump and tags stored successfully',
-                  jump_id: newJumpId
+                  jump_id: newJumpId,
+                  ok: true
                 });
               });
             }

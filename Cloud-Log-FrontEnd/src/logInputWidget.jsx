@@ -1181,7 +1181,6 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       setNewJumpCom(null);
       setNewJumpSigUpload(null);
       setNewJumpTagList([]);
-
     } else {
       alert(responseData.message);
       console.error(responseData.error)
@@ -1272,7 +1271,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       return alert('Rig is missing');
     };
     if (newJumpAlt < 1){
-      return  alert('Exit Altitude is missing or invalid');
+      return  alert('Exit Altitude is missing or invalid, make sure you are not using commas.');
     };
     if (newJumpDur < 1){
       return alert('Free Fall Time is missing or invalid')
