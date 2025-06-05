@@ -132,6 +132,19 @@ function JumpWidget(props) {
          <button style={showButton}>show tags</button>
       </div>
       </div>
+
+      {props.signature && props.signature.type === 'application/pdf' ? (
+        <object
+          data={URL.createObjectURL(props.signature)}
+          type="application/pdf"
+          width="100%"
+          height="600px"
+        >
+          Your browser does not support embedded PDFs.
+        </object>
+      ) : (
+        <p>No PDF to display</p>
+      )}
       
 
    </div>)
