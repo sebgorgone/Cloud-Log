@@ -28,6 +28,7 @@ function LoginScreen () {
       padding: "1vw",
       maxWidth: "28em",
       margin: "auto",
+      minHeight: "20em"
    }
 
    const headerStyle = {

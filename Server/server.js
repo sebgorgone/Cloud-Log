@@ -13,8 +13,11 @@ const userSigUpload = multer({ storage: multer.memoryStorage() })
  const app = express();
 
  app.use(express.static(path.join(__dirname, "public")));
- app.use(cors()); 
- app.use(express.json());
+ app.use(cors());
+ app.use(express.json({ limit: 
+  '10mb' }));
+
+ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
  const port = 5009;
 
@@ -220,74 +223,98 @@ app.post('/storejump', (req, res) => {
     t,
     notes,
     pdfSig,
-    tags  // an array of tag objects (each with name, cat, optional value)
+    tags
   } = req.body;
 
-  // 1) Insert into jumps, get back insertId as jump_id
-  const insertJumpSql = `
-    INSERT INTO jumps
-      (user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-
-  db.query(
-    insertJumpSql,
-    [user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig],
-    (jumpErr, jumpResult) => {
-      if (jumpErr) {
-        console.error('Error inserting jump:', jumpErr);
-        return res.status(500).json({ message: 'Failed to store jump' });
-      }
-
-      const newJumpId = jumpResult.insertId; // this is the generated jump_id
-
-      // 2) Now insert each tag, using newJumpId as jump_ref
-      //    If no tags, just respond success
-      if (!Array.isArray(tags) || tags.length === 0) {
-        return res.status(200).json({ message: 'Jump stored with no tags'});
-      }
-
-      // Build a batch of INSERTs (you can also do them one by one)
-      // Example: inserting tags one‐by‐one with error handling
-      let completed = 0;
-      let hasError = false;
-
-      tags.forEach(tagObj => {
-        // Only insert tags that actually exist in the array
-        const { name, cat, value } = tagObj;
-
-        // If value is undefined/null, set it to NULL in SQL
-        const insertTagSql = value !== undefined
-          ? 'INSERT INTO tags (name, cat, value, jump_ref) VALUES (?, ?, ?, ?)'
-          : 'INSERT INTO tags (name, cat, jump_ref) VALUES (?, ?, ?)';
-
-        const params = value !== undefined
-          ? [name, cat, value, newJumpId]
-          : [name, cat, newJumpId];
-
-        db.query(insertTagSql, params, (tagErr) => {
-          if (tagErr && !hasError) {
-            hasError = true;
-            console.error('Error inserting tag:', tagErr);
-            alert(tagErr, "Abort / Continue?")
-            // Once there's an error, you can decide to abort or continue.
-            // Here, abort and return 500 to client.
-            return res.status(500).json({ message: 'Failed to store tags' });
-          }
-
-          completed++;
-          if (completed === tags.length && !hasError) {
-            // All tags inserted successfully
-            return res.status(200).json({
-              message: 'Jump and tags stored successfully',
-              jump_id: newJumpId
-            });
-          }
-        });
-      });
+  db.beginTransaction(err => {
+    if (err) {
+      console.error('Transaction begin error:', err);
+      return res.status(500).json({ message: 'Failed to start transaction' });
     }
-  );
+
+    const insertJumpSql = `
+      INSERT INTO jumps
+        (user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      insertJumpSql,
+      [user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig],
+      (jumpErr, jumpResult) => {
+        if (jumpErr) {
+          console.error('Error inserting jump:', jumpErr);
+          return db.rollback(() => {
+            res.status(500).json({ message: 'Failed to store jump' });
+          });
+        }
+
+        const newJumpId = jumpResult.insertId;
+
+        if (!Array.isArray(tags) || tags.length === 0) {
+          return db.commit(commitErr => {
+            if (commitErr) {
+              console.error('Commit error:', commitErr);
+              return db.rollback(() => {
+                res.status(500).json({ message: 'Failed to commit transaction' });
+              });
+            }
+            res.status(200).json({ message: 'Jump stored with no tags', jump_id: newJumpId });
+          });
+        }
+
+        let completed = 0;
+        let hasError = false;
+
+        tags.forEach(tagObj => {
+          const { name, cat, value } = tagObj;
+          const insertTagSql = value !== undefined
+            ? 'INSERT INTO tags (user_id, name, cat, value, jump_ref) VALUES (?, ?, ?, ?, ?)'
+            : 'INSERT INTO tags (user_id, name, cat, jump_ref) VALUES (?, ?, ?, ?)';
+          const params = value !== undefined
+            ? [user_id ,name, cat, value, newJumpId]
+            : [user_id ,name, cat, newJumpId];
+
+                      // Log before attempting to insert tag
+          console.log('Attempting to insert tag for jump_id:', newJumpId, 'with params:', params);
+
+
+          db.query(insertTagSql, params, tagErr => {
+            if (tagErr && !hasError) {
+              hasError = true;
+              console.error('Error inserting tag:', tagErr);
+              return db.rollback(() => {
+                res.status(500).json({ message: 'Failed to store tags - Jump not catalouged',
+                error: tagErr.message
+                 });
+                
+              });
+            }
+
+            completed++;
+            if (completed === tags.length && !hasError) {
+              db.commit(commitErr => {
+                if (commitErr) {
+                  console.error('Commit error:', commitErr);
+                  return db.rollback(() => {
+                    res.status(500).json({ message: 'Failed to commit transaction' });
+                  });
+                }
+                res.status(200).json({
+                  message: 'Jump and tags stored successfully',
+                  jump_id: newJumpId
+                });
+              });
+            }
+          });
+        });
+      }
+    );
+  });
 });
+
+
+//
 
 
 

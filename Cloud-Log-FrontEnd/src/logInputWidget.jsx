@@ -8,7 +8,7 @@ function LogInputWidget() {
 
   //get user data
   const userData = useAuth();
-  console.log('Fetched User Data: ',userData.user.id)
+  // console.log('Fetched User Data: ',userData.user.id)
 
 
   //state hooks vv
@@ -83,15 +83,22 @@ function LogInputWidget() {
   
   //functional elements vv
 //page elements
+
   function handleEquipmentForm() {
+    setDzPage(true);
+    setAircraftPage(true);
     setEqpmPage(!eqpmPage);
   }
 
   function handleAircraftForm() {
+    setDzPage(true);
+    setEqpmPage(true);
     setAircraftPage(!aircraftPage);
   }
 
   function handleDzForm() {
+    setEqpmPage(true);
+    setAircraftPage(true);
     setDzPage(!dzPage);
   }
 
@@ -212,17 +219,17 @@ function LogInputWidget() {
   }
 //radio buttons
   function handleJumpDZChange(e) {
-    console.log("Clicked DZ value:", e.target.value);
+    // console.log("Clicked DZ value:", e.target.value);
     setNewJumpDZ(e.target.value);
   }
 
   function handleJumpAircraftChange(e) {
-    console.log("Clicked Aircraft value:", e.target.value);
+    // console.log("Clicked Aircraft value:", e.target.value);
     setNewJumpAircraft(e.target.value);
   }  
 
   function handleJumpRigChange(e) {
-    console.log("Clicked Rig value:", e.target.value);
+    // console.log("Clicked Rig value:", e.target.value);
     setNewJumpRig(e.target.value);
   }
 
@@ -323,12 +330,10 @@ function LogInputWidget() {
   const [tagTrackingJTT, setTagTrackingJTT] = useState(true);
   const [tagSoloJTT, setTagSoloJTT] = useState(true);
   const [tagTandemJTT, setTagTandemJTT] = useState(true);
-  const [tagAltJTT, setTagAltJTT] = useState(true);
   const [tagBigwayJTT, setTagBigwayJTT] = useState(true);
   const [tagZooJTT, setTagZooJTT] = useState(true);
   const [tagNightJTT, setTagNightJTT] = useState(true);
   const [tagHighPullJTT, setTagHighPullJTT] = useState(true);
-  const [tagFullJTT, setTagFullJTT] = useState(true);
   const [tagHighJTT, setTagHighJTT] = useState(true);
 
 
@@ -336,10 +341,8 @@ function LogInputWidget() {
   const [tagGoodOC, setTagGoodOC] = useState(true);
   const [tagHardOC, setTagHardOC] = useState(true);
   const [tagOffHeadingOC, setTagOffHeadingOC] = useState(true);
-  const [tagOnHeadingOC, setTagOnHeadingOC] = useState(true);
   const [tagPCDelayOC, setTagPCDelayOC] = useState(true);
   const [tagLineBreakOC, setTagLineBreakOC] = useState(true);
-  const [tagStableOC, setTagStableOC] = useState(true);
   const [tagUnstableOC, setTagUnstableOC] = useState(true);
 
                     //Liscensing and work 
@@ -359,7 +362,6 @@ function LogInputWidget() {
                     //Canopy and weather
   const [tagHighWindWTHR, setTagHighWindWTHR] = useState(true);
   const [tagLowWindWTHR, setTagLowWindWTHR] = useState(true);
-  const [tagUpWindWTHR, setTagUpWindWTHR] = useState(true);
   const [tagDownWindWTHR, setTagDownWindWTHR] = useState(true);
   const [tagCrossWindWTHR, setTagCrossWindWTHR] = useState(true);
   const [tagLongSpotWTHR, setTagLongSpotWTHR] = useState(true);
@@ -459,10 +461,6 @@ function LogInputWidget() {
       e.preventDefault();
       setTagTandemJTT(!tagTandemJTT);
     },
-    JTAlt: (e) => {
-      e.preventDefault();
-      setTagAltJTT(!tagAltJTT);
-    },
     JTBigway: (e) => {
       e.preventDefault();
       setTagBigwayJTT(!tagBigwayJTT);
@@ -478,10 +476,6 @@ function LogInputWidget() {
     JTHighPull: (e) => {
       e.preventDefault();
       setTagHighPullJTT(!tagHighPullJTT);
-    },
-    JTFull: (e) => {
-      e.preventDefault();
-      setTagFullJTT(!tagFullJTT);
     },
     JTHigh: (e) => {
       e.preventDefault();
@@ -499,10 +493,6 @@ function LogInputWidget() {
       e.preventDefault();
       setTagOffHeadingOC(!tagOffHeadingOC);
     },
-    OCOnHeading: (e) => {
-      e.preventDefault();
-      setTagOnHeadingOC(!tagOnHeadingOC);
-    },
     OCPCDelay: (e) => {
       e.preventDefault();
       setTagPCDelayOC(!tagPCDelayOC);
@@ -510,10 +500,6 @@ function LogInputWidget() {
     OCLineBreak: (e) => {
       e.preventDefault();
       setTagLineBreakOC(!tagLineBreakOC);
-    },
-    OCStable: (e) => {
-      e.preventDefault();
-      setTagStableOC(!tagStableOC);
     },
     OCUnstable: (e) => {
       e.preventDefault();
@@ -562,10 +548,6 @@ function LogInputWidget() {
     WTHRLowWind: (e) => {
       e.preventDefault();
       setTagLowWindWTHR(!tagLowWindWTHR);
-    },
-    WTHRUpWind: (e) => {
-      e.preventDefault();
-      setTagUpWindWTHR(!tagUpWindWTHR);
     },
     WTHRDownWind: (e) => {
       e.preventDefault();
@@ -759,8 +741,8 @@ function LogInputWidget() {
     position: "absolute",
     fontSize: "1.2em",
     fontWieght: "Bold",
-    top: "1vh",
-    right: "1vw",
+    top: "2vh",
+    right: "2vw",
     backgroundColor: pallette[0],
     border: "solid .15em",
     borderColor: pallette[4],
@@ -866,81 +848,76 @@ function tagBundler() {
     !tagFreeFlyJTT     ? { name: 'FreeFly',          cat: 'JTT' } : null,
     !tagWingsuitJTT    ? { name: 'Wingsuit',         cat: 'JTT' } : null,
     !tagBaseJTT        ? { name: 'Base',             cat: 'JTT' } : null,
-    !tagHnPJTT         ? { name: 'HnP',              cat: 'JTT' } : null,
+    !tagHnPJTT         ? { name: 'Hop and Pop',              cat: 'JTT' } : null,
     !tagSwoopJTT       ? { name: 'Swoop',            cat: 'JTT' } : null,
-    !tagCrwJTT         ? { name: 'Crw',              cat: 'JTT' } : null,
-    !tagVfsJTT         ? { name: 'Vfs',              cat: 'JTT' } : null,
-    !tagMfsJTT         ? { name: 'Mfs',              cat: 'JTT' } : null,
-    !tagFsJTT          ? { name: 'Fs',               cat: 'JTT' } : null,
+    !tagCrwJTT         ? { name: 'CRW',              cat: 'JTT' } : null,
+    !tagVfsJTT         ? { name: 'VFS',              cat: 'JTT' } : null,
+    !tagMfsJTT         ? { name: 'MFS',              cat: 'JTT' } : null,
+    !tagFsJTT          ? { name: 'FS',               cat: 'JTT' } : null,
     !tagAngleJTT       ? { name: 'Angle',            cat: 'JTT' } : null,
     !tagTrackingJTT    ? { name: 'Tracking',         cat: 'JTT' } : null,
     !tagSoloJTT        ? { name: 'Solo',             cat: 'JTT' } : null,
-    !tagTandemJTT      ? { name: 'Tandem',           cat: 'JTT' } : null,
-    !tagAltJTT         ? { name: 'Alt',              cat: 'JTT' } : null,
-    !tagBigwayJTT      ? { name: 'Bigway',           cat: 'JTT' } : null,
+    !tagTandemJTT      ? { name: 'Tandem Ride',           cat: 'JTT' } : null,
+    !tagBigwayJTT      ? { name: 'Big-Way',           cat: 'JTT' } : null,
     !tagZooJTT         ? { name: 'Zoo',              cat: 'JTT' } : null,
     !tagNightJTT       ? { name: 'Night',            cat: 'JTT' } : null,
-    !tagHighPullJTT    ? { name: 'HighPull',         cat: 'JTT' } : null,
-    !tagFullJTT        ? { name: 'Full',             cat: 'JTT' } : null,
-    !tagHighJTT        ? { name: 'High',             cat: 'JTT' } : null,
+    !tagHighPullJTT    ? { name: 'High-Pull',         cat: 'JTT' } : null,
+    !tagHighJTT        ? { name: 'High-Altitude',             cat: 'JTT' } : null,
 
-    !tagGoodOC         ? { name: 'Good',             cat: 'OC'  } : null,
-    !tagHardOC         ? { name: 'Hard',             cat: 'OC'  } : null,
-    !tagOffHeadingOC   ? { name: 'OffHeading',       cat: 'OC'  } : null,
-    !tagOnHeadingOC    ? { name: 'OnHeading',        cat: 'OC'  } : null,
-    !tagPCDelayOC      ? { name: 'PCDelay',          cat: 'OC'  } : null,
-    !tagLineBreakOC    ? { name: 'LineBreak',        cat: 'OC'  } : null,
-    !tagStableOC       ? { name: 'Stable',           cat: 'OC'  } : null,
-    !tagUnstableOC     ? { name: 'Unstable',         cat: 'OC'  } : null,
+    !tagGoodOC         ? { name: 'Good Opening',             cat: 'OC'  } : null,
+    !tagHardOC         ? { name: 'Hard Opening',             cat: 'OC'  } : null,
+    !tagOffHeadingOC   ? { name: 'Off Heading',       cat: 'OC'  } : null,
+    !tagPCDelayOC      ? { name: 'Piolot Chute Delay',          cat: 'OC'  } : null,
+    !tagLineBreakOC    ? { name: 'Line Break',        cat: 'OC'  } : null,
+    !tagUnstableOC     ? { name: 'Unstable Deployment',         cat: 'OC'  } : null,
 
-    !tagTILSC          ? { name: 'TI',               cat: 'LSC' } : null,
-    !tagVideoLSC       ? { name: 'Video',            cat: 'LSC' } : null,
-    !tagAffiLSC        ? { name: 'Affi',             cat: 'LSC' } : null,
-    !tagCoachLSC       ? { name: 'Coach',            cat: 'LSC' } : null,
-    !tagOrganizerLSC   ? { name: 'Organizer',        cat: 'LSC' } : null,
+    !tagTILSC          ? { name: 'TI Jump',               cat: 'LSC' } : null,
+    !tagVideoLSC       ? { name: 'Videogrpaher Jump',            cat: 'LSC' } : null,
+    !tagAffiLSC        ? { name: 'AFFI Jump',             cat: 'LSC' } : null,
+    !tagCoachLSC       ? { name: 'Coach Jump',            cat: 'LSC' } : null,
+    !tagOrganizerLSC   ? { name: 'Organizer Jump',        cat: 'LSC' } : null,
     !tagJumpMasterLSC  ? { name: 'JumpMaster',       cat: 'LSC' } : null,
-    !tagCheckLSC       ? { name: 'Check',            cat: 'LSC' } : null,
-    !tagRecurrencyLSC  ? { name: 'Recurrency',       cat: 'LSC' } : null,
-    !tagStudentLSC     ? { name: 'Student',          cat: 'LSC' } : null,
+    !tagCheckLSC       ? { name: 'Check Jump',            cat: 'LSC' } : null,
+    !tagRecurrencyLSC  ? { name: 'Recurrency Jump',       cat: 'LSC' } : null,
+    !tagStudentLSC     ? { name: 'Student Jump',          cat: 'LSC' } : null,
 
-    !tagHighWindWTHR   ? { name: 'HighWind',         cat: 'WTHR'} : null,
-    !tagLowWindWTHR    ? { name: 'LowWind',          cat: 'WTHR'} : null,
-    !tagUpWindWTHR     ? { name: 'UpWind',           cat: 'WTHR'} : null,
-    !tagDownWindWTHR   ? { name: 'DownWind',         cat: 'WTHR'} : null,
-    !tagCrossWindWTHR  ? { name: 'CrossWind',        cat: 'WTHR'} : null,
-    !tagLongSpotWTHR   ? { name: 'LongSpot',         cat: 'WTHR'} : null,
+    !tagHighWindWTHR   ? { name: 'High-Wind',         cat: 'WTHR'} : null,
+    !tagLowWindWTHR    ? { name: 'Low-Wind',          cat: 'WTHR'} : null,
+    !tagDownWindWTHR   ? { name: 'Down-Wind Landing',         cat: 'WTHR'} : null,
+    !tagCrossWindWTHR  ? { name: 'Cross-Wind Landing ',        cat: 'WTHR'} : null,
+    !tagLongSpotWTHR   ? { name: 'Long-Spot',         cat: 'WTHR'} : null,
     !tagRainWTHR       ? { name: 'Rain',             cat: 'WTHR'} : null,
     !tagSnowWTHR       ? { name: 'Snow',             cat: 'WTHR'} : null,
 
-    !tagCutAwayEMR     ? { name: 'CutAway',          cat: 'EMR' } : null,
-    !tagOffLandingEMR  ? { name: 'OffLanding',       cat: 'EMR' } : null,
+    !tagCutAwayEMR     ? { name: 'Cut-Away',          cat: 'EMR' } : null,
+    !tagOffLandingEMR  ? { name: 'Off-Landing',       cat: 'EMR' } : null,
     !tagAircraftEMR    ? { name: 'Aircraft Emergency',         cat: 'EMR' } : null,
     !tagInjuryEMR      ? { name: 'Injury',           cat: 'EMR' } : null,
 
-    !tagEvaMAL         ? { name: 'Eva',              cat: 'MAL' } : null,
-    !tagBiPlaneMAL     ? { name: 'BiPlane',          cat: 'MAL' } : null,
-    !tagDownPlaneMAL   ? { name: 'DownPlane',        cat: 'MAL' } : null,
-    !tagLineOverMAL    ? { name: 'LineOver',         cat: 'MAL' } : null,
-    !tagSideBySideMAL  ? { name: 'SideBySide',       cat: 'MAL' } : null,
-    !tagStuckSliderMAL ? { name: 'StuckSlider',      cat: 'MAL' } : null,
-    !tagPCInTowMAL     ? { name: 'PCInTow',          cat: 'MAL' } : null,
+    !tagEvaMAL         ? { name: 'Bag Lock',              cat: 'MAL' } : null,
+    !tagBiPlaneMAL     ? { name: '2 out (Bi-Plane)',          cat: 'MAL' } : null,
+    !tagDownPlaneMAL   ? { name: '2 out (Down-Plane)',        cat: 'MAL' } : null,
+    !tagLineOverMAL    ? { name: 'Line Over',         cat: 'MAL' } : null,
+    !tagSideBySideMAL  ? { name: 'Side By Side',       cat: 'MAL' } : null,
+    !tagStuckSliderMAL ? { name: 'Stuck Slider',      cat: 'MAL' } : null,
+    !tagPCInTowMAL     ? { name: 'Piolot Chute In Tow',          cat: 'MAL' } : null,
     !tagStreamerMAL    ? { name: 'Streamer',         cat: 'MAL' } : null,
     !tagHorshoeMAL     ? { name: 'Horshoe',          cat: 'MAL' } : null,
-    !tagPrematureMAL   ? { name: 'Premature',        cat: 'MAL' } : null,
-    !tagHardPullMAL    ? { name: 'HardPull',         cat: 'MAL' } : null,
-    !tagToggleLockMAL  ? { name: 'ToggleLock',       cat: 'MAL' } : null,
-    !tagToggleFireMAL  ? { name: 'ToggleFire',       cat: 'MAL' } : null,
-    !tagDivingLineTwistMAL ? { name: 'DivingLineTwist',   cat: 'MAL' } : null,
-    !tagTensionKnotMAL ? { name: 'TensionKnot',      cat: 'MAL' } : null,
+    !tagPrematureMAL   ? { name: 'Premature Deployment',        cat: 'MAL' } : null,
+    !tagHardPullMAL    ? { name: 'Hard-Pull',         cat: 'MAL' } : null,
+    !tagToggleLockMAL  ? { name: 'Toggle Lock',       cat: 'MAL' } : null,
+    !tagToggleFireMAL  ? { name: 'Toggle Fire',       cat: 'MAL' } : null,
+    !tagDivingLineTwistMAL ? { name: 'Diving Line Twist',   cat: 'MAL' } : null,
+    !tagTensionKnotMAL ? { name: 'Tension Knot',      cat: 'MAL' } : null,
 
-    !tagAcc33REQ ? {name: 'Accuracy Within 33ft',      cat: 'REQ'} : null,
-    !tagAcc7REQ ? {name: 'Accuracy Within 7ft', cat: 'REQ'} : null,
+    !tagAcc33REQ ? {name: 'Accuracy (Within 33ft)',      cat: 'REQ'} : null,
+    !tagAcc7REQ ? {name: 'Accuracy (Within 7ft)', cat: 'REQ'} : null,
     !tagDemoREQ ? {name: 'Demo Jump', cat: 'REQ'} : null,
     !tagWaterREQ ? {name: 'Intentional Water Landing ', cat: 'REQ'} : null,
     !tagNightREQ ? {name: 'Night Jump',      cat: 'REQ'} : null,
 
 
-    tagGroupSize > 1   ? { name: `GroupSize${tagGroupSize}`, value: tagGroupSize,        cat: 'GROUP' } : null
+    tagGroupSize > 1   ? { name: `${tagGroupSize}-Way`, value: tagGroupSize,        cat: 'GROUP' } : null
   ];
   const filteredNullBundle = tagBundleAll.filter(item => item !== null);
   const filteredBundle = filteredNullBundle.map(item => item.name);
@@ -980,20 +957,16 @@ tagAngleJTT,
 tagTrackingJTT,
 tagSoloJTT,
 tagTandemJTT,
-tagAltJTT,
 tagBigwayJTT,
 tagZooJTT,
 tagNightJTT,
 tagHighPullJTT,
-tagFullJTT,
 tagHighJTT,
 tagGoodOC,
 tagHardOC,
 tagOffHeadingOC,
-tagOnHeadingOC,
 tagPCDelayOC,
 tagLineBreakOC,
-tagStableOC,
 tagUnstableOC,
 tagTILSC,
 tagVideoLSC,
@@ -1006,7 +979,6 @@ tagRecurrencyLSC,
 tagStudentLSC,
 tagHighWindWTHR,
 tagLowWindWTHR,
-tagUpWindWTHR,
 tagDownWindWTHR,
 tagCrossWindWTHR,
 tagLongSpotWTHR,
@@ -1046,6 +1018,24 @@ useEffect(() => {
 
 //api calls
 
+  function fileToBase64(pdfFile) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => {
+      reader.abort();
+      reject(new Error('Error reading file.'));
+    };
+    reader.onload = () => {
+      // reader.result is something like "data:application/pdf;base64,JVBERi0xLjcK..."
+      // If you only want the raw Base64 (no "data:...;base64," prefix),
+      // you can strip everything up to “,”.
+      const base64String = reader.result.split(',')[1];
+      resolve(base64String);
+    };
+    reader.readAsDataURL(pdfFile);
+  });
+}
+
 //input info
 
   const getRigs = async () => {
@@ -1061,7 +1051,6 @@ useEffect(() => {
         for (let rig of returnedData.results) {
           foundRigs.push(rig.name);
         }
-      console.log('succesfully got user Rigs', foundRigs);
         setRigs([...foundRigs]);
       } else{
         console.error('no rigs imported', response);
@@ -1098,7 +1087,6 @@ useEffect(() => {
         for (let plane of returnedData.results) {
           foundPlanes.push(plane.name);
         }
-      console.log('succesfully got user Planes', foundPlanes);
         setPlanes([...foundPlanes]);
       } else{
         console.error('no Planes imported', response);
@@ -1135,7 +1123,6 @@ useEffect(() => {
         for (let dz of returnedData.results) {
           foundDZs.push(dz.name);
         }
-      console.log('succesfully got user DZ', foundDZs);
         setDZs([...foundDZs]);
       } else{
         console.error('no DZs imported', response);
@@ -1145,27 +1132,28 @@ useEffect(() => {
     }
   };
 
-  const storeDZ = async (newRigString) => {
+  const storeDZ = async (newDzString) => {
     try {
       const response = await fetch('http://localhost:5009/storedz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userData.user.id, name: `${newRigString}` }),
+        body: JSON.stringify({ user_id: userData.user.id, name: `${newDzString}` }),
       });
       const returnedDATA = await response.json();
       if (response.ok) {
         alert(returnedDATA.message)
       } else {alert(returnedDATA.message)}
-    } catch (err) {console.error('client failed storing rig', err);}
+    } catch (err) {console.error('client failed storing DZ', err);}
   };
 
 //store jump route
 
-const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, tagsPreview) => {
+const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList) => {
   try {
+    const base64Signature = await fileToBase64(newJumpSigUpload)
     const response = await fetch('http://localhost:5009/storejump', {
       method: 'POST',
-      headers: { 'Content-Type': 'application.json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         user_id: userData.user.id,
         jump_num: newJumpNum,
@@ -1176,14 +1164,18 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
         alt: newJumpAlt,
         t: newJumpDur,
         notes: newJumpCom,
-        pdfSig: newJumpSigUpload,
+        pdfSig: base64Signature,
         tags: newJumpTagList
       })
     });
-    const Rdata = await response.json();
-    if(response.ok){
-      alert(Rdata.message);
-    } else {alert(returnedDATA.message)}
+    const responseData = await response.json();
+    if(responseData.ok){
+      alert(responseData.message);
+    } else {
+      alert(responseData.message);
+      console.error(responseData.error)
+
+    }
   } catch (err) {console.error('client failed storing jump', err);}
 }
 
@@ -1249,25 +1241,27 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
 
   //jump upload
 
+
+
   function handleJumpUpload (e) {
     e.preventDefault();
     if (newJumpNum <= 0){
-      return
+      return alert('Jump Number is missing or invalid');
     };
     if (newJumpDate === null){
-      return
+      return alert('Jump Date is missing or invalid');
     };
     if (newJumpDZ === null){
-      return
+      return alert('Dropzone is missing');
     };
     if (newJumpAircraft === null){
-      return
+      return alert('Aircraft is missing');
     };
     if (newJumpRig === null){
-      return
+      return alert('Rig is missing');
     };
-    if (newJumpAlt === null){
-      return
+    if (newJumpAlt < 1){
+      return  alert('Exit Altitude is missing or invalid');
     };
     if (newJumpDur === null){
       return
@@ -1276,7 +1270,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       return
     };
 
-    storeJump()
+    storeJump(newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList)
 
   }
 
@@ -1290,7 +1284,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
 
       {/* title */}
       <div style={rowStyle}>
-        <h1 style={{fontFamily: "L1", padding: "1em", color: pallette[4],fontSize: "2.5em"}}>Add Jump</h1>
+        <h1 style={{fontFamily: "L1", padding: ".2em", color: pallette[4],fontSize: "2em"}}>Add Jump</h1>
       </div>
 
           {/* first row*/}
@@ -1323,7 +1317,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
           <div style={rowStyle}>
             {/* DZ */}
           <div style={inputSection}>
-              <button onClick={handleDzForm}style={headerButtonStyle}>Drop-Zone</button>
+              <button onClick={handleDzForm}style={headerButtonStyle}>Drop-Zone{!dzPage ? "(hide)" : "(show)"}</button>
               <form style={!dzPage ? formStyle : {display: "none"}}>
                 {DZList}
                 <p style={headerStyle}>Add Drop-Zone</p>
@@ -1371,7 +1365,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
             {/* equipment */}
           <div style={inputSection}>
             <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
-          <form style ={eqpmPage ? {display: "none"} : {display: "block", border: "solid", borderRadius: "1.5vw"}}>
+          <form style ={eqpmPage ? {display: "none"} : {display: "block"}}>
             {rigList}
             <div>
               <h3 style={headerStyle}>add rig</h3>
@@ -1437,6 +1431,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
             Notes
           </h3>
           <textarea 
+            style={{maxHeight: "2em"}}
             type="number" 
             placeholder="notes"
             rows="10"
@@ -1480,12 +1475,10 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
                 <button style={tagTrackingJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTracking}>Tracking</button>
                 <button style={tagSoloJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSolo}>Solo</button>
                 <button style={tagTandemJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTandem}>Tandem</button>
-                <button style={tagAltJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTAlt}>Altitude</button>
                 <button style={tagBigwayJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBigway}>Big Way</button>
                 <button style={tagZooJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTZoo}>Zoo</button>
                 <button style={tagNightJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTNight}>Night</button>
                 <button style={tagHighPullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHighPull}>High Pull</button>
-                <button style={tagFullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFull}>Full</button>
                 <button style={tagHighJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHigh}>High</button>
               </div>            
             </div>
@@ -1499,10 +1492,8 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
                 <button style={tagGoodOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCGood}>Good Opening</button>
                 <button style={tagHardOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCHard}>Hard Opening</button>
                 <button style={tagOffHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOffHeading}>Off Heading Opening</button>
-                <button style={tagOnHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOnHeading}>On Heading Opening</button>
                 <button style={tagPCDelayOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCPCDelay}>Pilot Chute Hesitation</button>
                 <button style={tagLineBreakOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCLineBreak}>Broken Line</button>
-                <button style={tagStableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCStable}>Stable Deployment</button>
                 <button style={tagUnstableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCUnstable}>Unstable Opening</button>
 
               </div>
@@ -1559,7 +1550,6 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
               <div style={cnpyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
                 <button style={tagHighWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRHighWind}>High Winds</button>
                 <button style={tagLowWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLowWind}>Low Winds</button>
-                <button style={tagUpWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRUpWind}>Up Wind Landing</button>
                 <button style={tagDownWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRDownWind}>Down Wind Landing</button>
                 <button style={tagCrossWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRCrossWind}>Cross Wind Landing</button>
                 <button style={tagLongSpotWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLongSpot}>Long Spot</button>
