@@ -1161,6 +1161,32 @@ useEffect(() => {
 
 //store jump route
 
+const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, tagsPreview) => {
+  try {
+    const response = await fetch('http://localhost:5009/storejump', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application.json' },
+      body: JSON.stringify({
+        user_id: userData.user.id,
+        jump_num: newJumpNum,
+        jump_date: newJumpDate,
+        dz: newJumpDZ,
+        aircraft: newJumpAircraft,
+        equipment: newJumpRig,
+        alt: newJumpAlt,
+        t: newJumpDur,
+        notes: newJumpCom,
+        pdfSig: newJumpSigUpload,
+        tags: newJumpTagList
+      })
+    });
+    const Rdata = await response.json();
+    if(response.ok){
+      alert(Rdata.message);
+    } else {alert(returnedDATA.message)}
+  } catch (err) {console.error('client failed storing jump', err);}
+}
+
   //revised Div Styles
 
   const shell = {
@@ -1221,7 +1247,38 @@ useEffect(() => {
     borderRadius:".3em" 
   };
 
-  
+  //jump upload
+
+  function handleJumpUpload (e) {
+    e.preventDefault();
+    if (newJumpNum <= 0){
+      return
+    };
+    if (newJumpDate === null){
+      return
+    };
+    if (newJumpDZ === null){
+      return
+    };
+    if (newJumpAircraft === null){
+      return
+    };
+    if (newJumpRig === null){
+      return
+    };
+    if (newJumpAlt === null){
+      return
+    };
+    if (newJumpDur === null){
+      return
+    };
+    if (newJumpSigUpload === null){
+      return
+    };
+
+    storeJump()
+
+  }
 
 
   return(
@@ -1596,7 +1653,7 @@ useEffect(() => {
           {/* upload skydive */}
 
           <div style={inputSection}>
-            <button style={headerButtonStyle}>Upload Skydive</button>
+            <button style={headerButtonStyle} onClick={handleJumpUpload}>Upload Skydive</button>
           </div>
 
 

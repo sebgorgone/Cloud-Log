@@ -94,7 +94,7 @@ function HomePage() {
       alignItems: "center",
       overflowX: "hidden"
    }
-      const newJumpButton= {
+   const newJumpButton= {
          margin: ".7em",
          display: "inline-block",
          alignItems: "center",
@@ -102,8 +102,10 @@ function HomePage() {
          color: pallette[0],
          background: pallette[3],
          border: "none"
-      }
+   }
    const mainPageArea = {margin: "0", marginLeft: "5em",}
+
+
    return(
       <div style={homePageShell}>
 
@@ -148,7 +150,7 @@ function HomePage() {
 
 
          <div style={widgetMenu}>
-            <div style={!showAddWidget ? {display: "block", width: "80%", marginLeft: "2em"} : {display: "none"}}>
+            <div style={showAddWidget ? {display: "block", width: "80%", marginLeft: "2em"} : {display: "none"}}>
                <LogInputWidget />
             </div>
             <br />

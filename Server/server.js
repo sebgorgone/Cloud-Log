@@ -206,39 +206,89 @@ app.post('/storedz', (req, res) => {
   )
 });
 
-//upload signature
-app.post(
-  '/uploadsignature', 
-  userSigUpload.single('pdfFile'),   // ← Multer will parse out one file from the "pdfFile" field
-  (req, res) => {
-    // at this point, `req.file` exists:
-    // {
-    //   fieldname: 'pdfFile',
-    //   originalname: 'whatever.pdf',
-    //   mimetype: 'application/pdf',
-    //   buffer: <Buffer …>,
-    //   size: 12345,
-    //   …
-    // }
+//upload jump route
 
-    if (!req.file) {
-      return res.status(400).json({ message: 'No PDF uploaded.' });
+app.post('/storejump', (req, res) => {
+  const {
+    user_id,
+    jump_num,
+    jump_date,
+    dz,
+    aircraft,
+    equipment,
+    alt,
+    t,
+    notes,
+    pdfSig,
+    tags  // an array of tag objects (each with name, cat, optional value)
+  } = req.body;
+
+  // 1) Insert into jumps, get back insertId as jump_id
+  const insertJumpSql = `
+    INSERT INTO jumps
+      (user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(
+    insertJumpSql,
+    [user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig],
+    (jumpErr, jumpResult) => {
+      if (jumpErr) {
+        console.error('Error inserting jump:', jumpErr);
+        return res.status(500).json({ message: 'Failed to store jump' });
+      }
+
+      const newJumpId = jumpResult.insertId; // this is the generated jump_id
+
+      // 2) Now insert each tag, using newJumpId as jump_ref
+      //    If no tags, just respond success
+      if (!Array.isArray(tags) || tags.length === 0) {
+        return res.status(200).json({ message: 'Jump stored with no tags'});
+      }
+
+      // Build a batch of INSERTs (you can also do them one by one)
+      // Example: inserting tags one‐by‐one with error handling
+      let completed = 0;
+      let hasError = false;
+
+      tags.forEach(tagObj => {
+        // Only insert tags that actually exist in the array
+        const { name, cat, value } = tagObj;
+
+        // If value is undefined/null, set it to NULL in SQL
+        const insertTagSql = value !== undefined
+          ? 'INSERT INTO tags (name, cat, value, jump_ref) VALUES (?, ?, ?, ?)'
+          : 'INSERT INTO tags (name, cat, jump_ref) VALUES (?, ?, ?)';
+
+        const params = value !== undefined
+          ? [name, cat, value, newJumpId]
+          : [name, cat, newJumpId];
+
+        db.query(insertTagSql, params, (tagErr) => {
+          if (tagErr && !hasError) {
+            hasError = true;
+            console.error('Error inserting tag:', tagErr);
+            alert(tagErr, "Abort / Continue?")
+            // Once there's an error, you can decide to abort or continue.
+            // Here, abort and return 500 to client.
+            return res.status(500).json({ message: 'Failed to store tags' });
+          }
+
+          completed++;
+          if (completed === tags.length && !hasError) {
+            // All tags inserted successfully
+            return res.status(200).json({
+              message: 'Jump and tags stored successfully',
+              jump_id: newJumpId
+            });
+          }
+        });
+      });
     }
+  );
+});
 
-    console.log('Received a PDF:', req.file.originalname);
-    // If you just want to accept it and do nothing else, you could:
-    //   • Save it to disk (fs.writeFile)
-    //   • Stream it somewhere else
-    //   • Return a success response without touching your MySQL at all
-
-    // For example, to just acknowledge receipt:
-    return res.status(200).json({
-      message: 'PDF received on the server!',
-      filename: req.file.originalname,
-      size: req.file.size
-    });
-  }
-);
 
 
 
@@ -246,3 +296,4 @@ app.post(
  app.listen(port, ()=> {
    console.log('listening')
  }); 
+
