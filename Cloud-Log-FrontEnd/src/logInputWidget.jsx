@@ -1180,7 +1180,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       setNewJumpDur(null);
       setNewJumpCom(null);
       setNewJumpSigUpload(null);
-      setNewJumpTagList([])
+      setNewJumpTagList([]);
 
     } else {
       alert(responseData.message);
@@ -1274,11 +1274,11 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     if (newJumpAlt < 1){
       return  alert('Exit Altitude is missing or invalid');
     };
-    if (newJumpDur === null){
-      return
+    if (newJumpDur < 1){
+      return alert('Free Fall Time is missing or invalid')
     };
     if (newJumpSigUpload === null){
-      return
+      return alert('Signature PDF upload is missing or invalid')
     };
 
     storeJump(newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList)
