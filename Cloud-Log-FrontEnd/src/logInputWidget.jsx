@@ -1171,6 +1171,17 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     const responseData = await response.json();
     if(responseData.ok){
       alert(responseData.message);
+      setNewJumpNum(null);
+      setNewJumpDate(null);
+      setNewJumpDZ(null);
+      setNewJumpAircraft(null);
+      setNewJumpRig(null);
+      setNewJumpAlt(null);
+      setNewJumpDur(null);
+      setNewJumpCom(null);
+      setNewJumpSigUpload(null);
+      setNewJumpTagList([])
+
     } else {
       alert(responseData.message);
       console.error(responseData.error)
