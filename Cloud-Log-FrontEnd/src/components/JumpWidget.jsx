@@ -3,6 +3,13 @@ import { useState } from 'react';
 
 
 function JumpWidget(props) {
+
+   if (props.context === "gathered") {
+      console.log(props.signature, props.jumpNum)
+   }
+
+
+
    const pallette = getPallette();
 
 
@@ -11,7 +18,6 @@ function JumpWidget(props) {
    const [showSig, setShowSig] = useState(false);
    const [showTags, setShowTags] = useState(false);
 
-   console.log(props.signature)
 
 
    //handlers
@@ -87,8 +93,6 @@ function JumpWidget(props) {
       margin: "0",
       color: pallette[0],
    }
-
-
 
 
    return(<div style={Shell} className="jumpWidget">

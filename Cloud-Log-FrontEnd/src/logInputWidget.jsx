@@ -1675,6 +1675,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
             notes={newJumpCom}
             signature={newJumpSigUpload}
             tags={tagsPreview}
+            context={"preview"}
         
           />
         </div>

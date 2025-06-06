@@ -159,7 +159,7 @@ function HomePage() {
 
    //useEffects
 
-   useEffect(() => {getJumpHist()}, [])
+   useEffect(() => {router.fullList && getJumpHist()}, [])
    return(
       <div style={homePageShell}>
 
