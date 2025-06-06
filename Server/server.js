@@ -122,6 +122,28 @@ app.post('/userjumphistory', (req, res) => {
   )
 })
 
+// get tags for multiple jumps
+app.post('/gettags', async (req, res) => {
+  const { jumpsIdArray } = req.body;
+  if (!Array.isArray(jumpsIdArray) || jumpsIdArray.length === 0) {
+    return res.status(400).json({ message: 'No jump IDs provided' });
+  }
+  try {
+    const tagResults = await Promise.all(
+      jumpsIdArray.map(id => new Promise((resolve, reject) => {
+        db.query('SELECT name, cat, jump_ref  FROM tags WHERE jump_ref = ?', [id], (err, results) => {
+          if (err) return reject(err);
+          resolve({ jump_ref: id, tags: results });
+        });
+      }))
+    );
+    return res.status(200).json({ ok: true, results: tagResults });
+  } catch (err) {
+    console.error('Error fetching tags:', err);
+    return res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 //get users rigs
 app.post('/getrigs', (req, res) => {
   const { user_id } = req.body;

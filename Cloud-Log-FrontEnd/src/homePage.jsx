@@ -72,6 +72,7 @@ function HomePage() {
 
    //inline styles
    const homePageShell = {
+      overflowX: "hidden"
    }
    const headerStyle ={
       position: "fixed",
@@ -82,7 +83,9 @@ function HomePage() {
       zIndex: "3",
       padding: "2vh",
       display: "flex",
-      background: pallette[4]
+      background: pallette[4],
+      borderBottom: "solid .25em",
+      borderColor: pallette[2]
    }
    const nameStyle= {
       color: pallette[0],
@@ -127,7 +130,9 @@ function HomePage() {
       padding: "2vh",
       display: "flex",
       flexDirection: "column",
-      background: pallette[4]
+      background: pallette[4],
+      borderRight: "solid .25em",
+      borderColor: pallette[2]
    }
 
    const widgetMenu = {
@@ -143,8 +148,8 @@ function HomePage() {
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
-      overflowX: "hidden"
-   }
+      overflowX: "hidden",
+      }
    const newJumpButton= {
          margin: ".7em",
          display: "inline-block",
@@ -154,7 +159,7 @@ function HomePage() {
          background: pallette[3],
          border: "none"
    }
-   const mainPageArea = {margin: "0", marginLeft: "5em",}
+   const mainPageArea = {margin: "0", marginLeft: "5em", overflowX: "hidden"}
 
 
    //useEffects

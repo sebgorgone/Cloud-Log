@@ -5,7 +5,6 @@ import { useState } from 'react';
 function JumpWidget(props) {
 
    if (props.context === "gathered") {
-      console.log(props.signature, props.jumpNum)
    }
 
 
