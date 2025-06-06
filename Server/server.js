@@ -101,6 +101,27 @@ db.query(query, [identifier], (err, results) => {
 });
 });
 
+//get user jump history
+
+app.post('/userjumphistory', (req, res) => {
+  const { user_id } = req.body;
+
+  db.query ('SELECT * FROM jumps WHERE user_id=? ORDER BY jump_num DESC',
+    user_id,
+    (err, results) => {
+      if (err){
+        console.error('DB error fetching user jump history', err);
+        return res.status(500).json({message: 'could not retrieve user jumps'})
+      }
+      if (results.length === 0) {
+        console.log('empty logbook', results);
+        return res.status(404).json({message: 'empty log book'})
+      }
+      return res.status(200).json({message: 'loaded jumps', results, ok: true})
+    }
+  )
+})
+
 //get users rigs
 app.post('/getrigs', (req, res) => {
   const { user_id } = req.body;

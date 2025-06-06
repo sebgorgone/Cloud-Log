@@ -2,8 +2,14 @@ import { useState, useEffect } from 'react'
 import {getUser} from './contexts/authContext'
 import {getPallette} from "./logInputWidget"
 import LogInputWidget from './logInputWidget'
+import FullJumpLedge from './components/fullJumpHistory.jsx'
 
 function HomePage() {
+
+
+
+   //environment variables
+
 
    const pallette = getPallette()
 
@@ -14,11 +20,56 @@ function HomePage() {
    //states
    const [showAddWidget, setShowAddWidget]= useState(false);
 
+    const [router, setRouter] = useState({
+      fullList: true,
+      searchedList: false,
+      download: false,
+      stats: false,
+      settings: false,
+    })
+
    //handlers
    function toggleWidgetDropdown (e) {
       e.preventDefault()
       setShowAddWidget(!showAddWidget)
    }
+
+      //getjumphistory post
+
+   const [userJumpHistory, setUserJumpHistory] = useState();
+
+   const getJumpHist = async () => { 
+      try {
+         const response = await fetch('http://localhost:5009/userjumphistory', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({user_id: user.ID}),
+         });
+         const data = await response.json();
+         if(data.ok){
+            let jumpHist = [];
+            for (let jump of data.results) {
+               jumpHist.push(jump);
+            }
+            setUserJumpHistory(jumpHist);
+            
+         }
+         else {
+            console.error('no Jumps imported', data)
+         }
+      } catch (err) {
+         console.error('client failed to load user jumps')
+      }
+   }
+
+
+   
+
+      
+
+
+
+
    //inline styles
    const homePageShell = {
    }
@@ -106,6 +157,9 @@ function HomePage() {
    const mainPageArea = {margin: "0", marginLeft: "5em",}
 
 
+   //useEffects
+
+   useEffect(() => {getJumpHist()}, [])
    return(
       <div style={homePageShell}>
 
@@ -161,7 +215,7 @@ function HomePage() {
          </div>
 
          <div style={mainPageArea}>
-            <p> hellp</p>
+            {router.fullList ? <FullJumpLedge jumps={userJumpHistory}/> : null}
          </div>
 
 

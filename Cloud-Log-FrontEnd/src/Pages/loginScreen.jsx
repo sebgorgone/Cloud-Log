@@ -21,6 +21,12 @@ function LoginScreen () {
    console.log("LOGIN PALLETTE:" + [...pallette]);
 
    //styles vv
+   const backdrop = {
+      backgroundColor: pallette[3],
+      position: "fixed",
+      minWidth: "100%",
+      minHeight: "100%",
+   }
    const loginContainer = {
       background: pallette[4],
       border: "solid 0.3em",
@@ -28,6 +34,7 @@ function LoginScreen () {
       padding: "1vw",
       maxWidth: "28em",
       margin: "auto",
+      marginTop: "10vh",
       minHeight: "20em"
    }
 
@@ -118,6 +125,7 @@ function LoginScreen () {
 
 
    return(
+      <div style={backdrop}>
       <div style={loginContainer}>
          <h3 style={headerStyle}>Please Log In</h3>
          <input 
@@ -143,6 +151,7 @@ function LoginScreen () {
          
 
 
+      </div>
       </div>
    )
 }

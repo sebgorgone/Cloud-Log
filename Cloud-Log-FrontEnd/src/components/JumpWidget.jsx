@@ -5,10 +5,13 @@ import { useState } from 'react';
 function JumpWidget(props) {
    const pallette = getPallette();
 
+
    //state
    const [showNotes, setShowNotes] = useState(false);
    const [showSig, setShowSig] = useState(false);
    const [showTags, setShowTags] = useState(false);
+
+   console.log(props.signature)
 
 
    //handlers
@@ -28,15 +31,14 @@ function JumpWidget(props) {
       setShowTags(!showTags);
    }
 
-
-
    //inline
    const Shell = {
       background: pallette[4],
       borderRadius: ".4em",
       borderTopLeftRadius: "0em",
       border: "solid .1em",
-      borderColor: pallette[0]
+      borderColor: pallette[0],
+      minWidth: ""
 
       
 
