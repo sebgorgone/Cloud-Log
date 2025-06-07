@@ -15,14 +15,17 @@ createRoot(document.getElementById('root')).render(
         <AuthProvider>     
           <Routes>
 
-            <Route index element={<PrivateRoute>
-              <HomePage />
+            <Route index element={
+              <PrivateRoute>
+                <HomePage/>
               </PrivateRoute>
             } />
 
+
+
             <Route path="/home" element={
               <PrivateRoute>
-              <HomePage />
+                <HomePage/>
               </PrivateRoute>
             } />
 

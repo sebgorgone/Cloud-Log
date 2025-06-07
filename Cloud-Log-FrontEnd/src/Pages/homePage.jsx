@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react'
 import {getUser} from '../contexts/authContext.jsx'
 import {getPallette} from "../logInputWidget.jsx"
-import FullJumpLedge from '../components/fullJumpHistory.jsx'
+import FullJumpLedge from './fullJumpHistory.jsx'
+import WelcomePage from './WelcomePage.jsx'
+import StatsPage from './StatsPage.jsx'
+import DownloadPage from './DownloadPage.jsx'
+import SettingsPage from './SettingsPage.jsx'
 
-function HomePage() {
+
+function HomePage(props) {
 
 
 
@@ -19,12 +24,14 @@ function HomePage() {
    //states
 
     const [router, setRouter] = useState({
-      fullList: true,
+      welcome: true,
+      fullList: false,
       searchedList: false,
       download: false,
       stats: false,
       settings: false,
     })
+
 
 
       //getjumphistory post
@@ -60,7 +67,55 @@ function HomePage() {
 
    
 
-      
+   //handlers
+
+   function handleNavToLedg (e) {
+      e.preventDefault();
+      setRouter({
+      welcome: false,
+      fullList: true,
+      searchedList: false,
+      download: false,
+      stats: false,
+      settings: false,
+    })
+   }
+
+   function handleNavToStats (e) {
+      e.preventDefault();
+      setRouter({
+      welcome: false,
+      fullList: false,
+      searchedList: false,
+      download: false,
+      stats: true,
+      settings: false,
+    })
+   }
+
+   function handleNavToDownload (e) {
+      e.preventDefault();
+      setRouter({
+      welcome: false,
+      fullList: false,
+      searchedList: false,
+      download: true,
+      stats: false,
+      settings: false,
+    })
+   }
+
+   function handleNavToSettings (e) {
+      e.preventDefault();
+      setRouter({
+      welcome: false,
+      fullList: false,
+      searchedList: false,
+      download: false,
+      stats: false,
+      settings: true,
+    })
+   }
 
 
 
@@ -145,7 +200,11 @@ function HomePage() {
 
    //useEffects
 
-   useEffect(() => {router.fullList && getJumpHist()}, [])
+
+   useEffect(() => {
+      console.log('useeffect is running')
+      getJumpHist();
+   }, [router])
    return(
       <div style={homePageShell}>
 
@@ -183,28 +242,36 @@ function HomePage() {
 
                <button 
                   title='Full Logbook Ledgar'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}>
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}
+                  onClick={handleNavToLedg}
+               >
                      <img style={{width: '1.8em', height: '1.8em', padding: ".3em"}} src="/list-svgrepo-com.svg" />
                </button>
                
                
                <button 
                   title='Download Logbook Data'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}>
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}
+                  onClick={handleNavToDownload}
+               >
                      <img style={{width: '2em', height: '2em', padding: ".2em"}} src="/download-file-1-svgrepo-com(1).svg" />
                </button>
 
 
                <button 
                   title='Statistics'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}>
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}
+                  onClick={handleNavToStats}
+               >
                      <img style={{width: '2em', height: '2em', padding: ".3em"}} src="/stats-svgrepo-com(2).svg" />
                </button>
 
 
                <button 
                   title='Settings'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}>
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}
+                  onClick={handleNavToSettings}
+               >
                      <img style={{width: '1.8em', height: '1.8em', padding: ".4em"}} src="/settings-gear-part-2-svgrepo-com.svg" />
                </button>
 
@@ -215,7 +282,11 @@ function HomePage() {
 
 
          <div style={mainPageArea}>
-            {router.fullList ? <FullJumpLedge jumps={userJumpHistory} /> : null}
+            {router.welcome ? <WelcomePage user={user}/>: null}
+            {router.fullList ? <FullJumpLedge  jumps={userJumpHistory} /> : null}
+            {router.download ? <DownloadPage user={user}/> : null}
+            {router.stats ? <StatsPage jumps={userJumpHistory} user={user}/> : null}
+            {router.settings ? <SettingsPage user={user}/> : null}
          </div>
 
 

@@ -4,9 +4,7 @@ import { useAuth } from './contexts/authContext';
 import JumpWidget from './components/JumpWidget.jsx'
 
 
-function LogInputWidget(user) {
-
-  console.log('input widget sees', user.numOfJumps, 'as total jump num')
+function LogInputWidget(props) {
 
   //get user data
   const userData = useAuth();
@@ -1012,6 +1010,7 @@ tagWaterREQ,
 tagNightREQ,
 tagGroupSize,]);
 
+
 useEffect(() => {
   getRigs()
   getPlanes();
@@ -1183,6 +1182,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       setNewJumpCom('');
       setNewJumpSigUpload(null);
       setNewJumpTagList([]);
+      // Notify parent to reload after successful storage
     } else {
       alert(responseData.message);
       console.error(responseData.error)
@@ -1282,7 +1282,8 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       return alert('Signature PDF upload is missing or invalid')
     };
 
-    storeJump(newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList)
+    storeJump(newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList);
+
 
   }
 

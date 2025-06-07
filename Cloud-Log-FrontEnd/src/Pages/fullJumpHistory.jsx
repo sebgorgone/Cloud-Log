@@ -1,10 +1,13 @@
-import JumpWidget from './JumpWidget';
+import JumpWidget from '../components/JumpWidget';
 import { useEffect, useState } from 'react'
 import LogInputWidget from '../logInputWidget'
 import {getPallette} from "../logInputWidget"
+import StatsPage from './StatsPage.jsx'
+
 
 
 function FullJumpLedg (props) {
+   console.log('in the jump ledger')
 
    const pallette = getPallette()
 
@@ -130,7 +133,9 @@ const tagsRoute = async (array) => {
 
          <div style={widgetMenu}>
             <div style={showAddWidget ? {display: "block", width: "80%", marginLeft: "2em"} : {display: "none"}}>
-               <LogInputWidget numOfJumps={Array.isArray(props.jumps) ? props.jumps.length : null}/>
+               <LogInputWidget 
+                  numOfJumps={Array.isArray(props.jumps) ? props.jumps.length : null}
+               />
             </div>
             <br />
             <div>
@@ -161,7 +166,6 @@ const tagsRoute = async (array) => {
                   jump_id={jump.jump_id}
                   tags={getThisJumpsTags(jump.jump_id)}
                   context={"gathered"}
-        
                /> 
             </div>
          )) : <p style={{fontFamily: "L1", textAlign: "center"}}>loading...</p>}
