@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import {getUser} from './contexts/authContext'
-import {getPallette} from "./logInputWidget"
-import LogInputWidget from './logInputWidget'
-import FullJumpLedge from './components/fullJumpHistory.jsx'
+import {getUser} from '../contexts/authContext.jsx'
+import {getPallette} from "../logInputWidget.jsx"
+import FullJumpLedge from '../components/fullJumpHistory.jsx'
 
 function HomePage() {
 
@@ -18,7 +17,6 @@ function HomePage() {
    // console.log('user: ', user, 'Pallette: ', pallette)
 
    //states
-   const [showAddWidget, setShowAddWidget]= useState(false);
 
     const [router, setRouter] = useState({
       fullList: true,
@@ -28,11 +26,6 @@ function HomePage() {
       settings: false,
     })
 
-   //handlers
-   function toggleWidgetDropdown (e) {
-      e.preventDefault()
-      setShowAddWidget(!showAddWidget)
-   }
 
       //getjumphistory post
 
@@ -95,7 +88,7 @@ function HomePage() {
       fontWeight: "bold",
       fontSize: "1.5em",
       margin: "0",
-      marginLeft: "25px",
+      marginLeft: "35px",
       padding: "0",
    }
    const jumpNumStyle= {
@@ -103,7 +96,7 @@ function HomePage() {
       fontFamily: "L1",
       fontSize: ".7em",
       margin: "0",
-      marginLeft: "25px",
+      marginLeft: "35px",
       padding: "0",
    }
    const filterButtonStyle= {
@@ -112,7 +105,9 @@ function HomePage() {
       backgroundColor: pallette[3],
       fontFamily: "L1",
       fontSize: "1.2em",
-      padding: "1em",
+      padding: ".3.3em",
+      paddingTop: ".7em",
+      paddingBottom: ".8em",
       border: "none",
       borderRadius: "2.7em",
       display: "flex",
@@ -139,32 +134,10 @@ function HomePage() {
       borderColor: pallette[3]
    }
 
-   const widgetMenu = {
-      background: pallette[1],
-      borderBottom: "solid .2em",
-      borderColor: pallette[3],
-      marginLeft: "2em",
-      width: "100%",
-      marginTop: "3.1em",
-      padding: "1em",
-      paddingTop: "1.6em",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      overflowX: "hidden",
-   }
-   const newJumpButton= {
-         margin: ".7em",
-         display: "inline-block",
-         alignItems: "center",
-         justifyContent: "center",
-         color: pallette[0],
-         background: pallette[3],
-         border: "none"
-   }
+
    const mainPageArea = {
       margin: "0", 
+      height: "100%",
       overflowX: "hidden",
       background: pallette[2]
    }
@@ -172,7 +145,7 @@ function HomePage() {
 
    //useEffects
 
-   useEffect(() => {router.fullList && getJumpHist()}, [showAddWidget])
+   useEffect(() => {router.fullList && getJumpHist()}, [])
    return(
       <div style={homePageShell}>
 
@@ -210,28 +183,28 @@ function HomePage() {
 
                <button 
                   title='Full Logbook Ledgar'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[3], marginTop: "2vh"}}>
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}>
                      <img style={{width: '1.8em', height: '1.8em', padding: ".3em"}} src="/list-svgrepo-com.svg" />
                </button>
                
                
                <button 
                   title='Download Logbook Data'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[3], marginTop: "2vh"}}>
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}>
                      <img style={{width: '2em', height: '2em', padding: ".2em"}} src="/download-file-1-svgrepo-com(1).svg" />
                </button>
 
 
                <button 
                   title='Statistics'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[3], marginTop: "2vh"}}>
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}>
                      <img style={{width: '2em', height: '2em', padding: ".3em"}} src="/stats-svgrepo-com(2).svg" />
                </button>
 
 
                <button 
                   title='Settings'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[3], marginTop: "2vh"}}>
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}>
                      <img style={{width: '1.8em', height: '1.8em', padding: ".4em"}} src="/settings-gear-part-2-svgrepo-com.svg" />
                </button>
 
@@ -241,23 +214,8 @@ function HomePage() {
          </div>
 
 
-         <div style={widgetMenu}>
-            <div style={showAddWidget ? {display: "block", width: "80%", marginLeft: "2em"} : {display: "none"}}>
-               <LogInputWidget numOfJumps={Array.isArray(userJumpHistory) ? userJumpHistory.length : null}/>
-            </div>
-            <br />
-            <div>
-               <button 
-                  title={!showAddWidget ? "Add New Jumps" : "Hide 'Add Jump' menu"}
-                  style={newJumpButton} onClick={toggleWidgetDropdown}>
-                     {!showAddWidget ? 'Add New Jumps' : 'Hide Add Menu'}
-               </button>
-            </div>
-            
-         </div>
-
          <div style={mainPageArea}>
-            {router.fullList ? <FullJumpLedge jumps={userJumpHistory}/> : null}
+            {router.fullList ? <FullJumpLedge jumps={userJumpHistory} /> : null}
          </div>
 
 
