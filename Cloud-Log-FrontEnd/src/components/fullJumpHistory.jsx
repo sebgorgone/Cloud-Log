@@ -30,8 +30,6 @@ function FullJumpLedg (props) {
    }
 
    const [tagsArray, setTags] = useState(null)
-   console.log('Retrieved tags: ',tagsArray);
-   const testId = 16;
 
    function getTags (jumpsArray) {
       let jumpsIdArray = [];
@@ -40,7 +38,6 @@ function FullJumpLedg (props) {
             jumpsIdArray.push(jump.jump_id)
          }
       }
-   console.log('retrieving tags for jumps', jumpsIdArray)
    tagsRoute(jumpsIdArray)
    
 }
@@ -55,11 +52,11 @@ const tagsRoute = async (array) => {
          });
          const data = await response.json();
          if(data.ok){
-            let tags = [];
-            for (let tag of data.results) {
-               tags.push(tag);
-            }
-            setTags(tags);
+            const flattenedTags = data.results.flatMap(r =>
+              r.tags.map(inner => ({ name: inner.name, cat: inner.cat, jump_ref: r.jump_ref }))
+            );
+            console.log('Flattened tagsArray:', flattenedTags);
+            setTags(flattenedTags);
             
          }
          else {
@@ -68,6 +65,22 @@ const tagsRoute = async (array) => {
       } catch (err) {
          console.error('client failed to load user tags')
       }
+   }
+
+   function getThisJumpsTags(id) {
+     if (!Array.isArray(tagsArray)) return [];
+     const thisJumpsTags = tagsArray
+       .filter(tag => tag.jump_ref === id)
+       .map(tag => ({ name: tag.name, cat: tag.cat }));
+     console.log('retrieved tags for jump_id:', id, '->', thisJumpsTags);
+
+     return thisJumpsTags.map((tag, idx) => {
+         return(
+            <div key={idx}>
+            <p>{tag.name}</p>
+            </div>
+         )
+      })
    }
 
    //useEffect 
@@ -94,7 +107,7 @@ const tagsRoute = async (array) => {
                   notes={jump.notes}
                   signature={unPackPdf(jump.pdfSig)}
                   jump_id={jump.jump_id}
-                  tags={Array.isArray(tagsArray) ? tagsArray.filter(tag => tag.jump_ref === jump.jump_id).map(tag   => tag.name): null}
+                  tags={getThisJumpsTags(jump.jump_id)}
                   context={"gathered"}
         
                /> 
