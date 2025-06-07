@@ -37,6 +37,7 @@ function HomePage() {
       //getjumphistory post
 
    const [userJumpHistory, setUserJumpHistory] = useState();
+   
 
    const getJumpHist = async () => { 
       try {
@@ -52,6 +53,7 @@ function HomePage() {
                jumpHist.push(jump);
             }
             setUserJumpHistory(jumpHist);
+            
             
          }
          else {
@@ -159,7 +161,7 @@ function HomePage() {
          background: pallette[3],
          border: "none"
    }
-   const mainPageArea = {margin: "0", marginLeft: "5em", overflowX: "hidden"}
+   const mainPageArea = {margin: "0", marginLeft: "12em", overflowX: "hidden"}
 
 
    //useEffects
@@ -177,7 +179,7 @@ function HomePage() {
 
             <div >
                <p style={nameStyle}>Hello {user.name.length > 20 ? user.name.slice(0, 20) : user.name }!</p>
-               <p style={jumpNumStyle}>{'{jump num}'} Jumps</p>
+               <p style={jumpNumStyle}>{Array.isArray(userJumpHistory) ? userJumpHistory.length : 'Loading...'} Jumps</p>
             </div>
 
             <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -210,11 +212,11 @@ function HomePage() {
 
          <div style={widgetMenu}>
             <div style={showAddWidget ? {display: "block", width: "80%", marginLeft: "2em"} : {display: "none"}}>
-               <LogInputWidget />
+               <LogInputWidget numOfJumps={Array.isArray(userJumpHistory) ? userJumpHistory.length : null}/>
             </div>
             <br />
             <div>
-               <button style={newJumpButton} onClick={toggleWidgetDropdown}>Add New Jumps</button>
+               <button style={newJumpButton} onClick={toggleWidgetDropdown}>{!showAddWidget ? 'Add New Jumps' : 'Hide Add Menu'}</button>
             </div>
             
          </div>

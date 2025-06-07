@@ -4,7 +4,9 @@ import { useAuth } from './contexts/authContext';
 import JumpWidget from './components/JumpWidget.jsx'
 
 
-function LogInputWidget() {
+function LogInputWidget(user) {
+
+  console.log('input widget sees', user.numOfJumps, 'as total jump num')
 
   //get user data
   const userData = useAuth();

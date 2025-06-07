@@ -43,7 +43,7 @@ function JumpWidget(props) {
       borderTopLeftRadius: "0em",
       border: "solid .1em",
       borderColor: pallette[0],
-      minWidth: ""
+      maxWidth: "89%"
 
       
 

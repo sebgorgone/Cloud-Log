@@ -8,23 +8,17 @@ function FullJumpLedg (props) {
 
 
    function unPackPdf(obj) {
-  // 1) Rebuild a Uint8Array from obj.data
   const base64Bytes = new Uint8Array(obj.data);
-  // 2) Decode those bytes into a UTF-8 string (the Base64 text)
   const b64String = new TextDecoder().decode(base64Bytes);
-  //    (At this point b64String === "JVBERi0xLjQKJYGBgYEKMSAwIG9iago8PC9UeXBlIC9QREYvRGV2aWNlUk…" )
 
-  // 3) Decode the Base64 string into a binary string
   const binaryString = atob(b64String);
 
-  // 4) Convert that binary string into a Uint8Array of PDF bytes
   const len = binaryString.length;
   const pdfUint8 = new Uint8Array(len);
   for (let i = 0; i < len; i++) {
     pdfUint8[i] = binaryString.charCodeAt(i);
   }
 
-  // 5) Wrap those bytes in a Blob, using the PDF MIME type
   const pdfBlob = new Blob([pdfUint8], { type: 'application/pdf' });
   return pdfBlob;
    }
@@ -43,7 +37,7 @@ function FullJumpLedg (props) {
 }
 
 const tagsRoute = async (array) => { 
-   console.log('async func data sees: ', array);
+   // console.log('async func data sees: ', array);
       try {
          const response = await fetch('http://localhost:5009/gettags', {
             method: 'POST',
@@ -55,7 +49,7 @@ const tagsRoute = async (array) => {
             const flattenedTags = data.results.flatMap(r =>
               r.tags.map(inner => ({ name: inner.name, cat: inner.cat, jump_ref: r.jump_ref }))
             );
-            console.log('Flattened tagsArray:', flattenedTags);
+            // console.log('Flattened tagsArray:', flattenedTags);
             setTags(flattenedTags);
             
          }
@@ -72,7 +66,7 @@ const tagsRoute = async (array) => {
      const thisJumpsTags = tagsArray
        .filter(tag => tag.jump_ref === id)
        .map(tag => ({ name: tag.name, cat: tag.cat }));
-     console.log('retrieved tags for jump_id:', id, '->', thisJumpsTags);
+   //   console.log('retrieved tags for jump_id:', id, '->', thisJumpsTags);
 
      return thisJumpsTags.map((tag, idx) => {
          return(
