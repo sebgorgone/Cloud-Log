@@ -87,7 +87,7 @@ function HomePage() {
       display: "flex",
       background: pallette[4],
       borderBottom: "solid .25em",
-      borderColor: pallette[2]
+      borderColor: pallette[3]
    }
    const nameStyle= {
       color: pallette[0],
@@ -95,6 +95,7 @@ function HomePage() {
       fontWeight: "bold",
       fontSize: "1.5em",
       margin: "0",
+      marginLeft: "25px",
       padding: "0",
    }
    const jumpNumStyle= {
@@ -102,6 +103,7 @@ function HomePage() {
       fontFamily: "L1",
       fontSize: ".7em",
       margin: "0",
+      marginLeft: "25px",
       padding: "0",
    }
    const filterButtonStyle= {
@@ -127,22 +129,22 @@ function HomePage() {
       position: "fixed",
       height: "100%",
       top: "0",
-      width: "2.5em",
-      zIndex: "2",
+      width: "3.5em",
+      zIndex: "3",
       padding: "2vh",
       display: "flex",
       flexDirection: "column",
       background: pallette[4],
       borderRight: "solid .25em",
-      borderColor: pallette[2]
+      borderColor: pallette[3]
    }
 
    const widgetMenu = {
       background: pallette[1],
-      border: "solid .2em",
+      borderBottom: "solid .2em",
       borderColor: pallette[3],
-      marginLeft: "2.9em",
-      width: "94%",
+      marginLeft: "2em",
+      width: "100%",
       marginTop: "3.1em",
       padding: "1em",
       paddingTop: "1.6em",
@@ -151,7 +153,7 @@ function HomePage() {
       justifyContent: "center",
       alignItems: "center",
       overflowX: "hidden",
-      }
+   }
    const newJumpButton= {
          margin: ".7em",
          display: "inline-block",
@@ -161,12 +163,16 @@ function HomePage() {
          background: pallette[3],
          border: "none"
    }
-   const mainPageArea = {margin: "0", marginLeft: "12em", overflowX: "hidden"}
+   const mainPageArea = {
+      margin: "0", 
+      overflowX: "hidden",
+      background: pallette[2]
+   }
 
 
    //useEffects
 
-   useEffect(() => {router.fullList && getJumpHist()}, [])
+   useEffect(() => {router.fullList && getJumpHist()}, [showAddWidget])
    return(
       <div style={homePageShell}>
 
@@ -200,11 +206,36 @@ function HomePage() {
          <div style={sidebarStyle}>
 
             <div style={{marginTop: "5.2em"}}>
-               <p>hello</p>
-               <p>hello</p>
-               <p>hello</p>
-               <p>hello</p>
-               <p>hello</p>
+
+
+               <button 
+                  title='Full Logbook Ledgar'
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[3], marginTop: "2vh"}}>
+                     <img style={{width: '1.8em', height: '1.8em', padding: ".3em"}} src="/list-svgrepo-com.svg" />
+               </button>
+               
+               
+               <button 
+                  title='Download Logbook Data'
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[3], marginTop: "2vh"}}>
+                     <img style={{width: '2em', height: '2em', padding: ".2em"}} src="/download-file-1-svgrepo-com(1).svg" />
+               </button>
+
+
+               <button 
+                  title='Statistics'
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[3], marginTop: "2vh"}}>
+                     <img style={{width: '2em', height: '2em', padding: ".3em"}} src="/stats-svgrepo-com(2).svg" />
+               </button>
+
+
+               <button 
+                  title='Settings'
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[3], marginTop: "2vh"}}>
+                     <img style={{width: '1.8em', height: '1.8em', padding: ".4em"}} src="/settings-gear-part-2-svgrepo-com.svg" />
+               </button>
+
+
             </div>
             
          </div>
@@ -216,7 +247,11 @@ function HomePage() {
             </div>
             <br />
             <div>
-               <button style={newJumpButton} onClick={toggleWidgetDropdown}>{!showAddWidget ? 'Add New Jumps' : 'Hide Add Menu'}</button>
+               <button 
+                  title={!showAddWidget ? "Add New Jumps" : "Hide 'Add Jump' menu"}
+                  style={newJumpButton} onClick={toggleWidgetDropdown}>
+                     {!showAddWidget ? 'Add New Jumps' : 'Hide Add Menu'}
+               </button>
             </div>
             
          </div>

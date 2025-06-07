@@ -41,9 +41,10 @@ function JumpWidget(props) {
       background: pallette[4],
       borderRadius: ".4em",
       borderTopLeftRadius: "0em",
-      border: "solid .1em",
-      borderColor: pallette[0],
-      maxWidth: "89%"
+      marginLeft: "20%",
+      border: "solid .2em",
+      borderColor: pallette[1],
+      maxWidth: "70%"
 
       
 
@@ -52,16 +53,19 @@ function JumpWidget(props) {
    const section = {
       display: 'inline-block',
       paddingRight: "1em",
+      margin: "0",
       borderRight: "solid .1em",
+      borderBottom: "solid .1em",
       borderColor: pallette[3],
 
    }
 
    const row = {
+      margin: "0",
       display: "flex",
       justifyContent: "space-evenly",
       margin: ".2em",
-      overflowX: "wrap"
+      flexWrap: "wrap"
    }
 
    const showButton= {
@@ -77,13 +81,13 @@ function JumpWidget(props) {
    const header= {
       color: pallette[0],
       padding: "0",
-      margin: "0",
       paddingLeft: ".2em",
       fontSize: ".85em",
    }
 
    const line = {
       border: "solid .2em",
+      margin: "0",
       borderColor: pallette[3]
    }
 
