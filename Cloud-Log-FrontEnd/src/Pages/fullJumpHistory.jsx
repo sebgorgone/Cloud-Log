@@ -16,7 +16,8 @@ function FullJumpLedg (props) {
       //handlers
    function toggleWidgetDropdown (e) {
       e.preventDefault()
-      setShowAddWidget(!showAddWidget)
+      setShowAddWidget(!showAddWidget);
+      props.rst();
    }
 
    //styles
@@ -149,7 +150,7 @@ const tagsRoute = async (array) => {
          </div>
 
 
-         {Array.isArray(jumps) ? jumps.map((jump, idx) => (
+         {!showAddWidget && Array.isArray(jumps) ? jumps.map((jump, idx) => (
             <div key={idx}
                style={{marginBottom: "2.5vh", marginTop: "1vh"}}
             >
@@ -168,7 +169,7 @@ const tagsRoute = async (array) => {
                   context={"gathered"}
                /> 
             </div>
-         )) : <p style={{fontFamily: "L1", textAlign: "center"}}>loading...</p>}
+         )) : <p style={{fontFamily: "L1", textAlign: "center"}}>{!showAddWidget && 'loading...'}</p>}
       </div>
    );
 }

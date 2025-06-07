@@ -8,6 +8,8 @@ import { useAuth } from '../contexts/authContext';
 
 function LoginScreen () {
 
+   const host = 'http://localhost:5173';
+
    const nav = useNavigate();
    const { login, user } = useAuth();
 
@@ -145,7 +147,8 @@ function LoginScreen () {
          />
          <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center", marginBottom: "3vh"}}>
             <button onClick={handleLogin} style={loginButton}>Log In</button>
-            <a style={signupPageButton}>Create New Account</a>
+
+            <a className="registerLink"style={signupPageButton} href={`${host}/register`}>Create New Account</a>
 
          </div>
          

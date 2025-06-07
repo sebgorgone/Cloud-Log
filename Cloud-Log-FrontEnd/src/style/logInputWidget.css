@@ -26,3 +26,9 @@ h3 {
 .jumpWidget {
    font-family: L1;
 }
+
+.registerLink:hover {
+   box-shadow: 3px 5px rgba(0,0,0,.3);
+   border-radius: 20%;
+
+}

@@ -6,6 +6,7 @@ import {BrowserRouter, Routes, Route} from  'react-router-dom';
 import PrivateRoute from './routes/PrivateRoute.jsx';
 import { AuthProvider } from './contexts/authContext.jsx';
 import HomePage from './pages/homePage.jsx'
+import RegisterPage from './Pages/RegisterPage.jsx';
 
 
 
@@ -29,10 +30,15 @@ createRoot(document.getElementById('root')).render(
               </PrivateRoute>
             } />
 
-              <Route path="/widgetbuild" element={
+            <Route path="/widgetbuild" element={
               <PrivateRoute>
               <LogInputWidget />
               </PrivateRoute>
+            } />
+
+
+            <Route path="/register" element={
+              <RegisterPage />
             } />
 
             <Route  path="/login" element={<LoginScreen />} />         
