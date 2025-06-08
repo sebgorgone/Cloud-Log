@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {getPallette} from "../logInputWidget";
 import '../style/loginScreen.css';
 import { useNavigate, Navigate } from "react-router-dom";
-import { useAuth } from '../contexts/authContext';
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 
 
 
