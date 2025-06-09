@@ -708,14 +708,6 @@ function LogInputWidget(props) {
     fontSize: "1.4vw"
   };
 
-  const previewStyle ={
-    marginTop: "2vh",
-    padding: "2vw",
-    background: pallette[3],
-    display: "flex",
-    justifyContent: "space-evenly"
-  }
-
   const tagsHeaderStyle = {
     fontFamily: "L1",
     postion: "absolute"
@@ -1296,7 +1288,8 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     <div style={shell}>
 
       {/* title */}
-      <div style={rowStyle}>
+      <div style={{ display: "flex", justifyContent: "center", margin: "1vh", padding: ".5em", background: pallette[1], borderRadius:".3em" }}>
+        <img style={{width: '5em', height: '5em', paddingTop: ".5em"}} src="/CloudLogLogo.svg" />
         <h1 style={{fontFamily: "L1", padding: ".2em", color: pallette[4],fontSize: "2em"}}>Add Jump</h1>
       </div>
 

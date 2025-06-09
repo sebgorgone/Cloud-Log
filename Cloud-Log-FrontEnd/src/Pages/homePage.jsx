@@ -11,7 +11,6 @@ import SettingsPage from './SettingsPage.jsx'
 function HomePage(props) {
 
 
-
    //environment variables
 
    const { logout } = useAuth();
@@ -147,7 +146,7 @@ function HomePage(props) {
       fontWeight: "bold",
       fontSize: "min(3vw, 25px)",
       margin: "0",
-      marginLeft: "35px",
+      marginLeft: "65px",
       padding: "0",
    }
    const jumpNumStyle= {
@@ -155,7 +154,7 @@ function HomePage(props) {
       fontFamily: "L1",
       fontSize: ".7em",
       margin: "0",
-      marginLeft: "35px",
+      marginLeft: "65px",
       padding: "0",
    }
    const filterButtonStyle= {
@@ -221,18 +220,15 @@ function HomePage(props) {
       getJumpHist();
    }, [router]);
 
+
    return(
       <div style={homePageShell}>
 
 
          <div style={headerStyle}>
 
-            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-evenly", padding: "2vw"}}>
-               <i>logo</i>
-            </div>
-
             <div >
-               <p style={nameStyle}>Hello {user.name.length > 20 ? user.name.slice(0, 20) : user.name }!</p>
+               <p style={nameStyle}>{user.name.length > 20 ? user.name.slice(0, 20) : user.name }!</p>
                <p style={jumpNumStyle}>{Array.isArray(userJumpHistory) ? userJumpHistory.length : 'Loading...'} Jumps</p>
             </div>
 
@@ -302,7 +298,7 @@ function HomePage(props) {
 
 
          <div style={mainPageArea}>
-            {router.welcome ? <WelcomePage user={user}/>: null}
+            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} />: null}
             {router.fullList ? <FullJumpLedge rst={ () => getJumpHist()} jumps={userJumpHistory} /> : null}
             {router.download ? <DownloadPage user={user}/> : null}
             {router.stats ? <StatsPage jumps={userJumpHistory} user={user}/> : null}
