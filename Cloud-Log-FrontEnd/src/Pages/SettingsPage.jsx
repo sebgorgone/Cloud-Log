@@ -12,6 +12,9 @@ function SettingsPage(props) {
 
    return(
       <div style={shell}>
+         <br />
+
+
          <p>Settings Page</p>
       </div>
    )

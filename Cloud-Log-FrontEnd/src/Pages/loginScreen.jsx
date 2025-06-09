@@ -37,7 +37,7 @@ function LoginScreen () {
       padding: "1vw",
       maxWidth: "28em",
       margin: "auto",
-      marginTop: "10vh",
+      marginTop: "5vh",
       minHeight: "20em"
    }
 
@@ -124,12 +124,21 @@ function LoginScreen () {
    function handlePskyField(e) {
       setPsky(e.target.value);
    }
+   
 
-
+   function handleFormSubmit(e) {
+      e.preventDefault();
+      handleLogin();
+}
 
    return(
       <div style={backdrop}>
-      <div style={loginContainer}>
+
+      <div style={{justifyContent: "center", display: "flex"}}>
+         <img style={{padding: "3em", width: "45em", paddingBottom: "0"}}src="/CloudLogBannerWhite.svg"/>
+      </div>
+      
+      <form style={loginContainer} onSubmit={handleFormSubmit}>
          <h3 style={headerStyle}>Please Log In</h3>
          <input 
             className="loginInput"
@@ -140,14 +149,14 @@ function LoginScreen () {
             onChange={handleIdentField}
           />
          <input style={inputStyle} 
-            type="text" 
+            type="password" 
             className="loginInput"
             placeholder="password" 
             value={psky}
             onChange={handlePskyField}
          />
          <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center", marginBottom: "3vh"}}>
-            <button onClick={handleLogin} style={loginButton}>Log In</button>
+            <button type="submit" style={loginButton}>Log In</button>
 
             <a className="registerLink"style={signupPageButton} href={`${host}/register`}>Create New Account</a>
 
@@ -155,7 +164,7 @@ function LoginScreen () {
          
 
 
-      </div>
+      </form>
       </div>
    )
 }

@@ -114,7 +114,7 @@ app.post('/userjumphistory', (req, res) => {
       }
       if (results.length === 0) {
         console.log('empty logbook', results);
-        return res.status(404).json({message: 'empty log book'})
+        return res.status(201).json({message: 'empty log book', results, ok: true})
       }
       return res.status(200).json({message: 'loaded jumps', results, ok: true})
     }
@@ -361,11 +361,31 @@ app.post('/storejump', (req, res) => {
 });
 
 
-//
+//ask db if user exists
 
+app.post('/askdbpos', (req, res) => {
+  const { name, email } = req.body;
 
+  db.query(
+    `SELECT * FROM users 
+     WHERE TRIM(LOWER(name)) = TRIM(LOWER(?)) 
+     AND TRIM(LOWER(email)) = TRIM(LOWER(?))`,
+    [name, email],
+    (err, results) => {
+      if (err) {
+        console.error('DB error:', err);
+        return res.status(500).json({ message: 'could not get user' });
+      }
 
+      console.log("found usermatch")
+      if (results.length === 0) {
+        return res.status(404).json({ message: 'no user found', ok: false });
+      }
 
+      return res.status(200).json({ message: 'user found', ok: true });
+    }
+  );
+});
 
  app.listen(port, ()=> {
    console.log('listening')

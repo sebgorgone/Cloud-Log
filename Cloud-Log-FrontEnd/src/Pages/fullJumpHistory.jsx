@@ -140,6 +140,7 @@ const tagsRoute = async (array) => {
             </div>
             <br />
             <div>
+               <br />
                <button 
                   title={!showAddWidget ? "Add New Jumps" : "Hide 'Add Jump' menu"}
                   style={newJumpButton} onClick={toggleWidgetDropdown}>

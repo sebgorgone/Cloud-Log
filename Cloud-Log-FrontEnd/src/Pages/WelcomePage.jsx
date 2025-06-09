@@ -12,6 +12,8 @@ function WelcomePage(props) {
 
    return(
       <div style={shell}>
+         <br />
+         
          <p>Welcome Page</p>
       </div>
    )

@@ -12,6 +12,9 @@ function DownloadPage(props) {
 
    return(
       <div style={shell}>
+         <br />
+
+
          <p>Download Page</p>
       </div>
    )

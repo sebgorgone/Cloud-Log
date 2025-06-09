@@ -12,6 +12,8 @@ function StatsPage(props) {
 
    return(
       <div style={shell}>
+         <br />
+         
          <p>Stats Page</p>
       </div>
    )
