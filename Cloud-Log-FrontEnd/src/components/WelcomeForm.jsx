@@ -22,9 +22,9 @@ function WelcomeForm (props) {
 
   const [rigs, setRigs] = useState(['No saved rigs yet']);
 
-//   const [DZs, setDZs] = useState(['No saved dropzones yet']);
+  const [DZs, setDZs] = useState(['No saved dropzones yet']);
 
-//   const [addJumpDZ, setAddJumpDZ] = useState(null);
+  const [addJumpDZ, setAddJumpDZ] = useState(null);
 
   const [addJumpAircraft, setAddJumpAircraft] = useState(null);
 
@@ -39,16 +39,32 @@ function WelcomeForm (props) {
     background: pallette[2],
     borderRadius: "1em",
     padding: "0",
+    textAlign: "center"
+   };
+
+   const headerButtonInputStyle = {
+    background: pallette[4],
+    width: "200px",
+    border: ".1em solid",
+    borderColor: pallette[0],
+    borderRadius: "1.5vw",
+    padding: "0",
+    margin: "0",
+    fontFamily: "L1",
+    fontSize: "1.2em",
+    color: pallette[0],
    };
 
    const headerButtonStyle = {
     background: pallette[0],
+    width: "200px",
     border: "solid",
     borderColor: pallette[4],
     borderRadius: "1.5vw",
     padding: "0",
     margin: "0",
     fontFamily: "L1",
+    fontSize: "1.2em",
     color: pallette[4],
    };
 
@@ -65,22 +81,55 @@ function WelcomeForm (props) {
 
    const rowStyle = {
     display: "flex", 
+    flexWrap: "wrap",
     justifyContent: "space-around", 
     margin: "1vh", padding: "1em", 
     background: pallette[3], 
-    borderRadius:".3em" 
+    borderRadius:".3em",
+    border: ".25em solid",
+    borderColor: pallette[0]
    };
 
    const inputSection = {
     display: "flex",
     flexFlow: "column",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    padding: "1em"
    };
+
+   const textBox = {
+      backgroundColor: pallette[2],
+      width: "50%",
+   }
+
+   const textSection = {
+      width: "100%",
+      textAlign: "center",
+   }
+
+   const title = {      
+      fontSize:"min(7vw, 250px)",
+      fontFamily: "L1",
+      color: pallette[4],
+      margin: "auto",
+      textAlign: "center",
+   }
+
+   const subTitle = {      
+      fontSize:"min(5vw, 200px)",
+      width: "80%",
+      fontFamily: "L1",
+      color: pallette[0],
+      background: pallette[4],
+      margin: "auto",
+      textAlign: "center",
+      borderRadius: "1.5em",
+      border: "none",
+   }
 
 
    //api
      const getRigs = async () => {
-      console.log('storing string value', addJumpRig)
     try {
       const response = await fetch('http://localhost:5009/getrigs', {
         method: 'POST',
@@ -121,7 +170,7 @@ function WelcomeForm (props) {
       const response = await fetch('http://localhost:5009/getplanes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: data.user.id}),
+        body: JSON.stringify({ user_id: data.user.ID}),
       });
       const returnedData = await response.json();
       if(response.ok){
@@ -143,7 +192,7 @@ function WelcomeForm (props) {
       const response = await fetch('http://localhost:5009/storeplanes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: data.user.id, name: planes }),
+        body: JSON.stringify({ user_id: data.user.ID, name: addJumpAircraft }),
       });
       const returnedDATA = await response.json();
       if (response.ok) {
@@ -152,26 +201,81 @@ function WelcomeForm (props) {
     } catch (err) {console.error('client failed storing plane', err);}
   }
 
+  const getDZs = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getdzs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: data.user.ID}),
+      });
+      const returnedData = await response.json();
+      if(response.ok){
+        let foundDZs = [];
+        for (let dz of returnedData.results) {
+          foundDZs.push(dz.name);
+        }
+        setDZs([...foundDZs]);
+      } else{
+        console.error('no DZs imported', response);
+      }
+    } catch (err) {
+      console.error('client failed getting DZs', err);
+    }
+  };
+
+  const storeDZ = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/storedz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: data.user.ID, name: addJumpDZ }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        alert(returnedDATA.message)
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing DZ', err);}
+  };
+
+const giveBasket = async () => {
+      console.log('giving basket to user id: ', data.user.ID)
+    try {
+      const response = await fetch('http://localhost:5009/givebasket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: data.user.ID }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        console.log(returnedDATA.message);
+        data.skip();
+      } else {
+         alert(returnedDATA.message)
+         data.skip();
+      }
+    } catch (err) {console.error('client failed to send basket', err);}
+  };
+
+
   //rendered lists
 
   const planeList = planes.map((plane, index) => 
     <div key={index}>
-    <p style={listStyle}>{plane}</p>
+    <p style={listStyle}>-{plane}</p>
   </div>
   );
 
   const rigList = rigs.map((rig, index) => 
     <div key={index}>
-      <p style={listStyle}>{rig}</p>
+      <p style={listStyle}>-{rig}</p>
     </div>
   );
 
-//   const DZList = DZs.map((DZ, index) => 
-//     <div key={index}>
-//       <p>{DZ}</p>
-//       <label htmlFor={`DZ-${index}`}>{DZ}</label>
-//     </div>
-//   )
+  const DZList = DZs.map((DZ, index) => 
+    <div key={index}>
+      <p style={listStyle}>-{DZ}</p>
+    </div>
+  );
 
 
 
@@ -189,15 +293,15 @@ function WelcomeForm (props) {
     setAircraftPage(!aircraftPage);
   }
 
-//   function handleDzForm() {
-//     setEqpmPage(true);
-//     setAircraftPage(true);
-//     setDzPage(!dzPage);
-//   }
+  function handleDzForm() {
+    setEqpmPage(true);
+    setAircraftPage(true);
+    setDzPage(!dzPage);
+  }
 
-//   function handleAddJumpDZChange (e) {
-//     setAddJumpDZ(e.target.value);
-//   }
+  function handleAddJumpDZChange (e) {
+    setAddJumpDZ(e.target.value);
+  }
 
   function handleAddJumpAircraftChange (e) {
     setAddJumpAircraft(e.target.value);
@@ -207,14 +311,14 @@ function WelcomeForm (props) {
     setAddJumpRig(e.target.value);
   }
 
-//   function handleDZInput (e) {
-//     e.preventDefault()
-//     if (addJumpDZ.trim() !== ""){
-//       storeDZ(addJumpDZ)
-//       getDZs();
-//       setAddJumpDZ("")
-//     }
-//   }
+  function handleDZInput (e) {
+    e.preventDefault()
+    if (addJumpDZ.trim() !== ""){
+      storeDZ(addJumpDZ)
+      getDZs();
+      setAddJumpDZ("")
+    }
+  }
 
   function handleAircraftInput (e) {
     e.preventDefault()
@@ -241,7 +345,8 @@ function WelcomeForm (props) {
 
   useEffect(() => {
                      getRigs();
-                     // getPlanes();
+                     getPlanes();
+                     getDZs();
                   }, []);
 
 
@@ -250,20 +355,25 @@ function WelcomeForm (props) {
 
 
          <div style={rowStyle}>
+            <div style={textSection}><p style={title}>Add your go-tos</p></div>
             <div style={inputSection}>
 
                <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
                <form style ={eqpmPage ? {display: "none"} : {formStyle}}>
-               {rigList}
-               <div>
-                  <input 
-                     type="text" 
-                     placeholder="new rig"
-                     value={addJumpRig}
-                     onChange={handleAddJumpRigChange}
-                  />
-                  <button style={headerButtonStyle} onClick={handleRigInput}>Add Rig</button>
-               </div>
+                  <p style={headerStyle}>
+                    Add Your Rigs 
+                  </p>
+                     {rigList}
+                     <div>
+                        <input 
+                           type="text" 
+                           style={textBox}
+                           placeholder="new rig"
+                           value={addJumpRig}
+                           onChange={handleAddJumpRigChange}
+                        />
+                        <button style={headerButtonInputStyle} onClick={handleRigInput}>Add Rig</button>
+                     </div>
                </form>
             </div>
 
@@ -272,7 +382,7 @@ function WelcomeForm (props) {
                <form style={!aircraftPage ? formStyle : {display: "none"}}>
 
                   <p style={headerStyle}>
-                    select your aircraft 
+                    Add Your Aircraft 
                   </p>
 
                   {planeList}
@@ -280,17 +390,37 @@ function WelcomeForm (props) {
                   <div>
                     <input 
                       type="text" 
+                      style={textBox}
                       placeholder="New Aircraft" 
                       value={addJumpAircraft}
                       onChange={handleAddJumpAircraftChange}
                     /> 
-                    <button style={headerButtonStyle} onClick={handleAircraftInput}>Add Aircraft</button>
+                    <button style={headerButtonInputStyle} onClick={handleAircraftInput}>Add Aircraft</button>
                   </div>
 
                </form>
             </div>
 
+            <div style={inputSection}>
+               <button onClick={handleDzForm}style={headerButtonStyle}>Drop-Zone{!dzPage ? "(hide)" : "(show)"}</button>
+              <form style={!dzPage ? formStyle : {display: "none"}}>
+                <p style={headerStyle}>Add Drop-Zones</p>
+                {DZList}
+                <input 
+                  style={textBox}
+                  id="newDZ"
+                  type="text" 
+                  placeholder="new DZ"
+                  value={addJumpDZ}
+                  onChange={handleAddJumpDZChange}
+                />
+              <button style={headerButtonInputStyle} onClick={handleDZInput}>add DZ</button>
+            </form>
+            </div>
+            <div style={textSection}><button style={subTitle} onClick={giveBasket}>Start Adding Logs</button></div>
+
          </div>
+
 
 
       </div>

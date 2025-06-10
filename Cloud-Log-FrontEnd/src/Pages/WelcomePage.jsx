@@ -1,14 +1,46 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {getPallette} from "../logInputWidget";
 import '../style/loginScreen.css';
 import WelcomeForm from '../components/WelcomeForm';
 import NavForm from '../components/NavForm';
 
 function WelcomePage(props) {
+   //env
 
-   const {user, jumps } = props
+   const {user, jumps, skip } = props
+
 
    const pallette = getPallette();
+
+   //state
+
+   const [basket, setBasket] = useState(false);
+
+   //handlers
+
+   function handleBasket () {
+      setBasket(true)
+   }
+
+   //api
+
+   const checkBasket = async () => {
+      console.log('checking basket for user id... ', user.ID)
+    try {
+      const response = await fetch('http://localhost:5009/checkbasket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        console.log(returnedDATA.message)
+        setBasket(true);
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed to receive basket', err);}
+  };
+
+   //style
 
    const shell = {
       marginTop: "5em",
@@ -21,11 +53,15 @@ function WelcomePage(props) {
    }
 
    const welcome = {
-      margin: "0",
-      fontSize: "1.7em",
+      margin: "auto",
+      fontSize:"min(7vw, 250px)",
       fontFamily: "L1",
-      color: pallette[4]
+      color: pallette[4],
+
    }
+   //useEffct
+
+   useEffect(() => {checkBasket()}, [])
 
    return(
       <div style={shell}>  
@@ -37,7 +73,7 @@ function WelcomePage(props) {
 
          <h3 style={welcome}>Welcome {props.user.name}</h3>
 
-         {props.jumps === 'loading' ? <p>loading user data</p> : props.jumps.length === 0 ?<WelcomeForm user={user}/> : <NavForm />}
+         {props.jumps === 'loading' ? <p>loading user data</p> : props.jumps.length === 0 && !basket ?<WelcomeForm user={user} skip={handleBasket}/> : <NavForm />}
 
          
       </div>

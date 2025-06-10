@@ -251,6 +251,36 @@ app.post('/storedz', (req, res) => {
   )
 });
 
+app.post('/givebasket', (req, res) => {
+  const { user_id } = req.body;
+
+  db.query('INSERT INTO welcome_basket (user_id) VALUES (?)',
+    user_id,
+    (err, results) => {
+      if (err) {
+        console.error('DB error while giving basket data', err);
+        return res.status(500).json({message: 'could not give basket'});
+      }
+      return res.status(200).json({message: 'Success! basket succesfully given', results})
+    }
+  )
+});
+
+app.post('/checkbasket', (req, res) => {
+  const { user_id } = req.body;
+
+  db.query('SELECT * from welcome_basket WHERE user_id=?',
+    user_id,
+    (err, results) => {
+      if (err) {
+        console.error('DB error finding basket data', err);
+        return res.status(500).json({message: 'could not find basket'});
+      }
+      return res.status(200).json({message: 'Success! basket succesfully found', results})
+    }
+  )
+});
+
 //upload jump route
 
 app.post('/storejump', (req, res) => {

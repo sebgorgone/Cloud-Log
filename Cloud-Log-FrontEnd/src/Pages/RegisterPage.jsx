@@ -234,18 +234,18 @@ function RegisterPage () {
 
             <h1 style={inputHeader}>New Password</h1>
             <input 
-               type="text" 
+               type="password" 
                value={newPassword}
                onChange={handlePasswordChange}
                style={inputField} 
-               placeholder="Password" 
+               placeholder="passwod" 
                title="Enter Password">
                  
             </input>
 
             <h1 style={inputHeader}>Confirm Password</h1>
             <input 
-               type="text" 
+               type="password" 
                value={confirmPassword}
                onChange={handleConfirmPasswordChange}
                style={inputField} 

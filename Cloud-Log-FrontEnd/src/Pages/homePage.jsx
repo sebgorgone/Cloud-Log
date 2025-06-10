@@ -298,7 +298,7 @@ function HomePage(props) {
 
 
          <div style={mainPageArea}>
-            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} />: null}
+            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} skip={handleNavToLedg}/>: null}
             {router.fullList ? <FullJumpLedge rst={ () => getJumpHist()} jumps={userJumpHistory} /> : null}
             {router.download ? <DownloadPage user={user}/> : null}
             {router.stats ? <StatsPage jumps={userJumpHistory} user={user}/> : null}
