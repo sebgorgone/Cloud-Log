@@ -250,7 +250,7 @@ const giveBasket = async () => {
         console.log(returnedDATA.message);
         data.skip();
       } else {
-         alert(returnedDATA.message)
+         console.log(returnedDATA.message)
          data.skip();
       }
     } catch (err) {console.error('client failed to send basket', err);}

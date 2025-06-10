@@ -7,7 +7,11 @@ import NavForm from '../components/NavForm';
 function WelcomePage(props) {
    //env
 
-   const {user, jumps, skip } = props
+   const {user} = props
+
+   const logbook = props.skip;
+
+   const statspage = props.stats;
 
 
    const pallette = getPallette();
@@ -73,7 +77,7 @@ function WelcomePage(props) {
 
          <h3 style={welcome}>Welcome {props.user.name}</h3>
 
-         {props.jumps === 'loading' ? <p>loading user data</p> : props.jumps.length === 0 && !basket ?<WelcomeForm user={user} skip={handleBasket}/> : <NavForm />}
+         {props.jumps === 'loading' ? <p>loading user data</p> : props.jumps.length === 0 && !basket ?<WelcomeForm user={user} skip={handleBasket}/> : <NavForm logs={logbook} stats={statspage} />}
 
          
       </div>

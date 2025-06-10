@@ -23,8 +23,8 @@ export function AuthProvider({ children }) {
   const [user, setUser]   = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  
 
-  // On mount, load & validate token
   useEffect(() => {
     console.log('AuthProvider initializing, reading token...');
     const t = localStorage.getItem('token');
@@ -44,7 +44,6 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  // login with { token, user }
   const login = ({ token: t, user: u }) => {
     setUser(u);
     setToken(t);

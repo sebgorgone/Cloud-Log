@@ -33,7 +33,7 @@ function HomePage(props) {
 
 
 
-      //getjumphistory post
+   //getjumphistory post
 
    const [userJumpHistory, setUserJumpHistory] = useState();
    
@@ -80,8 +80,30 @@ function HomePage(props) {
     })
    }
 
+   function callLedg () {
+      setRouter({
+      welcome: false,
+      fullList: true,
+      searchedList: false,
+      download: false,
+      stats: false,
+      settings: false,
+    })
+   }
+
    function handleNavToStats (e) {
       e.preventDefault();
+      setRouter({
+      welcome: false,
+      fullList: false,
+      searchedList: false,
+      download: false,
+      stats: true,
+      settings: false,
+    })
+   }
+
+   function callStats () {
       setRouter({
       welcome: false,
       fullList: false,
@@ -263,15 +285,6 @@ function HomePage(props) {
                >
                      <img style={{width: '1.8em', height: '1.8em', padding: ".3em"}} src="/list-svgrepo-com.svg" />
                </button>
-               
-               
-               <button 
-                  title='Download Logbook Data'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "3vh", background: pallette[0]}}
-                  onClick={handleNavToDownload}
-               >
-                     <img style={{width: '2em', height: '2em', padding: ".2em"}} src="/download-file-1-svgrepo-com(1).svg" />
-               </button>
 
 
                <button 
@@ -280,6 +293,15 @@ function HomePage(props) {
                   onClick={handleNavToStats}
                >
                      <img style={{width: '2em', height: '2em', padding: ".3em"}} src="/stats-svgrepo-com(2).svg" />
+               </button>
+               
+               
+               <button 
+                  title='Download Logbook Data'
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "3vh", background: pallette[0]}}
+                  onClick={handleNavToDownload}
+               >
+                     <img style={{width: '2em', height: '2em', padding: ".2em"}} src="/download-file-1-svgrepo-com(1).svg" />
                </button>
 
 
@@ -298,7 +320,7 @@ function HomePage(props) {
 
 
          <div style={mainPageArea}>
-            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} skip={handleNavToLedg}/>: null}
+            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} skip={callLedg} stats={callStats}/>: null}
             {router.fullList ? <FullJumpLedge rst={ () => getJumpHist()} jumps={userJumpHistory} /> : null}
             {router.download ? <DownloadPage user={user}/> : null}
             {router.stats ? <StatsPage jumps={userJumpHistory} user={user}/> : null}
