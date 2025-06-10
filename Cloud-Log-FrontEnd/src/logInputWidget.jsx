@@ -1325,8 +1325,8 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
           <div style={inputSection}>
               <button onClick={handleDzForm}style={headerButtonStyle}>Drop-Zone{!dzPage ? "(hide)" : "(show)"}</button>
               <form style={!dzPage ? formStyle : {display: "none"}}>
+                <p style={headerStyle}>Select Drop-Zone</p>
                 {DZList}
-                <p style={headerStyle}>Add Drop-Zone</p>
                 <input 
                   id="newDZ"
                   type="text" 
@@ -1352,9 +1352,6 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
             {planeList}
 
             <div>
-              <p style={headerStyle}>
-                add aircraft
-              </p>
               <input 
                 type="text" 
                 placeholder="New Aircraft" 
@@ -1371,10 +1368,10 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
             {/* equipment */}
           <div style={inputSection}>
             <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
-          <form style ={eqpmPage ? {display: "none"} : {display: "block"}}>
+          <form style ={!eqpmPage ? formStyle : {display: "none"}}>
+            <p style={headerStyle}>select your rig </p>
             {rigList}
             <div>
-              <h3 style={headerStyle}>add rig</h3>
               <input 
                 type="text" 
                 placeholder="new rig"

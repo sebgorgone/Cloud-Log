@@ -8,8 +8,6 @@ function WelcomePage(props) {
 
    const {user, jumps } = props
 
-   console.log(user, jumps)
-
    const pallette = getPallette();
 
    const shell = {
@@ -39,7 +37,7 @@ function WelcomePage(props) {
 
          <h3 style={welcome}>Welcome {props.user.name}</h3>
 
-         {props.jumps === 'loading' ? <p>loading user data</p> : props.jumps.length === 0 ?<WelcomeForm /> : <NavForm />}
+         {props.jumps === 'loading' ? <p>loading user data</p> : props.jumps.length === 0 ?<WelcomeForm user={user}/> : <NavForm />}
 
          
       </div>
