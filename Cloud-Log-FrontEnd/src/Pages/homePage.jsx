@@ -6,6 +6,7 @@ import WelcomePage from './WelcomePage.jsx'
 import StatsPage from './StatsPage.jsx'
 import DownloadPage from './DownloadPage.jsx'
 import SettingsPage from './SettingsPage.jsx'
+import SearchedList from './SearchedList.jsx'
 
 
 function HomePage(props) {
@@ -31,11 +32,17 @@ function HomePage(props) {
       settings: false,
     })
 
+   const [wcField, setWcField] = useState();
 
+   const [wildCard, setWildCard] = useState();
+
+   const [flag, setFlag]= useState(false);
 
    //getjumphistory post
 
    const [userJumpHistory, setUserJumpHistory] = useState();
+
+   const [userJumpCount, setUserJumpCount] = useState();
    
 
    const getJumpHist = async () => { 
@@ -62,8 +69,6 @@ function HomePage(props) {
          console.error('client failed to load user jumps')
       }
    }
-
-
    
 
    //handlers
@@ -79,7 +84,6 @@ function HomePage(props) {
       settings: false,
     })
    }
-
    function callLedg () {
       setRouter({
       welcome: false,
@@ -90,7 +94,6 @@ function HomePage(props) {
       settings: false,
     })
    }
-
    function handleNavToStats (e) {
       e.preventDefault();
       setRouter({
@@ -102,7 +105,6 @@ function HomePage(props) {
       settings: false,
     })
    }
-
    function callStats () {
       setRouter({
       welcome: false,
@@ -113,7 +115,6 @@ function HomePage(props) {
       settings: false,
     })
    }
-
    function handleNavToDownload (e) {
       e.preventDefault();
       setRouter({
@@ -125,7 +126,6 @@ function HomePage(props) {
       settings: false,
     })
    }
-
    function handleNavToSettings (e) {
       e.preventDefault();
       setRouter({
@@ -137,11 +137,29 @@ function HomePage(props) {
       settings: true,
     });
    }
-
    function handleLogout (e) {
       e.preventDefault();
       logout();
+    }
+    function handleSearch(e) {
 
+      setUserJumpHistory(null)
+      e.preventDefault();
+      setWildCard(wcField);
+      setRouter({
+         welcome: false,
+         fullList: false,
+         searchedList: true,
+         download: false,
+         stats: false,
+         settings: false,
+      })
+
+      setFlag(prev => !prev);
+   
+    }
+    function updateWildCardField (e) {
+      setWcField(e.target.value)
     }
 
 
@@ -160,7 +178,7 @@ function HomePage(props) {
       display: "flex",
       background: pallette[4],
       borderBottom: "solid .25em",
-      borderColor: pallette[3]
+      borderColor: pallette[3],
    }
    const nameStyle= {
       color: pallette[0],
@@ -213,15 +231,12 @@ function HomePage(props) {
       borderRight: "solid .25em",
       borderColor: pallette[3]
    }
-
-
    const mainPageArea = {
       margin: "0", 
       height: "100%",
       overflowX: "hidden",
       background: pallette[2]
    }
-
    const logOutButton = {
       position: "fixed",
       fontFamily: "L1",
@@ -239,8 +254,12 @@ function HomePage(props) {
 
 
    useEffect(() => {
-      getJumpHist();
+      !router.searchedList && getJumpHist();
    }, [router]);
+
+   useEffect(() => {
+      userJumpHistory && setUserJumpCount(userJumpHistory.length)
+   }, [userJumpHistory])
 
 
    return(
@@ -251,16 +270,18 @@ function HomePage(props) {
 
             <div >
                <p style={nameStyle}>{user.name.length > 20 ? user.name.slice(0, 20) : user.name }!</p>
-               <p style={jumpNumStyle}>{Array.isArray(userJumpHistory) ? userJumpHistory.length : 'Loading...'} Jumps</p>
+               <p style={jumpNumStyle}>{userJumpCount ? userJumpCount : 'Loading...'} Jumps</p>
             </div>
 
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <form onSubmit={handleSearch} style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <input
-                type="text"
-                placeholder="🔎Search"
-                style={filterInputStyle}
+                 value={wcField}
+                 onChange={updateWildCardField}
+                 type="text"
+                 placeholder="🔎Search"
+                 style={filterInputStyle}
               />
-            </div>
+            </form>
 
             <div style={{ display: 'flex', alignItems: 'center', marginRight: "5vw"}}>
               <button style={filterButtonStyle}>Filters</button>
@@ -320,11 +341,12 @@ function HomePage(props) {
 
 
          <div style={mainPageArea}>
-            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} skip={callLedg} stats={callStats}/>: null}
+            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} skip={callLedg} stats={callStats} />: null}
             {router.fullList ? <FullJumpLedge rst={ () => getJumpHist()} jumps={userJumpHistory} /> : null}
-            {router.download ? <DownloadPage user={user}/> : null}
-            {router.stats ? <StatsPage jumps={userJumpHistory} user={user}/> : null}
-            {router.settings ? <SettingsPage user={user}/> : null}
+            {router.download ? <DownloadPage user={user} /> : null}
+            {router.stats ? <StatsPage jumps={userJumpHistory} user={user} /> : null}
+            {router.settings ? <SettingsPage user={user} /> : null}
+            {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag}/> : null}
          </div>
 
 

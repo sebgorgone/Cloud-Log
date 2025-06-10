@@ -29,7 +29,6 @@ function WelcomePage(props) {
    //api
 
    const checkBasket = async () => {
-      console.log('checking basket for user id... ', user.ID)
     try {
       const response = await fetch('http://localhost:5009/checkbasket', {
         method: 'POST',
@@ -38,7 +37,6 @@ function WelcomePage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        console.log(returnedDATA.message, returnedDATA.results)
         returnedDATA.results.length !== 0 && setBasket(true);
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed to receive basket', err);}

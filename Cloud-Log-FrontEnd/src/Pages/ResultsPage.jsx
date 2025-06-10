@@ -1,56 +1,17 @@
 import JumpWidget from '../components/JumpWidget';
 import { useEffect, useState } from 'react'
-import LogInputWidget from '../logInputWidget'
-import {getPallette} from "../logInputWidget"
 
 
 
-function FullJumpLedg (props) {
-   console.log('in the jump ledger')
+function ResultsPage (props) {
 
-   const pallette = getPallette()
-
-   const [showAddWidget, setShowAddWidget]= useState(false);
-
-      //handlers
-   function toggleWidgetDropdown (e) {
-      e.preventDefault()
-      setShowAddWidget(!showAddWidget);
-      props.rst();
-   }
-
-   //styles
-
-      const newJumpButton= {
-         margin: ".7em",
-         display: "inline-block",
-         alignItems: "center",
-         justifyContent: "center",
-         color: pallette[0],
-         background: pallette[3],
-         border: "none"
-   }
-
-      const widgetMenu = {
-      background: pallette[1],
-      borderBottom: "solid .2em",
-      borderColor: pallette[3],
-      marginLeft: "2em",
-      width: "100%",
-      marginTop: "3.1em",
-      padding: "1em",
-      paddingTop: "1.6em",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      overflowX: "hidden",
-   }
+   console.log("results page sees", props.jumps)
    
+   //state
 
    const [jumps, setJumps] = useState(null);
 
-
+   //pdf
    function unPackPdf(obj) {
   const base64Bytes = new Uint8Array(obj.data);
   const b64String = new TextDecoder().decode(base64Bytes);
@@ -66,7 +27,7 @@ function FullJumpLedg (props) {
   const pdfBlob = new Blob([pdfUint8], { type: 'application/pdf' });
   return pdfBlob;
    }
-
+   //tags
    const [tagsArray, setTags] = useState(null)
 
    function getTags (jumpsArray) {
@@ -81,7 +42,7 @@ function FullJumpLedg (props) {
 }
 
 const tagsRoute = async (array) => { 
-   // console.log('async func data sees: ', array);
+   console.log('async func data sees: ', array);
       try {
          const response = await fetch('http://localhost:5009/gettags', {
             method: 'POST',
@@ -93,7 +54,7 @@ const tagsRoute = async (array) => {
             const flattenedTags = data.results.flatMap(r =>
               r.tags.map(inner => ({ name: inner.name, cat: inner.cat, jump_ref: r.jump_ref }))
             );
-            // console.log('Flattened tagsArray:', flattenedTags);
+            console.log('Flattened tagsArray:', flattenedTags);
             setTags(flattenedTags);
             
          }
@@ -131,33 +92,15 @@ const tagsRoute = async (array) => {
    return (
       <div>
 
-         <div style={widgetMenu}>
-            <div style={showAddWidget ? {display: "block", width: "80%", marginLeft: "2em"} : {display: "none"}}>
-               <LogInputWidget 
-                  numOfJumps={Array.isArray(props.jumps) ? props.jumps.length : null}
-               />
-            </div>
-            <br />
-            <div>
-               <br />
-               <button 
-                  title={!showAddWidget ? "Add New Jumps" : "Hide 'Add Jump' menu"}
-                  style={newJumpButton} onClick={toggleWidgetDropdown}>
-                     {!showAddWidget ? 'Add New Jumps' : 'Hide Add Menu'}
-               </button>
-            </div>
-            
-         </div>
 
-
-         {!showAddWidget && Array.isArray(jumps) ? jumps.map((jump, idx) => (
+         {Array.isArray(jumps) ? jumps.map((jump, idx) => (
             <div key={idx}
                style={{marginBottom: "2.5vh", marginTop: "1vh"}}
             >
-               <JumpWidget 
+               {Array.isArray(jumps) && <JumpWidget 
                   jumpNum={jump.jump_num}
                   jumpDate={jump.jump_date.slice(0,10)}
-                  dz={jump.dz}
+                  dz={jump.dropzone}
                   aircraft={jump.aircraft}
                   rig={jump.equipment}
                   exitAlt={jump.alt}
@@ -167,11 +110,11 @@ const tagsRoute = async (array) => {
                   jump_id={jump.jump_id}
                   tags={getThisJumpsTags(jump.jump_id)}
                   context={"gathered"}
-               /> 
+               /> }
             </div>
-         )) : <p style={{fontFamily: "L1", textAlign: "center"}}>{!showAddWidget && 'loading...'}</p>}
+         )) : <p style={{fontFamily: "L1", textAlign: "center"}}>{'loading...'}</p>}
       </div>
    );
 }
 
-export default FullJumpLedg
+export default ResultsPage

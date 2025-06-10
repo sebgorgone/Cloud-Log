@@ -39,7 +39,7 @@ function WelcomeForm (props) {
     background: pallette[2],
     borderRadius: "1em",
     padding: "0",
-    textAlign: "center"
+    textAlign: "center",
    };
 
    const headerButtonInputStyle = {

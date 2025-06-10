@@ -8,7 +8,7 @@ function LogInputWidget(props) {
 
   //get user data
   const userData = useAuth();
-  // console.log('Fetched User Data: ',userData.user.id)
+  const nextJumpNum = props.numOfJumps + 1
 
 
   //state hooks vv
@@ -18,11 +18,7 @@ function LogInputWidget(props) {
 
   const [rigs, setRigs] = useState([]);
 
-  const [DZs, setDZs] = useState(['CPI', 'The Ranch'])
-
-
-//default states
-  const [defaultRig, setDefaultRig] = useState(null);
+  const [DZs, setDZs] = useState([])
 
 //add States
   const [addJumpDZ, setAddJumpDZ] = useState(null);
@@ -59,7 +55,7 @@ function LogInputWidget(props) {
 
 
 //newjump variables
-  const [newJumpNum, setNewJumpNum] = useState(null);
+  const [newJumpNum, setNewJumpNum] = useState(nextJumpNum);
 
   const [newJumpDate, setNewJumpDate] = useState(null);
 

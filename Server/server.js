@@ -421,6 +421,61 @@ app.post('/askdbpos', (req, res) => {
   );
 });
 
+//search
+
+app.post('/search', (req, res) => {
+  const { wildCard: searchTerm, user_id } = req.body;
+  const term     = searchTerm.trim();
+  const likeTerm = `%${term}%`;
+
+  if (!user_id) {
+    return res
+      .status(400)
+      .json({ message: 'user_id required' });
+  }
+
+  const sql = `
+    SELECT DISTINCT
+      j.jump_id, j.user_id, j.jump_num, j.jump_date,
+      j.dz AS dropzone, j.equipment, j.notes, j.pdfSig, j.alt, j.t, j.aircraft
+    FROM jumps AS j
+    LEFT JOIN tags AS t
+      ON j.jump_id = t.jump_ref
+    WHERE j.user_id = ?
+      AND (
+        j.jump_num = CAST(? AS UNSIGNED)
+        OR YEAR(j.jump_date) = CAST(? AS UNSIGNED)
+        OR j.dz        LIKE ?
+        OR j.equipment LIKE ?
+        OR j.notes     LIKE ?
+        OR t.name      LIKE ?
+      )
+    ORDER BY j.jump_num DESC
+    LIMIT 30;
+  `;
+
+  db.query(
+    sql,
+    [ user_id, term, term, likeTerm, likeTerm, likeTerm, likeTerm ],
+    (err, results) => {
+      if (err) {
+        console.error('DB error fetching search results', err);
+        return res
+          .status(500)
+          .json({ message: 'could not retrieve search results' });
+      }
+      if (results.length === 0) {
+        return res
+          .status(200)
+          .json({ message: 'no results', results, ok: true });
+      }
+      return res
+        .status(200)
+        .json({ message: 'loaded jumps', results, ok: true });
+    }
+  );
+});
+
  app.listen(port, ()=> {
    console.log('listening')
  }); 

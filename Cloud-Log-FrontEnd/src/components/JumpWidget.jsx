@@ -4,9 +4,6 @@ import { useState } from 'react';
 
 function JumpWidget(props) {
 
-   if (props.context === "gathered") {
-   }
-
 
 
    const pallette = getPallette();
@@ -182,7 +179,7 @@ function JumpWidget(props) {
       <div style={showSig ? row : {display: "none"}}>
          {props.signature && props.signature.type === 'application/pdf' ? (
             <object
-               data={URL.createObjectURL(props.signature)}
+               data={`${URL.createObjectURL(props.signature)}#zoom=50`}
                type="application/pdf"
                width="100%"
                height="600px"

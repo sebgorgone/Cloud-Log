@@ -44,7 +44,7 @@ function NavForm(props) {
       borderRadius: "1.5em",
       border: "none",
       padding: ".3em",
-      paddingBottom: ".1em"
+      paddingBottom: ".3em"
    }
 
    const rowStyle = {
