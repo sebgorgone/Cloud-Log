@@ -34,8 +34,8 @@ function WelcomePage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        console.log(returnedDATA.message)
-        setBasket(true);
+        console.log(returnedDATA.message, returnedDATA.results)
+        returnedDATA.results.length !== 0 && setBasket(true);
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed to receive basket', err);}
   };

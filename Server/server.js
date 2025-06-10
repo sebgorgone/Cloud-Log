@@ -261,7 +261,11 @@ app.post('/givebasket', (req, res) => {
         console.error('DB error while giving basket data', err);
         return res.status(500).json({message: 'could not give basket'});
       }
-      return res.status(200).json({message: 'Success! basket succesfully given', results})
+      if(results.length === 0){
+        return res.status(404).json({message: 'no basket yet'})
+      }
+      console.log('got basket for: ', results)
+      return res.status(200).json({message: 'Success! basket succesfully given', results, ok: true})
     }
   )
 });
