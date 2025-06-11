@@ -8,7 +8,6 @@ function LogInputWidget(props) {
 
   //get user data
   const userData = useAuth();
-  const nextJumpNum = props.numOfJumps + 1
 
 
   //state hooks vv
@@ -55,7 +54,7 @@ function LogInputWidget(props) {
 
 
 //newjump variables
-  const [newJumpNum, setNewJumpNum] = useState(nextJumpNum);
+  const [newJumpNum, setNewJumpNum] = useState(null);
 
   const [newJumpDate, setNewJumpDate] = useState(null);
 
@@ -1161,12 +1160,6 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     if(responseData.ok){
       alert(responseData.message);
       setNewJumpNum('');
-      setNewJumpDate('');
-      setNewJumpDZ(null);
-      setNewJumpAircraft(null);
-      setNewJumpRig(null);
-      setNewJumpAlt('');
-      setNewJumpDur('');
       setNewJumpCom('');
       setNewJumpSigUpload(null);
       setNewJumpTagList([]);

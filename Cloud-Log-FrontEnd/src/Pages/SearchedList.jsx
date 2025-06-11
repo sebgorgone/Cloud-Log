@@ -13,17 +13,19 @@ function SearchedList(props) {
 
    //state
 
+   const [page, setPage] = useState(0); 
+
    const [results, setResults] = useState('loading...');
 
    console.log('results: ', results);
 
-   const getResults = async () => { 
+   const getResults = async (page) => { 
       console.log('getting search results')
       try {
          const response = await fetch('http://localhost:5009/search', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({user_id: user.ID, wildCard: wildCard}),
+            body: JSON.stringify({user_id: user.ID, wildCard: wildCard, offset: page}),
          });
          const data = await response.json();
          if(data.ok){
@@ -74,18 +76,29 @@ function SearchedList(props) {
 
    }
 
+   const pageNav={
+      display: "flex",
+      justifyContent: "center",
+   }
+
    //useEffect
    useEffect(() => {
-      getResults();
+      getResults(page);
    }, [props.flag]);
    return(
       <div style={shell}>
 
 
-         {wildCard !== "" ? <p style={headerStyle}>showing results for {props.wildCard}</p> : <p style={headerStyle}>enter search</p>}
+         {wildCard !== "" ? <p style={headerStyle}>showing results for {props.wildCard}</p> : <p style={headerStyle}>enter searchd</p>}
          {results.length > 0 && <p style={textStyle}>results: {results.length}</p>}
 
          {Array.isArray(results) ? results.length > 0 ? <ResultsPage jumps={results} /> : <p style={textStyle}>no results</p>: <p style={textStyle}>loading</p>}
+
+         <div style ={pageNav}>
+            <p>page {page + 1}</p>
+         </div>
+
+
       </div>
    )
 

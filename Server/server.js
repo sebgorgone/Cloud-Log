@@ -424,7 +424,7 @@ app.post('/askdbpos', (req, res) => {
 //search
 
 app.post('/search', (req, res) => {
-  const { wildCard: searchTerm, user_id } = req.body;
+  const { wildCard: searchTerm, user_id, offset } = req.body;
   const term     = searchTerm.trim();
   const likeTerm = `%${term}%`;
 
@@ -451,12 +451,13 @@ app.post('/search', (req, res) => {
         OR t.name      LIKE ?
       )
     ORDER BY j.jump_num DESC
-    LIMIT 30;
+    LIMIT 30
+    OFFSET ?;
   `;
 
   db.query(
     sql,
-    [ user_id, term, term, likeTerm, likeTerm, likeTerm, likeTerm ],
+    [ user_id, term, term, likeTerm, likeTerm, likeTerm, likeTerm, offset ],
     (err, results) => {
       if (err) {
         console.error('DB error fetching search results', err);
