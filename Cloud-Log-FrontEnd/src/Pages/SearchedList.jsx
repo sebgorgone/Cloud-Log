@@ -25,7 +25,7 @@ function SearchedList(props) {
          const response = await fetch('http://localhost:5009/search', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({user_id: user.ID, wildCard: wildCard, offset: page}),
+            body: JSON.stringify({user_id: user.ID, wildCard: wildCard, offset: page * 30}),
          });
          const data = await response.json();
          if(data.ok){
@@ -77,12 +77,28 @@ function SearchedList(props) {
    }
 
    const pageNav={
+      paddingLeft: "6.5em",
       display: "flex",
       justifyContent: "center",
+      alignItems: "center"
+   }
+
+   const pageButton = {
+      fontSize: ".5em",
+      marginLeft: ".5em",
+      marginLeft: ".5em",
+      fontFamily: "L1",
+      height: "fit-content",
+   }
+
+   const pageNum = {
+      fontFamily: "L1",
+      height: "fit-content",
    }
 
    //useEffect
    useEffect(() => {
+      setPage(0);
       getResults(page);
    }, [props.flag]);
    return(
@@ -95,7 +111,9 @@ function SearchedList(props) {
          {Array.isArray(results) ? results.length > 0 ? <ResultsPage jumps={results} /> : <p style={textStyle}>no results</p>: <p style={textStyle}>loading</p>}
 
          <div style ={pageNav}>
-            <p>page {page + 1}</p>
+            {page > 0 && <button>{page}</button>}
+            {results.length === 30 && <p style={pageNum}>page {page + 1}</p>}
+            {results.length === 30 && <button style={pageButton}>page {page + 2}</button>}
          </div>
 
 
