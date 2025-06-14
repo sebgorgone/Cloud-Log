@@ -19,13 +19,15 @@ function SearchedList(props) {
 
    console.log('results: ', results);
 
-   const getResults = async (page) => { 
-      console.log('getting search results')
+   const getResults = async () => { 
+      console.log('getting search results');
+      const Offset = page * 30;
+      setResults([])
       try {
          const response = await fetch('http://localhost:5009/search', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({user_id: user.ID, wildCard: wildCard, offset: page * 30}),
+            body: JSON.stringify({user_id: user.ID, wildCard: wildCard, offset: Offset}),
          });
          const data = await response.json();
          if(data.ok){
@@ -44,6 +46,12 @@ function SearchedList(props) {
       } catch (err) {
          console.error('client failed to load user jumps')
       }
+   }
+
+   //handler 
+
+   function handleNextPage () {
+      setPage(prev => prev + 1);
    }
 
    //style
@@ -99,8 +107,12 @@ function SearchedList(props) {
    //useEffect
    useEffect(() => {
       setPage(0);
-      getResults(page);
+      getResults();
    }, [props.flag]);
+
+   useEffect(() => {
+      getResults();
+   }, [page]);
    return(
       <div style={shell}>
 
@@ -113,7 +125,7 @@ function SearchedList(props) {
          <div style ={pageNav}>
             {page > 0 && <button>{page}</button>}
             {results.length === 30 && <p style={pageNum}>page {page + 1}</p>}
-            {results.length === 30 && <button style={pageButton}>page {page + 2}</button>}
+            {results.length === 30 && <button style={pageButton} onClick={handleNextPage}>page {page + 2}</button>}
          </div>
 
 
