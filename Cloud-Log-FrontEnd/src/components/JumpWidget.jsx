@@ -176,7 +176,7 @@ function JumpWidget(props) {
 
 
       <div style={showSig ? line : {display : "none"}}></div>
-      <div style={showSig ? row : {display: "none"}}>
+      {showSig && <div style={row}>
          {props.signature && props.signature.type === 'application/pdf' ? (
             <object
                data={`${URL.createObjectURL(props.signature)}#zoom=50`}
@@ -189,7 +189,7 @@ function JumpWidget(props) {
          ) : (
             <p>No PDF to display</p>
          )}
-      </div>
+      </div>}
       
 
    </div>)
