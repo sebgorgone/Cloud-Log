@@ -12,6 +12,10 @@ function FullJumpLedg (props) {
 
    const [showAddWidget, setShowAddWidget]= useState(false);
 
+   const [page, setPage] = useState(0);
+
+   const [pageJumps, setPageJumps] = useState();
+
       //handlers
    function toggleWidgetDropdown (e) {
       e.preventDefault()
@@ -19,16 +23,35 @@ function FullJumpLedg (props) {
       props.rst();
    }
 
+   function handlePage() {
+      setPageJumps(null);
+      setTags(null);
+
+      console.log('page: ',page)
+      Array.isArray(props.jumps) && setPageJumps(props.jumps.slice(page * 30, (page * 30) + 30));
+      console.log('show jumps: ', pageJumps)
+   }
+
+   function handleNextPage () {
+      setPage(prev => prev + 1);
+
+   }
+
+   function handlePrevPage () {
+      setPage(prev => prev - 1);
+
+   }
+
    //styles
 
-      const newJumpButton= {
-         margin: ".7em",
-         display: "inline-block",
-         alignItems: "center",
-         justifyContent: "center",
-         color: pallette[0],
-         background: pallette[3],
-         border: "none"
+   const newJumpButton= {
+      margin: ".7em",
+      display: "inline-block",
+      alignItems: "center",
+      justifyContent: "center",
+      color: pallette[0],
+      background: pallette[3],
+      border: "none"
    }
 
       const widgetMenu = {
@@ -46,9 +69,26 @@ function FullJumpLedg (props) {
       alignItems: "center",
       overflowX: "hidden",
    }
-   
 
-   const [jumps, setJumps] = useState(null);
+   const pageNav={
+      paddingLeft: "6.5em",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+   }
+
+   const pageButton = {
+      fontSize: ".5em",
+      marginLeft: ".5em",
+      marginLeft: ".5em",
+      fontFamily: "L1",
+      height: "fit-content",
+   }
+
+   const pageNum = {
+      fontFamily: "L1",
+      height: "fit-content",
+   }
 
 
    function unPackPdf(obj) {
@@ -81,7 +121,8 @@ function FullJumpLedg (props) {
 }
 
 const tagsRoute = async (array) => { 
-   // console.log('async func data sees: ', array);
+   console.log('async func data sees: ', array);
+   setTags(null);
       try {
          const response = await fetch('http://localhost:5009/gettags', {
             method: 'POST',
@@ -122,10 +163,14 @@ const tagsRoute = async (array) => {
    }
 
    //useEffect 
+
    useEffect(() => {
-      Array.isArray(jumps) && getTags(jumps);
-      setJumps(props.jumps);
-   }, [props.jumps]); 
+      handlePage();
+   }, [page])
+
+   useEffect(() => {
+      Array.isArray(pageJumps) && getTags(pageJumps);
+   }, [pageJumps])
    
 
    return (
@@ -150,7 +195,7 @@ const tagsRoute = async (array) => {
          </div>
 
 
-         {!showAddWidget && Array.isArray(jumps) ? jumps.map((jump, idx) => (
+         {!showAddWidget && Array.isArray(pageJumps) ? pageJumps.map((jump, idx) => (
             <div key={idx}
                style={{marginBottom: "2.5vh", marginTop: "1vh"}}
             >
@@ -170,6 +215,12 @@ const tagsRoute = async (array) => {
                /> 
             </div>
          )) : <p style={{fontFamily: "L1", textAlign: "center"}}>{!showAddWidget && 'loading...'}</p>}
+
+         <div style ={pageNav}>
+            {page > 0 && <button style={pageButton} onClick={handlePrevPage}>Page {page}</button>}
+            <p style={pageNum}>page {page + 1}</p>
+            {page < (props.jump_num / 30) - 1 && <button style={pageButton} onClick={handleNextPage}>page {page + 2}</button>}
+         </div>
       </div>
    );
 }
