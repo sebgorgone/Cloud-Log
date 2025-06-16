@@ -6,7 +6,9 @@ import {getPallette} from "../logInputWidget"
 
 
 function FullJumpLedg (props) {
-   console.log('in the jump ledger')
+
+
+   console.log('in the jump ledger', props.jumps)
 
    const pallette = getPallette()
 
@@ -27,9 +29,7 @@ function FullJumpLedg (props) {
       setPageJumps(null);
       setTags(null);
 
-      console.log('page: ',page)
       Array.isArray(props.jumps) && setPageJumps(props.jumps.slice(page * 30, (page * 30) + 30));
-      console.log('show jumps: ', pageJumps)
    }
 
    function handleNextPage () {
@@ -40,6 +40,12 @@ function FullJumpLedg (props) {
    function handlePrevPage () {
       setPage(prev => prev - 1);
 
+   }
+
+   function handleRetry (e) {
+      e.preventDefault();
+      props.rst();
+      handlePage();
    }
 
    //styles
@@ -73,20 +79,39 @@ function FullJumpLedg (props) {
    const pageNav={
       paddingLeft: "6.5em",
       display: "flex",
-      justifyContent: "center",
+      justifyContent: "space-around",
       alignItems: "center"
    }
 
-   const pageButton = {
-      fontSize: ".5em",
+   const pageButtonLeft = {
+      color: pallette[1],
+      background: pallette[4],
+      borderRadius: "1em",
+      border: "none",
+      fontSize: ".8em",
       marginLeft: ".5em",
-      marginLeft: ".5em",
+      fontFamily: "L1",
+      height: "fit-content",
+   }
+
+   const pageButtonRight = {
+      color: pallette[1],
+      background: pallette[4],
+      borderRadius: "1em",
+      border: "none",
+      fontSize: ".8em",
+      marginLeft: "1em",
       fontFamily: "L1",
       height: "fit-content",
    }
 
    const pageNum = {
       fontFamily: "L1",
+      fontSize: "1.75em",
+      padding: ".3em",
+      borderRadius: ".3em",
+      color: pallette[4],
+      background: pallette[0],
       height: "fit-content",
    }
 
@@ -121,7 +146,7 @@ function FullJumpLedg (props) {
 }
 
 const tagsRoute = async (array) => { 
-   console.log('async func data sees: ', array);
+   // console.log('async func data sees: ', array);
    setTags(null);
       try {
          const response = await fetch('http://localhost:5009/gettags', {
@@ -194,6 +219,12 @@ const tagsRoute = async (array) => {
             
          </div>
 
+         {!showAddWidget && Array.isArray(pageJumps)  && <div style ={pageNav}>
+            {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}
+            {pageJumps.length > 0 ? <p style={pageNum}>Page {page + 1}/{Math.floor((props.jump_num / 30) + 1)}</p> : <p style={pageNum}>No Jumps Logged Yet</p>}
+            {page < Math.floor(props.jump_num / 30) && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
+         </div>}
+
 
          {!showAddWidget && Array.isArray(pageJumps) ? pageJumps.map((jump, idx) => (
             <div key={idx}
@@ -214,13 +245,18 @@ const tagsRoute = async (array) => {
                   context={"gathered"}
                /> 
             </div>
-         )) : <p style={{fontFamily: "L1", textAlign: "center"}}>{!showAddWidget && 'loading...'}</p>}
+            )) :  <div style={{display: "flex", justifyContent: "center", verticleAlign: "center"}}>
+                  <p style={{fontFamily: "L1"}}>
+                     {!showAddWidget && 'loading...'}
+                  </p>
+                  <button onClick={handleRetry} style={{fontFamily: "L1", height: "2em", margin: "1em"}}>retry</button>
+                  </div>}
 
-         <div style ={pageNav}>
-            {page > 0 && <button style={pageButton} onClick={handlePrevPage}>Page {page}</button>}
-            <p style={pageNum}>page {page + 1}</p>
-            {page < (props.jump_num / 30) - 1 && <button style={pageButton} onClick={handleNextPage}>page {page + 2}</button>}
-         </div>
+         {!showAddWidget && Array.isArray(pageJumps) && <div style ={pageNav}>
+            {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}
+            <p style={pageNum}>Page {page + 1}/{Math.floor((props.jump_num / 30) + 1)}</p>
+            {page < Math.floor(props.jump_num / 30) && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
+         </div>}
       </div>
    );
 }

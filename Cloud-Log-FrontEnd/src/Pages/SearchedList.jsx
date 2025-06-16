@@ -5,13 +5,14 @@ import { getPallette } from '../logInputWidget';
 
 function SearchedList(props) {
    //environment
-   console.log('in the Search Results', '  Search Term: ', props.wildCard, props.user);
    const user = props.user;
    const wildCard = props.wildCard;
 
    const pallette = getPallette();
 
    //state
+
+   const [flag, setFlag] = useState(false);
 
    const [page, setPage] = useState(0); 
 
@@ -54,6 +55,10 @@ function SearchedList(props) {
       setPage(prev => prev + 1);
    }
 
+   function handlePrevPage () {
+      setPage(prev => prev - 1);
+   }
+
    //style
 
    const shell = {
@@ -85,22 +90,41 @@ function SearchedList(props) {
    }
 
    const pageNav={
-      paddingLeft: "6.5em",
+      padding: "0",
       display: "flex",
-      justifyContent: "center",
+      justifyContent: "space-around",
       alignItems: "center"
    }
 
-   const pageButton = {
-      fontSize: ".5em",
+   const pageButtonLeft = {
+      color: pallette[1],
+      background: pallette[4],
+      borderRadius: "1em",
+      border: "none",
+      fontSize: ".8em",
       marginLeft: ".5em",
-      marginLeft: ".5em",
+      fontFamily: "L1",
+      height: "fit-content",
+   }
+
+   const pageButtonRight = {
+      color: pallette[1],
+      background: pallette[4],
+      borderRadius: "1em",
+      border: "none",
+      fontSize: ".8em",
+      marginLeft: "1em",
       fontFamily: "L1",
       height: "fit-content",
    }
 
    const pageNum = {
       fontFamily: "L1",
+      fontSize: "1.75em",
+      padding: ".3em",
+      borderRadius: ".3em",
+      color: pallette[0],
+      // background: pallette[0],
       height: "fit-content",
    }
 
@@ -111,8 +135,12 @@ function SearchedList(props) {
    }, [props.flag]);
 
    useEffect(() => {
+      setFlag(!flag)
       getResults();
    }, [page]);
+
+   console.log('in the Search Results', '  Search Term: ', props.wildCard, props.user, 'page: ', page);
+
    return(
       <div style={shell}>
 
@@ -120,13 +148,19 @@ function SearchedList(props) {
          {wildCard !== "" ? <p style={headerStyle}>showing results for {props.wildCard}</p> : <p style={headerStyle}>enter searchd</p>}
          {results.length > 0 && <p style={textStyle}>results: {results.length}</p>}
 
-         {Array.isArray(results) ? results.length > 0 ? <ResultsPage jumps={results} /> : <p style={textStyle}>no results</p>: <p style={textStyle}>loading</p>}
+         {results.length > 0 && <div style ={pageNav}>
+            {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}
+            <p style={pageNum}>Page {page + 1}</p>
+            {results.length >= 30 && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
+         </div>}
 
-         <div style ={pageNav}>
-            {page > 0 && <button>{page}</button>}
-            {results.length === 30 && <p style={pageNum}>page {page + 1}</p>}
-            {results.length === 30 && <button style={pageButton} onClick={handleNextPage}>page {page + 2}</button>}
-         </div>
+         {Array.isArray(results) ? results.length > 0 ? <ResultsPage jumps={results} flag={flag} /> : <p style={textStyle}>no results</p>: <p style={textStyle}>loading</p>}
+
+         {results.length > 0 && <div style ={pageNav}>
+            {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}
+            <p style={pageNum}>Page {page + 1}</p>
+            {results.length === 30 && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
+         </div>}
 
 
       </div>

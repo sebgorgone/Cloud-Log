@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react'
 
 
 function ResultsPage (props) {
-
-   console.log("results page sees", props.jumps)
    
    //state
 
@@ -30,6 +28,7 @@ function ResultsPage (props) {
    //tags
    const [tagsArray, setTags] = useState(null)
 
+
    function getTags (jumpsArray) {
       let jumpsIdArray = [];
       if (Array.isArray(jumpsArray)) {
@@ -51,6 +50,7 @@ const tagsRoute = async (array) => {
          });
          const data = await response.json();
          if(data.ok){
+            console.log('results: ', data.results)
             const flattenedTags = data.results.flatMap(r =>
               r.tags.map(inner => ({ name: inner.name, cat: inner.cat, jump_ref: r.jump_ref }))
             );
@@ -87,6 +87,12 @@ const tagsRoute = async (array) => {
       Array.isArray(jumps) && getTags(jumps);
       setJumps(props.jumps);
    }, [props.jumps]); 
+
+   useEffect(() => {
+      console.log('useffect')
+      Array.isArray(jumps) && getTags(jumps)
+   }, [props.flag, jumps])
+
    
 
    return (

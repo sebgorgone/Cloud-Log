@@ -10,11 +10,11 @@
 
 button {
    box-shadow: 4px 5px #000000;
-   transition: .3s;
+   transition: .7s;
 }
 
 button:hover {
-   box-shadow: 3px 3.5px #000000;
+   box-shadow: 0px 0px #000000;
    cursor: pointer;
 
 }

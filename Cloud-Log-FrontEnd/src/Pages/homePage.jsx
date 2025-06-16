@@ -11,7 +11,6 @@ import SearchedList from './SearchedList.jsx'
 
 function HomePage(props) {
 
-
    //environment variables
 
    const { logout } = useAuth();
@@ -47,7 +46,7 @@ function HomePage(props) {
 
    const getJumpHist = async () => { 
       setUserJumpHistory(null);
-      console.log('getting user jump history')
+      // console.log('getting user jump history')
       try {
          const response = await fetch('http://localhost:5009/userjumphistory', {
             method: 'POST',
@@ -61,7 +60,7 @@ function HomePage(props) {
                jumpHist.push(jump);
             }
             setUserJumpHistory(jumpHist);
-            console.log('set user jump history')
+            // console.log('set user jump history')
                
          }
          else {
@@ -273,7 +272,7 @@ function HomePage(props) {
 
             <div >
                <p style={nameStyle}>{user.name.length > 20 ? user.name.slice(0, 20) : user.name }!</p>
-               <p style={jumpNumStyle}>{userJumpCount ? userJumpCount : 'Loading...'} Jumps</p>
+               <p style={jumpNumStyle}>{userJumpCount ? userJumpCount : userJumpCount !== 0 ? 'Loading...' : userJumpCount} Jumps</p>
             </div>
 
             <form onSubmit={handleSearch} style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -349,7 +348,7 @@ function HomePage(props) {
             {router.download ? <DownloadPage user={user} /> : null}
             {router.stats ? <StatsPage jumps={userJumpHistory} user={user} /> : null}
             {router.settings ? <SettingsPage user={user} /> : null}
-            {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag}/> : null}
+            {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag} jump_num={userJumpCount}/> : null}
          </div>
 
 
