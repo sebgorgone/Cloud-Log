@@ -23,6 +23,14 @@ function SettingsPage(props) {
 
    const [passwordField, setPasswordField] = useState(false);
 
+   const [userValidated, setUserValidated] = useState(false);
+
+   const [validatePassword, setValidatePassword] = useState();
+
+   const [newUserPassword, setNewUserPassword] = useState();
+
+   const [checkNewUserPassword, setCheckNewUserPassword] = useState();
+
    //handlers
 
    function handleCUCLick (e) {
@@ -62,7 +70,57 @@ function SettingsPage(props) {
       console.log(newEmail);
    }
 
-   function handleCPClick (e) {}
+   function handleCPClick (e) {
+      e.preventDefault();
+      setNewUsername(null);
+      setNewEmail(null);
+      setUsernameField(false);
+      setEmailField(false);
+      setPasswordField(true);
+   }
+
+   function handleValidatePasswordChange (e) {
+      setValidatePassword(e.target.value)
+   }
+
+   function handleCPCancel (e) {
+      e.preventDefault();
+      setPasswordField(false);
+      setValidatePassword(null);
+      setUserValidated(false);
+      setNewUserPassword('');
+      setCheckNewUserPassword('');
+   }
+
+   function handleValidate (e) {
+      e.preventDefault();
+      validate();
+      setValidatePassword('')
+   }
+
+   function handleNewUserPasswordChange (e) {
+      setNewUserPassword(e.target.value)
+   }
+
+   function handleCheckNewUserPasswordChange (e) {
+      setCheckNewUserPassword(e.target.value)
+   }
+
+   function handleChangePassword (e) {
+      e.preventDefault()
+      if (newUserPassword.length < 7 || newUserPassword.length > 35) return alert('incorrect passsword length')
+      if(newUserPassword === '' || checkNewUserPassword === '') return alert('empty fields');
+      if (newUserPassword !== checkNewUserPassword) {
+         setNewUserPassword('');
+         setCheckNewUserPassword('');
+         return alert('passwords do not match');
+      }
+      changePassword()
+      return alert('success')
+
+   }
+
+
 
    //time stamp jsx
 
@@ -96,10 +154,19 @@ function SettingsPage(props) {
       const ampm   = hour24 >= 12 ? 'pm' : 'am';
       const hour12 = hour24 % 12 || 12; // turns 0→12, 13→1, 12→12
 
-      return <p>Created {diffDays} Day{diffDays !== 1 ? 's' : ''} ago <br />'{monthName} {createdDate.getDate()}, {createdDate.getFullYear()}' at {hour12}:{minute} {ampm}</p>;
+      return <p>User Created {diffDays} Day{diffDays !== 1 ? 's' : ''} ago <br />'{monthName} {createdDate.getDate()}, {createdDate.getFullYear()}' at {hour12}:{minute} {ampm}</p>;
+   }
+
+   //check valid password 
+
+   function checkValidPassword() {
+      if(!newUserPassword) return false
+      if (newUserPassword.length < 7) return false;
+      if (newUserPassword.length > 35) return false;
+      return true;
    }
   
-   console.log('in the Settings page', userCred);
+   // console.log('in the Settings page', user);
 
    //style
 
@@ -130,7 +197,8 @@ function SettingsPage(props) {
    const timeStamp = {
       fontSize: ".6em",
       fontFamily: "L1",
-      color: pallette[0]
+      color: pallette[0],
+      marginLeft: ".5em"
    }
 
    const changePasswordButton = {
@@ -158,11 +226,14 @@ function SettingsPage(props) {
       width: "1000vw",
       fontFamily: "L1",
       fontSize: "1.em",
-      padding: ".2em",
+      padding: ".3em",
+      textAlign: "center",
       margin: "0",
       marginBottom: ".5em",
       background: pallette[3],
-      color: pallette[0]
+      color: pallette[0],
+      border: "solid .1em",
+      borderColor: pallette[0],
    }
 
    const textStyle = {
@@ -184,6 +255,7 @@ function SettingsPage(props) {
       fontFamily: "L1",
       borderRadius: "1em",
       paddingBottom: ".4em",
+      marginLeft: ".5em",
       background: pallette[1],
       color: pallette[4],
    }
@@ -225,6 +297,68 @@ function SettingsPage(props) {
       }
    }
 
+   const validate = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: user.ID, password: validatePassword }),
+      });
+
+      const contentType = response.headers.get('content-type');
+      let returnedData;
+      if (contentType && contentType.includes('application/json')) {
+        returnedData = await response.json();
+      } else {
+        returnedData = await response.text();
+      }
+
+      if (response.ok) {
+        
+        console.log('✅ validation success', response.ok);
+        setUserValidated(true);
+
+      } else {
+        console.error('❌ validation failed:', returnedData);
+        alert(returnedData.error || returnedData.message || 'bad password')
+      }
+    } catch (err) {
+      console.error('error', err);
+      alert('Error');
+    }
+  };
+
+  const changePassword = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/changepassword', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: user.ID, password: newUserPassword }),
+      });
+
+      const contentType = response.headers.get('content-type');
+      let returnedData;
+      if (contentType && contentType.includes('application/json')) {
+        returnedData = await response.json();
+      } else {
+        returnedData = await response.text();
+      }
+
+      if (response.ok) {
+        
+        console.log('✅ password change success', response.ok);
+        handleCPCancel();
+
+      } else {
+        console.error('❌ password change failed:', returnedData);
+        alert(returnedData.error || returnedData.message || 'bad password')
+      }
+    } catch (err) {
+      console.error('error', err);
+      alert('Error');
+    }
+  };
+
    //useEffect
 
    useEffect(() => {
@@ -240,55 +374,100 @@ function SettingsPage(props) {
 
             {passwordField ? 
             
-            <div>
-               <p>pasword prompt</p>
-            </div> 
+               userValidated ? 
+
+
+                  <div>
+                     <p style={textStyle}>Enter Your New Password</p>
+                     <input 
+                        style={inputStyle}
+                        type='password'
+                        placeholder="new password"
+                        value={newUserPassword}
+                        onChange={handleNewUserPasswordChange}
+                     />
+
+                     {checkValidPassword() && 
+                        <div>
+                           <p style={textStyle}>Confirm Your New Password</p>
+                           <input 
+                              style={inputStyle}
+                              placeholder="new password"
+                              type='password'
+                              value={checkNewUserPassword}
+                              onChange={handleCheckNewUserPasswordChange}
+                           />
+                        </div>}
+
+                     <div>
+                        {checkValidPassword() && <button style={nestedButtonOk} onClick={handleChangePassword}>Change Password</button>}
+                        <button style={nestedButtonCancel} onClick={handleCPCancel}>Cancel</button>
+                     </div>
+
+                  </div> 
+                  : 
+
+                  <form style={settingsStyle} onSubmit={handleValidate}>
+                     <p style={textStyle}>Enter Your Current Password</p>
+                     <div style={{marginBottom: ".75em"}}>
+                        <input 
+                           style={inputStyle}
+                           value={validatePassword}
+                           onChange={handleValidatePasswordChange}
+                           type="password"
+                           placeholder="password"
+                        />
+                        <button style={nestedButtonOk} onClick={handleValidate}>Enter</button>
+                        <button style={nestedButtonCancel} onClick={handleCPCancel}>cancel</button>
+                     </div>
+                  </form> 
+
+               : 
             
-            : 
-            
-            <div style={settingsStyle}>
+                  <div style={settingsStyle}>
+                  
 
+                     <p style={textStyle}>User: {user ? user.name: 'loading...'}</p>
 
-               <p style={textStyle}>User: {user ? user.name: 'loading...'}</p>
+                     {!usernameField && <button style={changeButton} onClick={handleCUCLick}>change username</button>}
 
-               {!usernameField && <button style={changeButton} onClick={handleCUCLick}>change username</button>}
+                     {usernameField && <input 
+                        value={newUsername}
+                        onChange={handleNewUserChange}
+                        style={inputStyle}
+                        placeholder='change username' 
+                     />}
 
-               {usernameField && <input 
-                  value={newUsername}
-                  onChange={handleNewUserChange}
-                  style={inputStyle}
-                  placeholder='change username' 
-               />}
+                     {usernameField && <div style={{marginBottom: ".75em"}}>
+                        <button style={nestedButtonOk}>change username</button>
+                        <button style={nestedButtonCancel} onClick={handleCUCancel}>cancel</button>
+                     </div>}
+                     
+                     <p style={textStyle}>Email: {userCred ? userCred[0].email : 'loading...'}</p>
+                     
+                     {!emailField && <button style={changeButton} onClick={handleCEClick}>change email</button>}
+                     
+                     {emailField && <input 
+                        value={newEmail}
+                        onChange={handleNewEmailChange}
+                        style={inputStyle}
+                        placeholder="change email" 
+                     />}
 
-               {usernameField && <div style={{marginBottom: ".75em"}}>
-                  <button style={nestedButtonOk}>change username</button>
-                  <button style={nestedButtonCancel} onClick={handleCUCancel}>cancel</button>
-               </div>}
-
-               <p style={textStyle}>Email: {userCred ? userCred[0].email : 'loading...'}</p>
-
-               {!emailField && <button style={changeButton} onClick={handleCEClick}>change email</button>}
-
-               {emailField && <input 
-                  value={newEmail}
-                  onChange={handleNewEmailChange}
-                  style={inputStyle}
-                  placeholder="change email" 
-               />}
-
-               {emailField && <div style={{marginBottom: ".75em"}}>
-                  <button style={nestedButtonOk}>change email</button>
-                  <button style={nestedButtonCancel} onClick={handleCECancel}>cancel</button>
-               </div>}
-
-
-
-               <button style={changePasswordButton}>change password</button>
-
-               <p style={timeStamp}>{createdAt()}</p>
-
-
-            </div>}
+                     {emailField && <div style={{marginBottom: ".75em"}}>
+                        <button style={nestedButtonOk}>change email</button>
+                        <button style={nestedButtonCancel} onClick={handleCECancel}>cancel</button>
+                     </div>}
+                     
+                     
+                     
+                     <button style={changePasswordButton} onClick={handleCPClick}>change password</button>
+                     
+                     <p style={timeStamp}>{createdAt()}</p>
+                     
+                     
+                  </div>
+               }
 
             
          </div>

@@ -58,11 +58,27 @@ app.post('/register', (req, res) => {
   );
 });
 
+//change password
+
+app.post('/changepassword', (req, res) => {
+  const { id, password } = req.body;
+  const { hash,salt } = hashPassword(password);
+
+  db.query(
+    'UPDATE users SET password=?, salt=? WHERE id=?',
+    [hash, salt, id],
+    (err, result) => {
+      if (err) return res.status(500).json({message: 'password change failed'});
+      console.log('succesfully set new user password');
+      res.status(201).json({message: 'User password changed', ok: true});
+    }
+  );
+});
+
 //login route
 app.post('/login', (req, res) => {
-  const { identifier, password } = req.body; // "identifier" = username OR email
+  const { identifier, password } = req.body;
 
-  // Check if input is an email (simple regex)
   const isEmail = identifier.includes('@');
 
   const query = isEmail 
@@ -100,6 +116,42 @@ db.query(query, [identifier], (err, results) => {
 });
 });
 
+//validate password
+
+app.post('/validate', (req, res) => {
+  const { id, password } = req.body;
+
+  const query = 'SELECT * FROM users WHERE id=?'
+
+
+console.log("validation attempt from:", id);
+
+db.query(query, id, (err, results) => {
+  if (err) {
+    console.error("DB error:", err);
+    return res.status(500).json({ error: 'validation error' });
+  }
+
+  if (results.length === 0) {
+    console.log("No user found for user_ID:", id);
+    return res.status(401).json({ error: 'User not found' });
+  }
+
+  const user = results[0];
+  console.log("User found:", user);
+
+  const { hash } = hashPassword(password, user.salt);
+
+  if (hash !== user.password) {
+    console.log("❌ Bad password for", id);
+    return res.status(401).json({ error: 'Invalid credentials', ok: false });
+  }
+
+  console.log("✅ user validated:", user.name);
+  res.status(200).json({ message: 'User validated', ok: true});
+});
+});
+
 //get user jump history
 
 app.post('/userjumphistory', (req, res) => {
@@ -121,6 +173,7 @@ app.post('/userjumphistory', (req, res) => {
   )
 });
 
+//get user info
 app.post('/user', (req, res) => {
   const { user_id } = req.body;
 
