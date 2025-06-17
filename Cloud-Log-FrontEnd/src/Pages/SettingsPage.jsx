@@ -39,7 +39,11 @@ function SettingsPage(props) {
             // 5. Turn month number into name
       const monthName = createdDate.toLocaleString('default', { month: 'long' });
             // 6. Return the formatted string
-      return `created ${diffDays} Day${diffDays !== 1 ? 's' : ''} ago '${monthName} ${createdDate.getDate()}, ${createdDate.getFullYear()}'`;
+      const hour24 = createdDate.getHours();
+      const ampm   = hour24 >= 12 ? 'pm' : 'am';
+      const hour12 = hour24 % 12 || 12; // turns 0→12, 13→1, 12→12
+
+      return `Created ${diffDays} Day${diffDays !== 1 ? 's' : ''} ago '${monthName} ${createdDate.getDate()}, ${createdDate.getFullYear()}' at ${hour12}:${minute} ${ampm}`;
    }
   
    console.log('in the Settings page', userCred);
@@ -109,9 +113,16 @@ function SettingsPage(props) {
             <h1 style={headerStyle}>Settings</h1>
 
             <div style={settingsStyle}>
-               <input placeholder='name'></input>
-               <input placeholder='email'></input>
-               <input placeholder='password'></input>
+
+               <input 
+                  placeholder={user.name} 
+               />
+
+               <input 
+                  placeholder={userCred ? userCred[0].email : 'loading...'} 
+               />
+
+               <button>change password</button>
                <p>{createdAt()}</p>
             </div>
 
