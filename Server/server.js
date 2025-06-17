@@ -119,7 +119,22 @@ app.post('/userjumphistory', (req, res) => {
       return res.status(200).json({message: 'loaded jumps', results, ok: true})
     }
   )
-})
+});
+
+app.post('/user', (req, res) => {
+  const { user_id } = req.body;
+
+  db.query ('SELECT email, created_at FROM users WHERE id=?',
+    user_id,
+    (err, results) => {
+      if (err){
+        console.error('DB error fetching user cred', err);
+        return res.status(500).json({message: 'could not retrieve user data'})
+      }
+      return res.status(200).json({message: 'retieved user', results, ok: true})
+    }
+  )
+});
 
 // get tags for multiple jumps
 app.post('/gettags', async (req, res) => {
@@ -130,7 +145,7 @@ app.post('/gettags', async (req, res) => {
   try {
     const tagResults = await Promise.all(
       jumpsIdArray.map(id => new Promise((resolve, reject) => {
-        db.query('SELECT name, cat, jump_ref  FROM tags WHERE jump_ref = ?', [id], (err, results) => {
+        db.query('SELECT name, cat, jump_ref FROM tags WHERE jump_ref = ?', [id], (err, results) => {
           if (err) return reject(err);
           resolve({ jump_ref: id, tags: results });
         });

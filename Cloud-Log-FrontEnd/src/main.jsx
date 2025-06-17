@@ -7,6 +7,7 @@ import PrivateRoute from './routes/PrivateRoute.jsx';
 import { AuthProvider } from './contexts/authContext.jsx';
 import HomePage from './pages/homePage.jsx'
 import RegisterPage from './Pages/RegisterPage.jsx';
+import SettingsPage from './Pages/SettingsPage.jsx';
 
 
 
@@ -30,9 +31,9 @@ createRoot(document.getElementById('root')).render(
               </PrivateRoute>
             } />
 
-            <Route path="/widgetbuild" element={
+            <Route path="/settingsbuild" element={
               <PrivateRoute>
-              <LogInputWidget />
+              <SettingsPage />
               </PrivateRoute>
             } />
 
