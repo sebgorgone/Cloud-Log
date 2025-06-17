@@ -46,14 +46,43 @@ function hashPassword(password, salt = crypto.randomBytes(16).toString('hex')) {
 
 app.post('/register', (req, res) => {
   const { name, email, password } = req.body;
-  const { hash,salt } = hashPassword(password);
 
   db.query(
-    'INSERT INTO users (name, email, password, salt) VALUES (?, ?, ?, ?)',
-    [name, email, hash, salt],
-    (err, result) => {
-      if (err) return res.status(500).json({message: 'Registration failed'});
-      res.status(201).json({message: 'User registered'});
+    'SELECT id FROM users WHERE name = ? OR email = ?',
+    [name, email],
+    (checkErr, checkResults) => {
+      if (checkErr) {
+        console.error('DB error checking existing user:', checkErr);
+        return res.status(500).json({
+          message: 'Internal server error',
+          error: 'db_error'
+        });
+      }
+      if (checkResults.length > 0) {
+        return res.status(409).json({
+          message: 'User or email already exists',
+          error: 'user_or_email_exists'
+        });
+      }
+
+      const { hash, salt } = hashPassword(password);
+
+      db.query(
+        'INSERT INTO users (name, email, password, salt) VALUES (?, ?, ?, ?)',
+        [name, email, hash, salt],
+        (insertErr, insertResult) => {
+          if (insertErr) {
+            console.error('DB error inserting new user:', insertErr);
+            return res.status(500).json({
+              message: 'Registration failed',
+              error: 'insert_error'
+            });
+          }
+          res.status(201).json({
+            message: 'User registered'
+          });
+        }
+      );
     }
   );
 });

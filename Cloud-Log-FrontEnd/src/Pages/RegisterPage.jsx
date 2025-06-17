@@ -238,7 +238,7 @@ function RegisterPage () {
                value={newPassword}
                onChange={handlePasswordChange}
                style={inputField} 
-               placeholder="passwod" 
+               placeholder="password" 
                title="Enter Password">
                  
             </input>

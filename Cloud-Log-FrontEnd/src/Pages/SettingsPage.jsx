@@ -358,6 +358,36 @@ function SettingsPage(props) {
       alert('Error');
     }
   };
+  const changeUsername = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/changeusername', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: user.ID, username: newUsername }),
+      });
+
+      const contentType = response.headers.get('content-type');
+      let returnedData;
+      if (contentType && contentType.includes('application/json')) {
+        returnedData = await response.json();
+      } else {
+        returnedData = await response.text();
+      }
+
+      if (response.ok) {
+        
+        console.log('✅ username change success', response.ok);
+        handleCPCancel();
+
+      } else {
+        console.error('❌ username change failed:', returnedData);
+        alert(returnedData.error || returnedData.message || 'error')
+      }
+    } catch (err) {
+      console.error('error', err);
+      alert('Error');
+    }
+  };
 
    //useEffect
 
