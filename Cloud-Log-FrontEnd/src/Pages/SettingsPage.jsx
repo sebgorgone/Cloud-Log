@@ -62,6 +62,8 @@ function SettingsPage(props) {
       setRigField(false);
       setAircraftField(false);
 
+      setAddJumpDZ("")
+
       setUsernameField(true);
    }
 
@@ -84,6 +86,8 @@ function SettingsPage(props) {
       setDzField(false);
       setRigField(false);
       setAircraftField(false);
+
+      setAddJumpDZ("")
 
       setEmailField(true);
 
@@ -111,6 +115,8 @@ function SettingsPage(props) {
       setDzField(false);
       setRigField(false);
       setAircraftField(false);
+
+      setAddJumpDZ("")
 
       setPasswordField(true);
 
@@ -182,6 +188,8 @@ function SettingsPage(props) {
       setAircraftField(false);
       setDzField(false);
 
+      setAddJumpDZ("")
+
       setNewUsername(null);
       setNewEmail(null);
       setUsernameField(false);
@@ -217,6 +225,8 @@ function SettingsPage(props) {
       e.preventDefault();
       setDzField(false);
       setRigField(false);
+
+      setAddJumpDZ("")
 
       setNewUsername(null);
       setNewEmail(null);
