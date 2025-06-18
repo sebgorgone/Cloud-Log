@@ -325,6 +325,76 @@ app.post('/gettags', async (req, res) => {
   }
 });
 
+//get user defaults 
+app.post('/getdefaults', (req, res) => {
+  const { user_id } = req.body;
+
+  db.query('SELECT rig, dz, aircraft FROM presets WHERE user_id=?',
+    user_id,
+    (err, results) => {
+      if (err) {
+        console.error('DB error fetching defaults for user', err);
+        return res.status(500).json({message: 'could not retrieve defaults'});
+      }
+      if (results.length === 0) {
+        console.log('no defaults found', results)
+        return res.status(404).json({message: 'no rigs found'})
+      }
+      return res.status(200).json({message: 'got that defaults for ya', results})
+    }
+  )
+});
+
+//store default rig
+
+app.post('/storedefaultrig', (req, res) => {
+  const { user_id, rig } = req.body;
+
+  db.query('UPDATE presets SET rig=? WHERE user_id=?',
+    [rig, user_id],
+    (err, results) => {
+      if (err) {
+        console.error('DB error storing default', err);
+        return res.status(500).json({message: 'could not store default rig'});
+      }
+      return res.status(200).json({message: 'defaults in there!', results})
+    }
+  )
+});
+
+//store default dz
+
+app.post('/storedefaultdz', (req, res) => {
+  const { user_id, dz } = req.body;
+
+  db.query('UPDATE presets SET dz=? WHERE user_id=?',
+    [dz, user_id],
+    (err, results) => {
+      if (err) {
+        console.error('DB error storing default', err);
+        return res.status(500).json({message: 'could not store default'});
+      }
+      return res.status(200).json({message: 'defaults in there!', results})
+    }
+  )
+});
+
+//store default aircraft
+app.post('/storedefaultaircraft', (req, res) => {
+  const { user_id, aircraft } = req.body;
+
+  db.query('UPDATE presets SET aircraft=? WHERE user_id=?',
+    [aircraft, user_id],
+    (err, results) => {
+      if (err) {
+        console.error('DB error storing default', err);
+        return res.status(500).json({message: 'could not store default'});
+      }
+      return res.status(200).json({message: 'defaults in there!', results})
+    }
+  )
+});
+
 //get users rigs
 app.post('/getrigs', (req, res) => {
   const { user_id } = req.body;

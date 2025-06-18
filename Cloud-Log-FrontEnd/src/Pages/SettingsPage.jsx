@@ -137,37 +137,30 @@ function SettingsPage(props) {
 
    //time stamp jsx
 
-   function createdAt () {
+   function createdAt() {
+      if (!userCred) return <p>loading…</p>;
 
-      if (!userCred) return <p>loading...</p>;
+      const raw = userCred[0].created_at;  // e.g. "2025-06-18T12:26:48.000Z"
+      const createdDate = new Date(raw);   // JS now knows it’s UTC and converts to your local zone
 
-      const raw = userCred[0].created_at;
-      
-      const [datePart, timePart] = raw.split('T');
-      const [year, month, day]     = datePart.split('-');
-      const [hour, minute, second] = timePart.split(':');
-      const [realSeconds, bullsh] = second.split('.')
+      // …compute diffDays exactly like before…
 
-      const createdDate = new Date(
-        parseInt(year, 10),
-        parseInt(month, 10) - 1,
-        parseInt(day, 10),
-        parseInt(hour, 10),
-        parseInt(minute, 10),
-        parseInt(realSeconds, 10)
-      );
-            // 4. Compute difference in days
-      const now      = new Date();
-      const diffMs   = now - createdDate;
-      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            // 5. Turn month number into name
+      const diffMs   = Date.now() - createdDate;
+      const diffDays = Math.floor(diffMs / 86_400_000);
+
       const monthName = createdDate.toLocaleString('default', { month: 'long' });
-            // 6. Return the formatted string
-      const hour24 = createdDate.getHours();
-      const ampm   = hour24 >= 12 ? 'pm' : 'am';
-      const hour12 = hour24 % 12 || 12; // turns 0→12, 13→1, 12→12
+      const hour24    = createdDate.getHours();           // already in local
+      const ampm      = hour24 >= 12 ? 'pm' : 'am';
+      const hour12    = hour24 % 12 || 12;
+      const minute    = String(createdDate.getMinutes()).padStart(2, '0');
 
-      return <p>User Created {diffDays} Day{diffDays !== 1 ? 's' : ''} ago <br />'{monthName} {createdDate.getDate()}, {createdDate.getFullYear()}' at {hour12}:{minute} {ampm}</p>;
+      return (
+        <p>
+          User Created {diffDays} Day{diffDays !== 1 ? 's' : ''} ago
+          <br />
+          '{monthName} {createdDate.getDate()}, {createdDate.getFullYear()}' at {hour12}:{minute} {ampm}
+        </p>
+      );
    }
 
    //check valid password 

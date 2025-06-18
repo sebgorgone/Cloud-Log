@@ -30,6 +30,14 @@ function WelcomeForm (props) {
 
   const [addJumpRig, setAddJumpRig] = useState(null);
 
+
+
+  const [defaultRig, setDefualtRig] = useState(null);
+
+  const [defaultAircraft, setDefaultAircraft] = useState(null);
+
+  const [defaultDZ, setDefaultDZ] = useState(null);
+
    //style
 
    const headerStyle = {
@@ -44,14 +52,14 @@ function WelcomeForm (props) {
 
    const headerButtonInputStyle = {
     background: pallette[4],
-    width: "200px",
+    width: "100px",
     border: ".1em solid",
     borderColor: pallette[0],
     borderRadius: "1.5vw",
     padding: "0",
     margin: "0",
     fontFamily: "L1",
-    fontSize: "1.2em",
+    fontSize: ".9em",
     color: pallette[0],
    };
 
@@ -70,8 +78,9 @@ function WelcomeForm (props) {
 
    const listStyle = {
    fontFamily: "L1",
-   fontSize: "1.5em",
+   fontSize: "1em",
    padding: "none",
+   color: pallette[3]
    }
 
    const formStyle= {
@@ -81,7 +90,7 @@ function WelcomeForm (props) {
 
    const rowStyle = {
     display: "flex", 
-    flexWrap: "wrap",
+    flexFlow: "column",
     justifyContent: "space-around", 
     margin: "1vh", padding: "1em", 
     background: pallette[3], 
@@ -94,12 +103,15 @@ function WelcomeForm (props) {
     display: "flex",
     flexFlow: "column",
     justifyContent: "space-evenly",
-    padding: "1em"
+    padding: "1em",
+    width: "70%",
    };
 
    const textBox = {
       backgroundColor: pallette[2],
-      width: "50%",
+      minWidth: "65%",
+      height: "2.3em",
+      marginRight: "15%"
    }
 
    const textSection = {
@@ -126,6 +138,28 @@ function WelcomeForm (props) {
       borderRadius: "1.5em",
       border: "none",
    }
+
+  const favoriteButtonNull = {
+    height: "fit-content",
+    background: pallette[2],
+    border: "none",
+    padding: ".5em",
+    paddingTop: ".5em",
+    paddingBottom: ".3em",
+    borderRadius: "3em",
+    marginRight: "1em",
+  }
+
+  const listDiv = {
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "space-between", 
+    width: "60%", 
+    borderRadius: "1em", 
+    background: pallette[0], 
+    padding: ".3em", 
+    margin: "1em"
+  }
 
 
    //api
@@ -160,7 +194,6 @@ function WelcomeForm (props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        alert(returnedDATA.message)
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing rig', err);}
   };
@@ -196,7 +229,6 @@ function WelcomeForm (props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        alert(returnedDATA.message)
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing plane', err);}
   }
@@ -232,12 +264,11 @@ function WelcomeForm (props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        alert(returnedDATA.message)
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing DZ', err);}
   };
 
-const giveBasket = async () => {
+  const giveBasket = async () => {
       console.log('giving basket to user id: ', data.user.ID)
     try {
       const response = await fetch('http://localhost:5009/givebasket', {
@@ -256,24 +287,91 @@ const giveBasket = async () => {
     } catch (err) {console.error('client failed to send basket', err);}
   };
 
+  const getDefaults = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getdefaults', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: props.user.ID}),
+      });
+      const returnedData = await response.json();
+      const data = returnedData.results[0]
+      if(response.ok){
+        console.log('retrieved user defaults--> ', 'data: ', data, ' rig: ', data.rig, ' dz: ', data.dz, ' aircraft: ', data.aircraft)
+        setDefualtRig(data.rig);
+        setDefaultAircraft(data.aircraft);
+        setDefaultDZ(data.dz);
+      } else{
+        console.error('no defaults retrieved', response);
+      }
+    } catch (err) {
+      console.error('client failed getting defaults', err);
+    }
+  }; 
+
+  const storeDefaultRig = async (eqpm) => {
+    try {
+      const response = await fetch('http://localhost:5009/storedefaultrig', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: data.user.ID, rig: eqpm }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        getDefaults();
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing Defualt', err);}
+  };
+
+  const storeDefaultDZ = async (dz) => {
+    try {
+      const response = await fetch('http://localhost:5009/storedefaultdz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: data.user.ID, dz: dz }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        getDefaults();
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing Default', err);}
+  };
+
+  const storeDefaultAircraft = async (aircraft) => {
+    try {
+      const response = await fetch('http://localhost:5009/storedefaultaircraft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: data.user.ID, aircraft: aircraft }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        getDefaults();
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing Default', err);}
+  };
+
 
   //rendered lists
 
   const planeList = planes.map((plane, index) => 
-    <div key={index}>
-    <p style={listStyle}>-{plane}</p>
+    <div key={index} style={listDiv}>
+    <p style={listStyle}>{plane}</p>
+    {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
   </div>
   );
 
   const rigList = rigs.map((rig, index) => 
-    <div key={index}>
-      <p style={listStyle}>-{rig}</p>
+    <div key={index} style={listDiv}>
+      <p style={listStyle}>{rig}</p>
+      {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
     </div>
   );
 
   const DZList = DZs.map((DZ, index) => 
-    <div key={index}>
-      <p style={listStyle}>-{DZ}</p>
+    <div key={index} style={listDiv}>
+      <p style={listStyle}>{DZ}</p>
+      {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
     </div>
   );
 
@@ -339,6 +437,30 @@ const giveBasket = async () => {
 
   }
 
+  function handleSetFavoriteRig (chute) {
+
+    console.log('chute=', chute)
+    if (chute === defaultRig) return
+    storeDefaultRig(chute)
+
+  }
+
+  function handleSetFavoriteDZ (dz) {
+
+    console.log('dz=', dz)
+    if (dz === defaultDZ) return
+    storeDefaultDZ(dz)
+
+  }
+
+  function handleSetFavoriteAircraft (ac) {
+
+    console.log('ac=', ac);
+    if (ac === defaultAircraft) return;
+    storeDefaultAircraft(ac);
+
+  }
+
   //useEffect
 
 
@@ -347,6 +469,7 @@ const giveBasket = async () => {
                      getRigs();
                      getPlanes();
                      getDZs();
+                     getDefaults();
                   }, []);
 
 
@@ -363,7 +486,7 @@ const giveBasket = async () => {
                   <p style={headerStyle}>
                     Add Your Rigs 
                   </p>
-                     {rigList}
+                     
                      <div>
                         <input 
                            type="text" 
@@ -374,6 +497,7 @@ const giveBasket = async () => {
                         />
                         <button style={headerButtonInputStyle} onClick={handleRigInput}>Add Rig</button>
                      </div>
+                     {rigList}
                </form>
             </div>
 
@@ -385,7 +509,7 @@ const giveBasket = async () => {
                     Add Your Aircraft 
                   </p>
 
-                  {planeList}
+                  
 
                   <div>
                     <input 
@@ -398,6 +522,8 @@ const giveBasket = async () => {
                     <button style={headerButtonInputStyle} onClick={handleAircraftInput}>Add Aircraft</button>
                   </div>
 
+                  {planeList}
+
                </form>
             </div>
 
@@ -405,7 +531,7 @@ const giveBasket = async () => {
                <button onClick={handleDzForm}style={headerButtonStyle}>Drop-Zone{!dzPage ? "(hide)" : "(show)"}</button>
               <form style={!dzPage ? formStyle : {display: "none"}}>
                 <p style={headerStyle}>Add Drop-Zones</p>
-                {DZList}
+                
                 <input 
                   style={textBox}
                   id="newDZ"
@@ -415,6 +541,7 @@ const giveBasket = async () => {
                   onChange={handleAddJumpDZChange}
                 />
               <button style={headerButtonInputStyle} onClick={handleDZInput}>add DZ</button>
+              {DZList}
             </form>
             </div>
             <div style={textSection}><button style={subTitle} onClick={giveBasket}>Start Adding Logs</button></div>
