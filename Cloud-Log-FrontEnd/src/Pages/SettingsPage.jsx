@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {getPallette} from "../logInputWidget";
 import '../style/loginScreen.css';
+import { useAuth } from '../contexts/authContext';
 
 function SettingsPage(props) {
 
@@ -8,8 +9,11 @@ function SettingsPage(props) {
 
    const user = props.user;
 
+   const { updateUsername } = useAuth();
 
    //state
+
+   const [flag, setFlag] = useState(false);
 
    const [userCred, setUserCred] = useState(null);
 
@@ -48,7 +52,6 @@ function SettingsPage(props) {
 
    function handleNewUserChange (e) {
       setNewUsername(e.target.value);
-      console.log(newUsername)
    }
 
    function handleCEClick (e) {
@@ -67,7 +70,6 @@ function SettingsPage(props) {
 
    function handleNewEmailChange (e) {
       setNewEmail(e.target.value);
-      console.log(newEmail);
    }
 
    function handleCPClick (e) {
@@ -116,8 +118,15 @@ function SettingsPage(props) {
          return alert('passwords do not match');
       }
       changePassword()
-      return alert('success')
 
+   }
+
+   function handleChangeUsername (e) {
+      e.preventDefault();
+      if (newUsername.length < 5 || newUsername > 24) return alert('Invalid username length')
+      changeUsername();
+      setNewUsername('');
+      setUsernameField(false);
    }
 
 
@@ -347,7 +356,16 @@ function SettingsPage(props) {
       if (response.ok) {
         
         console.log('✅ password change success', response.ok);
-        handleCPCancel();
+
+        setNewUserPassword('');
+        setCheckNewUserPassword('');
+
+        setUserValidated(false);
+
+        setPasswordField(false);
+
+        alert('Changed Password')
+        
 
       } else {
         console.error('❌ password change failed:', returnedData);
@@ -363,7 +381,7 @@ function SettingsPage(props) {
       const response = await fetch('http://localhost:5009/changeusername', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: user.ID, username: newUsername }),
+        body: JSON.stringify({ name: newUsername, id: user.ID }),
       });
 
       const contentType = response.headers.get('content-type');
@@ -377,7 +395,7 @@ function SettingsPage(props) {
       if (response.ok) {
         
         console.log('✅ username change success', response.ok);
-        handleCPCancel();
+        updateUsername(newUsername)
 
       } else {
         console.error('❌ username change failed:', returnedData);
@@ -393,7 +411,7 @@ function SettingsPage(props) {
 
    useEffect(() => {
       getUser();
-   }, [])
+   }, [flag])
 
    return(
       <div>
@@ -461,15 +479,19 @@ function SettingsPage(props) {
 
                      {!usernameField && <button style={changeButton} onClick={handleCUCLick}>change username</button>}
 
-                     {usernameField && <input 
-                        value={newUsername}
-                        onChange={handleNewUserChange}
-                        style={inputStyle}
-                        placeholder='change username' 
-                     />}
+                     {usernameField && 
+                        <form onSubmit={handleChangeUsername}>
+                           <input 
+                              value={newUsername}
+                              onChange={handleNewUserChange}
+                              style={inputStyle}
+                              placeholder='change username' 
+                           />
+                        </form>
+                     }
 
                      {usernameField && <div style={{marginBottom: ".75em"}}>
-                        <button style={nestedButtonOk}>change username</button>
+                        <button style={nestedButtonOk} onClick={handleChangeUsername}>change username</button>
                         <button style={nestedButtonCancel} onClick={handleCUCancel}>cancel</button>
                      </div>}
                      

@@ -104,6 +104,49 @@ app.post('/changepassword', (req, res) => {
   );
 });
 
+//change username
+
+app.post('/changeusername', (req, res) => {
+  const { name, id } = req.body;
+
+  db.query(
+    'SELECT id FROM users WHERE name = ?',
+    [name],
+    (checkErr, checkResults) => {
+      if (checkErr) {
+        console.error('DB error checking existing user:', checkErr);
+        return res.status(500).json({
+          message: 'Internal server error',
+          error: 'db_error'
+        });
+      }
+      if (checkResults.length > 0) {
+        return res.status(409).json({
+          message: 'Username already exists',
+          error: 'user_name_already_exists'
+        });
+      }
+
+      db.query(
+        'UPDATE users SET name=? WHERE id=?',
+        [name, id],
+        (insertErr, insertResult) => {
+          if (insertErr) {
+            console.error('DB error creating new username:', insertErr);
+            return res.status(500).json({
+              message: 'Username change failed',
+              error: 'change_error'
+            });
+          }
+          res.status(201).json({
+            message: 'Username changed'
+          });
+        }
+      );
+    }
+  );
+});
+
 //login route
 app.post('/login', (req, res) => {
   const { identifier, password } = req.body;

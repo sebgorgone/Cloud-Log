@@ -26,23 +26,31 @@ export function AuthProvider({ children }) {
   
 
   useEffect(() => {
-    console.log('AuthProvider initializing, reading token...');
-    const t = localStorage.getItem('token');
-    if (!t) {
-      setLoading(false);
-      return;
-    }
-
-    const decoded = parseJwt(t);
-    if (decoded && decoded.exp * 1000 > Date.now()) {
-      setUser({ id: decoded.id, name: decoded.name, email: decoded.email });
-      setToken(t);
-    } else {
-      console.log('AuthProvider token invalid or expired, removing from storage');
-      localStorage.removeItem('token');
-    }
+  const stored = localStorage.getItem('user');
+  if (stored) {
+    // We’ve got an updated user in storage
+    setUser(JSON.parse(stored));
+    setToken(localStorage.getItem('token')); 
     setLoading(false);
-  }, []);
+    return;
+  }
+
+  // No stored user, fall back to token
+  const t = localStorage.getItem('token');
+  if (!t) {
+    setLoading(false);
+    return;
+  }
+  const decoded = parseJwt(t);
+  if (decoded && decoded.exp * 1000 > Date.now()) {
+    setUser({ id: decoded.id, name: decoded.name, email: decoded.email });
+    setToken(t);
+  } else {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
+  setLoading(false);
+}, []);
 
   const login = ({ token: t, user: u }) => {
     setUser(u);
@@ -55,10 +63,19 @@ export function AuthProvider({ children }) {
     setUser(null);
     setToken(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user')
+  };
+
+  const updateUsername = (newName) => {
+    setUser(prev => {
+      const updated = { ...prev, name: newName };
+      localStorage.setItem('user', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading, updateUsername }}>
       {children}
     </AuthContext.Provider>
   );
