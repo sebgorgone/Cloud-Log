@@ -270,7 +270,7 @@ function HomePage(props) {
          <div style={headerStyle}>
 
             <div >
-               <p style={nameStyle}>{user.name.length > 20 ? user.name.slice(0, 20) : user.name }!</p>
+               <p style={nameStyle}>{user.name.length > 20 ? user.name.slice(0, 20) : user.name }</p>
                <p style={jumpNumStyle}>{userJumpCount ? userJumpCount : userJumpCount !== 0 ? 'Loading...' : userJumpCount} Jumps</p>
             </div>
 

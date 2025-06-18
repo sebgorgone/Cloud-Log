@@ -179,7 +179,7 @@ function RegisterPage () {
   };
 
   const askDB = async () => {
-   setTimeOut((prev) => prev - 1);
+   setTimeOut(timeout - 1);
    console.log('attempts left', timeout);
    try {
       const response = await fetch('http://localhost:5009/askdbpos', {
@@ -201,7 +201,7 @@ function RegisterPage () {
 
    return(
       <div>
-         <img style={{aspectRatio: "1/1", width: "4em", marginRight: "2em", position: "fixed",}} src="/cloudLogBoxLogo-white.svg"/>
+         <img style={{aspectRatio: "1/1", width: "4em", marginRight: "2em", position: "absolute",}} src="/cloudLogBoxLogo-white.svg"/>
 
          <div style={{display: "flex", justifyContent: "center", background: pallette[3]}}>
             <h1 style={title}>Create New Account</h1>

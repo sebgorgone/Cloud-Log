@@ -13,8 +13,6 @@ function SettingsPage(props) {
 
    //state
 
-   const [flag, setFlag] = useState(false);
-
    const [userCred, setUserCred] = useState(null);
 
    const [usernameField, setUsernameField] = useState(false);
@@ -129,7 +127,13 @@ function SettingsPage(props) {
       setUsernameField(false);
    }
 
-
+   function handleChangeEmail (e) {
+      e.preventDefault();
+      if (!newEmail.includes('@') || !newEmail.includes('.')) return alert('Invalid Email')
+      changeEmail();
+      setNewEmail('');
+      setEmailField(false);
+   }
 
    //time stamp jsx
 
@@ -194,17 +198,18 @@ function SettingsPage(props) {
       width: "100%",
       fontFamily: "L1",
       color: pallette[0],
-      textAlign: "center"
+      textAlign: "center",
+      fontSize: "3em",
    }
 
    const settingsStyle = {
       display: "flex",
       flexFlow: "column",
-      width: "40%"
+      width: "30%"
    }
 
    const timeStamp = {
-      fontSize: ".6em",
+      fontSize: ".8em",
       fontFamily: "L1",
       color: pallette[0],
       marginLeft: ".5em"
@@ -213,7 +218,7 @@ function SettingsPage(props) {
    const changePasswordButton = {
       border: "none",
       fontFamily: "L1",
-      width: "70%",
+      width: "106%",
       borderRadius: "1em",
       paddingBottom: ".2em",
       background: pallette[1],
@@ -224,7 +229,7 @@ function SettingsPage(props) {
       border: "none",
       marginBottom: "1em",
       fontFamily: "L1",
-      width: "50%",
+      width: "90%",
       borderRadius: "1em",
       paddingBottom: ".2em",
       background: pallette[3],
@@ -232,10 +237,10 @@ function SettingsPage(props) {
    }
 
    const inputStyle = {
-      width: "1000vw",
+      width: "60%",
       fontFamily: "L1",
       fontSize: "1.em",
-      padding: ".3em",
+      padding: ".2em",
       textAlign: "center",
       margin: "0",
       marginBottom: ".5em",
@@ -376,6 +381,7 @@ function SettingsPage(props) {
       alert('Error');
     }
   };
+
   const changeUsername = async () => {
     try {
       const response = await fetch('http://localhost:5009/changeusername', {
@@ -407,17 +413,49 @@ function SettingsPage(props) {
     }
   };
 
+  const changeEmail = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/changeemail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newEmail, id: user.ID }),
+      });
+
+      const contentType = response.headers.get('content-type');
+      let returnedData;
+      if (contentType && contentType.includes('application/json')) {
+        returnedData = await response.json();
+      } else {
+        returnedData = await response.text();
+      }
+
+      if (response.ok) {
+        
+        console.log('✅ email change success', response.ok);
+        getUser();
+
+      } else {
+        console.error('❌ email change failed:', returnedData);
+        alert(returnedData.error || returnedData.message || 'error')
+      }
+    } catch (err) {
+      console.error('error', err);
+      alert('Error');
+    }
+  };
+
    //useEffect
 
    useEffect(() => {
       getUser();
-   }, [flag])
+   }, [])
 
    return(
       <div>
          <div style={shell}>
             <br />
 
+            <img style={{aspectRatio: '5 /1', width: '100%',paddingTop: "2em", margin: "0"}} src="/CloudLogBannerWhite.svg" />
             <h1 style={headerStyle}>Settings</h1>
 
             {passwordField ? 
@@ -425,7 +463,7 @@ function SettingsPage(props) {
                userValidated ? 
 
 
-                  <div>
+                  <div style={settingsStyle}>
                      <p style={textStyle}>Enter Your New Password</p>
                      <input 
                         style={inputStyle}
@@ -499,15 +537,19 @@ function SettingsPage(props) {
                      
                      {!emailField && <button style={changeButton} onClick={handleCEClick}>change email</button>}
                      
-                     {emailField && <input 
-                        value={newEmail}
-                        onChange={handleNewEmailChange}
-                        style={inputStyle}
-                        placeholder="change email" 
-                     />}
+                     {emailField && 
+                        <form onSubmit={handleChangeEmail}>
+                           <input 
+                              value={newEmail}
+                              onChange={handleNewEmailChange}
+                              style={inputStyle}
+                              placeholder="change email" 
+                           />
+                        </form>
+                     }
 
                      {emailField && <div style={{marginBottom: ".75em"}}>
-                        <button style={nestedButtonOk}>change email</button>
+                        <button style={nestedButtonOk} onClick={handleChangeEmail}>change email</button>
                         <button style={nestedButtonCancel} onClick={handleCECancel}>cancel</button>
                      </div>}
                      
@@ -520,6 +562,21 @@ function SettingsPage(props) {
                      
                   </div>
                }
+
+               <div style={settingsStyle}>
+
+                  <p style={textStyle}>Edit Stored Jumps</p>
+                  <button style={changeButton}>edit records</button>
+
+                  <p style={textStyle}>Home DZ {'loading..'}</p>
+                  <button style={changeButton}>change Home DZ</button>
+
+                  <p style={textStyle}>Default Rig {'loading...'}</p>
+                  <button style={changeButton}>change default rig</button>
+
+                  <p style={textStyle}>Default Aircraft {'loading...'}</p>
+                  <button style={changeButton}>change default aircraft</button>
+               </div>
 
             
          </div>

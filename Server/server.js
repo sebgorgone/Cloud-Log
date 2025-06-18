@@ -147,6 +147,48 @@ app.post('/changeusername', (req, res) => {
   );
 });
 
+//change email
+app.post('/changeemail', (req, res) => {
+  const { email, id } = req.body;
+
+  db.query(
+    'SELECT id FROM users WHERE email = ?',
+    [email],
+    (checkErr, checkResults) => {
+      if (checkErr) {
+        console.error('DB error checking existing email:', checkErr);
+        return res.status(500).json({
+          message: 'Internal server error',
+          error: 'db_error'
+        });
+      }
+      if (checkResults.length > 0) {
+        return res.status(409).json({
+          message: 'Email already exists',
+          error: 'email_already_exists'
+        });
+      }
+
+      db.query(
+        'UPDATE users SET email=? WHERE id=?',
+        [email, id],
+        (insertErr, insertResult) => {
+          if (insertErr) {
+            console.error('DB error creating new email:', insertErr);
+            return res.status(500).json({
+              message: 'Email change failed',
+              error: 'change_error'
+            });
+          }
+          res.status(201).json({
+            message: 'Email changed'
+          });
+        }
+      );
+    }
+  );
+});
+
 //login route
 app.post('/login', (req, res) => {
   const { identifier, password } = req.body;
@@ -541,22 +583,42 @@ app.post('/askdbpos', (req, res) => {
   const { name, email } = req.body;
 
   db.query(
-    `SELECT * FROM users 
-     WHERE TRIM(LOWER(name)) = TRIM(LOWER(?)) 
-     AND TRIM(LOWER(email)) = TRIM(LOWER(?))`,
+    `SELECT * FROM users
+     WHERE TRIM(LOWER(name))  = TRIM(LOWER(?))
+       AND TRIM(LOWER(email)) = TRIM(LOWER(?))`,
     [name, email],
     (err, results) => {
       if (err) {
         console.error('DB error:', err);
         return res.status(500).json({ message: 'could not get user' });
       }
-
-      console.log("found usermatch")
       if (results.length === 0) {
-        return res.status(404).json({ message: 'no user found', ok: false });
+        return res
+          .status(404)
+          .json({ message: 'no user found', ok: false });
       }
 
-      return res.status(200).json({ message: 'user found', ok: true });
+      const userId = results[0].id;
+
+      db.query(
+        'INSERT INTO presets (user_id) VALUES (?)',
+        [userId],
+        (defErr, defResults) => {
+          if (defErr) {
+            console.error('DB error creating defaults:', defErr);
+            return res
+              .status(500)
+              .json({ message: 'could not make defaults' });
+          }
+
+          return res
+            .status(201)
+            .json({
+              message: 'successfully created user defaults',
+              ok: true
+            });
+        }
+      );
     }
   );
 });

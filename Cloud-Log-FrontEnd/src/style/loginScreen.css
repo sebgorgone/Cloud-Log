@@ -10,7 +10,7 @@
 
 button {
    box-shadow: 4px 5px #000000;
-   transition: .7s;
+   transition: .5s;
 }
 
 button:hover {
