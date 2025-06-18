@@ -7,7 +7,9 @@ function SettingsPage(props) {
 
    const pallette = getPallette();
 
-   const user = props.user;
+   // const user = props.user;
+
+   const user = { ID: 1}
 
    const { updateUsername } = useAuth();
 
@@ -33,12 +35,33 @@ function SettingsPage(props) {
 
    const [checkNewUserPassword, setCheckNewUserPassword] = useState();
 
+
+   const [jumpEditPage, setJumpEditPage] = useState();
+   const [dzField, setDzField] = useState(false);
+   const [rigField, setRigField] = useState(false);
+   const [aircraftField, setAircraftField] = useState(false);
+
+   const [rigs, setRigs] = useState(['No saved rigs yet']);
+   const [planes, setPlanes] = useState(['No saved planes yet']);
+   const [DZs, setDZs] = useState(['No saved dropzones yet']);
+
+   const [defaultRig, setDefualtRig] = useState(null);
+   const [defaultAircraft, setDefaultAircraft] = useState(null);
+   const [defaultDZ, setDefaultDZ] = useState(null);
+
+   const [addJumpDZ, setAddJumpDZ] = useState();
+
    //handlers
 
    function handleCUCLick (e) {
       e.preventDefault();
       setEmailField(false);
       setNewEmail(null)
+
+      setDzField(false);
+      setRigField(false);
+      setAircraftField(false);
+
       setUsernameField(true);
    }
 
@@ -52,10 +75,16 @@ function SettingsPage(props) {
       setNewUsername(e.target.value);
    }
 
+
    function handleCEClick (e) {
       e.preventDefault();
       setUsernameField(false)
       setNewUsername(null)
+
+      setDzField(false);
+      setRigField(false);
+      setAircraftField(false);
+
       setEmailField(true);
 
    }
@@ -70,13 +99,22 @@ function SettingsPage(props) {
       setNewEmail(e.target.value);
    }
 
+
+
    function handleCPClick (e) {
       e.preventDefault();
       setNewUsername(null);
       setNewEmail(null);
       setUsernameField(false);
       setEmailField(false);
+
+      setDzField(false);
+      setRigField(false);
+      setAircraftField(false);
+
       setPasswordField(true);
+
+
    }
 
    function handleValidatePasswordChange (e) {
@@ -106,6 +144,8 @@ function SettingsPage(props) {
       setCheckNewUserPassword(e.target.value)
    }
 
+
+
    function handleChangePassword (e) {
       e.preventDefault()
       if (newUserPassword.length < 7 || newUserPassword.length > 35) return alert('incorrect passsword length')
@@ -134,6 +174,106 @@ function SettingsPage(props) {
       setNewEmail('');
       setEmailField(false);
    }
+
+
+
+   function handleDRF (e) {
+      e.preventDefault();
+      setAircraftField(false);
+      setDzField(false);
+
+      setNewUsername(null);
+      setNewEmail(null);
+      setUsernameField(false);
+      setEmailField(false);
+      setPasswordField(false);
+      setValidatePassword(null);
+      setUserValidated(false);
+      setNewUserPassword('');
+      setCheckNewUserPassword('');
+
+      setRigField(true);
+   }
+
+   function handleDDF (e) {
+      e.preventDefault();
+      setAircraftField(false);
+      setRigField(false);
+
+      setNewUsername(null);
+      setNewEmail(null);
+      setUsernameField(false);
+      setEmailField(false);
+      setPasswordField(false);
+      setValidatePassword(null);
+      setUserValidated(false);
+      setNewUserPassword('');
+      setCheckNewUserPassword('');
+      
+      setDzField(true);
+   }
+
+   function handleDAF (e) {
+      e.preventDefault();
+      setDzField(false);
+      setRigField(false);
+
+      setNewUsername(null);
+      setNewEmail(null);
+      setUsernameField(false);
+      setEmailField(false);
+      setPasswordField(false);
+      setValidatePassword(null);
+      setUserValidated(false);
+      setNewUserPassword('');
+      setCheckNewUserPassword('');
+      
+      setAircraftField(true);
+   }
+
+
+  function handleSetFavoriteRig (chute) {
+
+    console.log('chute=', chute)
+    if (chute === defaultRig) return
+    storeDefaultRig(chute)
+
+  }
+
+  function handleSetFavoriteDZ (dz) {
+
+    console.log('dz=', dz)
+    if (dz === defaultDZ) return
+    storeDefaultDZ(dz)
+
+  }
+
+  function handleSetFavoriteAircraft (ac) {
+
+    console.log('ac=', ac);
+    if (ac === defaultAircraft) return;
+    storeDefaultAircraft(ac);
+
+  }
+
+  function handleDZFCancel (e) {
+   e.preventDefault();
+   setAddJumpDZ("")
+   setDzField(false);
+  }
+
+   function handleDZInput (e) {
+    e.preventDefault()
+    if (addJumpDZ.trim() !== ""){
+      storeDZ(addJumpDZ)
+      getDZs();
+      setAddJumpDZ("")
+    }
+  }
+
+  function handleAddJumpDZChange (e) {
+    setAddJumpDZ(e.target.value);
+  }
 
    //time stamp jsx
 
@@ -275,8 +415,62 @@ function SettingsPage(props) {
       paddingBottom: ".4em",
       background: pallette[4],
       color: pallette[1],
-      marginLeft: ".6em"
+      marginLeft: ".6em",
+      marginBottom: "1.6em"
    }
+
+   const favoriteButtonNull = {
+    height: "fit-content",
+    background: pallette[2],
+    border: "none",
+    padding: ".5em",
+    paddingTop: ".5em",
+    paddingBottom: ".3em",
+    borderRadius: "3em",
+    marginRight: ".5em",
+    marginLeft: ".5em",
+  }
+
+  const listDiv = {
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "space-between", 
+    width: "60%", 
+    borderRadius: "1em", 
+    background: pallette[0], 
+    paddingRight: "1em", 
+    margin: "1em"
+  }
+
+  const rlStyle = {
+   fontFamily: "L1",
+   fontSize: "1em",
+   padding: ".1em",
+   color: pallette[3]
+   }
+
+//rendered lists
+
+   const planeList = planes.map((plane, index) => 
+       <div key={index} style={listDiv}>
+       <p style={rlStyle}>{plane}</p>
+       {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+     </div>
+     );
+
+     const rigList = rigs.map((rig, index) => 
+       <div key={index} style={listDiv}>
+         <p style={rlStyle}>{rig}</p>
+         {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+       </div>
+     );
+
+     const DZList = DZs.map((DZ, index) => 
+       <div key={index} style={listDiv}>
+         <p style={rlStyle}>{DZ}</p>
+         {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+       </div>
+     );
 
    //api
 
@@ -437,10 +631,183 @@ function SettingsPage(props) {
     }
   };
 
+  const getRigs = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getrigs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID}),
+      });
+      const returnedData = await response.json();
+      if(response.ok){
+        let foundRigs = [];
+        for (let rig of returnedData.results) {
+          foundRigs.push(rig.name);
+        }
+        setRigs([...foundRigs]);
+      } else{
+        console.error('no rigs imported', response);
+      }
+    } catch (err) {
+      console.error('client failed getting rigs', err);
+    }
+  };
+
+   const storeRig = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/storerigs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID, name: addJumpRig }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing rig', err);}
+  };
+
+  const getPlanes = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getplanes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID}),
+      });
+      const returnedData = await response.json();
+      if(response.ok){
+        let foundPlanes = [];
+        for (let plane of returnedData.results) {
+          foundPlanes.push(plane.name);
+        }
+        setPlanes([...foundPlanes]);
+      } else{
+        console.error('no Planes imported', response);
+      }
+    } catch (err) {
+      console.error('client failed plane rigs', err)
+    }
+  };
+
+  const storePlane = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/storeplanes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID, name: addJumpAircraft }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing plane', err);}
+  }
+
+  const getDZs = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getdzs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID}),
+      });
+      const returnedData = await response.json();
+      if(response.ok){
+        let foundDZs = [];
+        for (let dz of returnedData.results) {
+          foundDZs.push(dz.name);
+        }
+        setDZs([...foundDZs]);
+      } else{
+        console.error('no DZs imported', response);
+      }
+    } catch (err) {
+      console.error('client failed getting DZs', err);
+    }
+  };
+
+  const storeDZ = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/storedz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID, name: addJumpDZ }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing DZ', err);}
+  };
+
+    const storeDefaultRig = async (eqpm) => {
+    try {
+      const response = await fetch('http://localhost:5009/storedefaultrig', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID, rig: eqpm }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        getDefaults();
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing Defualt', err);}
+  };
+
+  const storeDefaultDZ = async (dz) => {
+    try {
+      const response = await fetch('http://localhost:5009/storedefaultdz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID, dz: dz }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        getDefaults();
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing Default', err);}
+  };
+
+  const storeDefaultAircraft = async (aircraft) => {
+    try {
+      const response = await fetch('http://localhost:5009/storedefaultaircraft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID, aircraft: aircraft }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+        getDefaults();
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing Default', err);}
+  };
+
+  const getDefaults = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getdefaults', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID}),
+      });
+      const returnedData = await response.json();
+      const data = returnedData.results[0]
+      if(response.ok){
+        console.log('retrieved user defaults--> ', 'data: ', data, ' rig: ', data.rig, ' dz: ', data.dz, ' aircraft: ', data.aircraft)
+        setDefualtRig(data.rig);
+        setDefaultAircraft(data.aircraft);
+        setDefaultDZ(data.dz);
+      } else{
+        console.error('no defaults retrieved', response);
+      }
+    } catch (err) {
+      console.error('client failed getting defaults', err);
+    }
+  }; 
+
    //useEffect
 
    useEffect(() => {
       getUser();
+      getDefaults();
+      getDZs();
+      getRigs();
+      getPlanes();
    }, [])
 
    return(
@@ -561,14 +928,31 @@ function SettingsPage(props) {
                   <p style={textStyle}>Edit Stored Jumps</p>
                   <button style={changeButton}>edit records</button>
 
-                  <p style={textStyle}>Home DZ {'loading..'}</p>
-                  <button style={changeButton}>change Home DZ</button>
+                  <p style={textStyle}>Home DZ {defaultDZ ? defaultDZ : 'none'}</p>
+                  {!dzField && <button style={changeButton} onClick={handleDDF}>change Home DZ</button>}
+                  {dzField && DZList}
+                  {dzField &&
+                     <form onSubmit={handleDZInput}>
+                        <input 
+                           style={inputStyle}
+                           id="newDZ"
+                           type="text" 
+                           placeholder="new DZ"
+                           value={addJumpDZ}
+                           onChange={handleAddJumpDZChange}
+                        />
+                        <button style={nestedButtonOk}  onClick={handleDZInput}>add</button> 
+                     </form>
+                  }
+                  {dzField && 
+                     <button style={nestedButtonCancel} onClick={handleDZFCancel}>hide</button>
+                  }
 
-                  <p style={textStyle}>Default Rig {'loading...'}</p>
-                  <button style={changeButton}>change default rig</button>
+                  <p style={textStyle}>Default Rig {defaultRig ? defaultRig :'none'}</p>
+                  {!rigField && <button style={changeButton} onClick={handleDRF}>change default rig</button>}
 
-                  <p style={textStyle}>Default Aircraft {'loading...'}</p>
-                  <button style={changeButton}>change default aircraft</button>
+                  <p style={textStyle}>Default Aircraft {defaultAircraft ? defaultAircraft :'none'}</p>
+                  {!aircraftField && <button style={changeButton} onClick={handleDAF}>change default aircraft</button>}
                </div>
 
             

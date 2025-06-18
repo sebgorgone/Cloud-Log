@@ -163,7 +163,7 @@ function WelcomeForm (props) {
 
 
    //api
-     const getRigs = async () => {
+   const getRigs = async () => {
     try {
       const response = await fetch('http://localhost:5009/getrigs', {
         method: 'POST',
