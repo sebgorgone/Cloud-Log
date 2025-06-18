@@ -50,6 +50,7 @@ function SettingsPage(props) {
    const [defaultDZ, setDefaultDZ] = useState(null);
 
    const [addJumpDZ, setAddJumpDZ] = useState();
+   const [addJumpRig, setAddJumpRig] = useState();
 
    //handlers
 
@@ -63,6 +64,7 @@ function SettingsPage(props) {
       setAircraftField(false);
 
       setAddJumpDZ("")
+      setAddJumpRig("")
 
       setUsernameField(true);
    }
@@ -88,6 +90,7 @@ function SettingsPage(props) {
       setAircraftField(false);
 
       setAddJumpDZ("")
+      setAddJumpRig("")
 
       setEmailField(true);
 
@@ -117,6 +120,7 @@ function SettingsPage(props) {
       setAircraftField(false);
 
       setAddJumpDZ("")
+      setAddJumpRig("")
 
       setPasswordField(true);
 
@@ -208,6 +212,8 @@ function SettingsPage(props) {
       setAircraftField(false);
       setRigField(false);
 
+      setAddJumpRig("")
+
       setNewUsername(null);
       setNewEmail(null);
       setUsernameField(false);
@@ -226,7 +232,8 @@ function SettingsPage(props) {
       setDzField(false);
       setRigField(false);
 
-      setAddJumpDZ("")
+      setAddJumpDZ("");
+      setAddJumpRig("");
 
       setNewUsername(null);
       setNewEmail(null);
@@ -266,6 +273,8 @@ function SettingsPage(props) {
 
   }
 
+
+
   function handleDZFCancel (e) {
    e.preventDefault();
    setAddJumpDZ("")
@@ -283,6 +292,39 @@ function SettingsPage(props) {
 
   function handleAddJumpDZChange (e) {
     setAddJumpDZ(e.target.value);
+  }
+
+  function handleRFCancel (e) {
+   e.preventDefault();
+   setAddJumpRig("")
+   setRigField(false);
+  }
+
+  function handleAircraftInput (e) {
+    e.preventDefault()
+    if (addJumpAircraft.trim() !== ""){
+      storePlane(addJumpAircraft);
+      getPlanes();
+      setAddJumpAircraft("");
+    }
+  }
+
+  function handleRigInput (e) {
+    e.preventDefault()
+    if (addJumpRig.trim() !== ""){
+      storeRig();
+      getRigs();
+      setAddJumpRig("");
+    }
+
+  }
+
+  function handleAddJumpAircraftChange (e) {
+    setAddJumpAircraft(e.target.value);
+  }
+
+  function handleAddJumpRigChange (e) {
+    setAddJumpRig(e.target.value);
   }
 
    //time stamp jsx
@@ -938,6 +980,8 @@ function SettingsPage(props) {
                   <p style={textStyle}>Edit Stored Jumps</p>
                   <button style={changeButton}>edit records</button>
 
+
+
                   <p style={textStyle}>Home DZ {defaultDZ ? defaultDZ : 'none'}</p>
                   {!dzField && <button style={changeButton} onClick={handleDDF}>change Home DZ</button>}
                   {dzField && DZList}
@@ -958,8 +1002,27 @@ function SettingsPage(props) {
                      <button style={nestedButtonCancel} onClick={handleDZFCancel}>hide</button>
                   }
 
+
+
                   <p style={textStyle}>Default Rig {defaultRig ? defaultRig :'none'}</p>
                   {!rigField && <button style={changeButton} onClick={handleDRF}>change default rig</button>}
+                  {rigField && rigList}
+                  {rigField && 
+                     <form onSubmit={handleRigInput}>
+                        <input 
+                           style={inputStyle}
+                           id="newRig"
+                           type="text" 
+                           placeholder="new Rig"
+                           value={addJumpRig}
+                           onChange={handleAddJumpRigChange}
+                        />
+                        <button style={nestedButtonOk}  onClick={handleRigInput}>add</button>
+                     </form>  
+                  }
+                  {rigField && 
+                     <button style={nestedButtonCancel} onClick={handleRFCancel}>hide</button>
+                  }
 
                   <p style={textStyle}>Default Aircraft {defaultAircraft ? defaultAircraft :'none'}</p>
                   {!aircraftField && <button style={changeButton} onClick={handleDAF}>change default aircraft</button>}
