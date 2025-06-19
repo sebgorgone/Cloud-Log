@@ -2,18 +2,25 @@ import {useState, useEffect} from 'react';
 import {getPallette} from "../logInputWidget";
 import '../style/loginScreen.css';
 import { useAuth } from '../contexts/authContext';
+import JumpWidget from '../components/JumpWidget';
 
 function SettingsPage(props) {
 
    const pallette = getPallette();
 
-   // const user = props.user;
+   const user = props.user;
 
-   const user = { ID: 1}
+   // const user = { ID: 1}
+
+   const jumps = props.jumps;
 
    const { updateUsername } = useAuth();
 
+   console.log('jump history for the settings', jumps)
+
    const favoriteIcon = <img style={{width: "1.5em"}} src="/favorite-svgrepo-com.svg" />
+
+   const backIcon = <img style={{width: ".8em", aspectRatio: "1 /1", paddingRight: "1em"}} src="/back-arrow-to-first-track-svgrepo-com(1).svg" />
 
    //state
 
@@ -54,6 +61,8 @@ function SettingsPage(props) {
    const [addJumpDZ, setAddJumpDZ] = useState();
    const [addJumpRig, setAddJumpRig] = useState();
    const [addJumpAircraft, setAddJumpAircraft] = useState();
+
+   const [page, setPage] = useState(0);
 
    //handlers
 
@@ -350,6 +359,49 @@ function SettingsPage(props) {
     setAddJumpRig(e.target.value);
   }
 
+
+  function handleERClick (e) {
+      e.preventDefault();
+
+      setDzField(false);
+      setRigField(false);
+      setAircraftField(false);
+
+      setAddJumpDZ("");
+      setAddJumpRig("");
+      setAddJumpAircraft("");
+
+      setNewUsername(null);
+      setNewEmail(null);
+      setUsernameField(false);
+      setEmailField(false);
+      setPasswordField(false);
+      setValidatePassword(null);
+      setUserValidated(false);
+      setNewUserPassword('');
+      setCheckNewUserPassword('');
+
+      setJumpEditPage(true);
+  }
+
+  function handleERCancel (e) {
+   e.preventDefault();
+
+   setJumpEditPage(false);
+  }
+
+
+  function handleNextPage (e) {
+   if (page > Math.floor(props.jump_num / 15) - 1) return 
+   setPage(page + 1);
+  }
+
+  function handlePrevPage (e) {
+   if (page === 0) return
+   setPage(page - 1)
+
+  }
+
    //time stamp jsx
 
    function createdAt() {
@@ -526,6 +578,31 @@ function SettingsPage(props) {
    color: pallette[3]
    }
 
+   const backButton = {
+      border: "none",
+      fontFamily: "L1",
+      width: "40%",
+      borderRadius: "1em",
+      paddingBottom: ".2em",
+      background: pallette[3],
+      color: pallette[0],
+   }
+
+   const editOk = {
+      border: "none",
+      fontSize: "1.5em",
+      fontFamily: "L1",
+      borderRadius: "1em",
+      marginLeft: ".5em",
+      background: pallette[1],
+      color: pallette[4],
+      width: "5em",
+      height: "2em"
+
+   }
+
+   
+
 //rendered lists
 
    const planeList = planes.map((plane, index) => 
@@ -548,6 +625,28 @@ function SettingsPage(props) {
          {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
        </div>
      );
+
+     const jumpList = Array.isArray(jumps)
+  ? jumps.slice(page * 15, (page * 15) + 15).map((jump, idx) => (
+      <div key={idx} style={{marginTop: "2em", display: "flex", alignItems: "center"}}>
+        <JumpWidget 
+          jumpNum={jump.jump_num}
+          jumpDate={jump.jump_date.slice(0,10)}
+          dz={jump.dz}
+          aircraft={jump.aircraft}
+          rig={jump.equipment}
+          exitAlt={jump.alt}
+          time={jump.t}
+          notes={jump.notes}
+          signature="no pdf display in settings"
+          jump_id={jump.jump_id}
+          tags="no tags display in settings"
+          context="gathered"
+        />
+        <button style={editOk}>edit</button>
+      </div>
+    ))
+  : null;
 
    //api
 
@@ -887,191 +986,252 @@ function SettingsPage(props) {
       getPlanes();
    }, [])
 
-   return(
-      <div>
-         <div style={shell}>
-            <br />
+   return (
+  <div>
+    <div style={shell}>
+      <br />
+      <img
+        style={{
+          aspectRatio: '5 /1',
+          width: '80%',
+          paddingTop: '2em',
+          paddingRight: '8%',
+          margin: '0'
+        }}
+        src="/CloudLogBannerWhite.svg"
+      />
+      <h1 style={headerStyle}>{!jumpEditPage ? 'Settings' : 'Edit Jumps'}</h1>
 
-            <img style={{aspectRatio: '5 /1', width: '80%',paddingTop: "2em",paddingRight: "8%", margin: "0"}} src="/CloudLogBannerWhite.svg" />
-            <h1 style={headerStyle}>Settings</h1>
-
-            {passwordField ? 
-            
-               userValidated ? 
-
-
-                  <div style={settingsStyle}>
-                     <p style={textStyle}>Enter Your New Password</p>
-                     <input 
-                        style={inputStyle}
-                        type='password'
-                        placeholder="new password"
-                        value={newUserPassword}
-                        onChange={handleNewUserPasswordChange}
-                     />
-
-                     {checkValidPassword() && 
-                        <div>
-                           <p style={textStyle}>Confirm Your New Password</p>
-                           <input 
-                              style={inputStyle}
-                              placeholder="new password"
-                              type='password'
-                              value={checkNewUserPassword}
-                              onChange={handleCheckNewUserPasswordChange}
-                           />
-                        </div>}
-
-                     <div>
-                        {checkValidPassword() && <button style={nestedButtonOk} onClick={handleChangePassword}>Change Password</button>}
-                        <button style={nestedButtonCancel} onClick={handleCPCancel}>Cancel</button>
-                     </div>
-
-                  </div> 
-                  : 
-
-                  <form style={settingsStyle} onSubmit={handleValidate}>
-                     <p style={textStyle}>Enter Your Current Password</p>
-                     <div style={{marginBottom: ".75em"}}>
-                        <input 
-                           style={inputStyle}
-                           value={validatePassword}
-                           onChange={handleValidatePasswordChange}
-                           type="password"
-                           placeholder="password"
-                        />
-                        <button style={nestedButtonOk} onClick={handleValidate}>Enter</button>
-                        <button style={nestedButtonCancel} onClick={handleCPCancel}>cancel</button>
-                     </div>
-                  </form> 
-
-               : 
-            
-                  <div style={settingsStyle}>
-                  
-
-                     <p style={textStyle}>User: {user ? user.name: 'loading...'}</p>
-
-                     {!usernameField && <button style={changeButton} onClick={handleCUCLick}>change username</button>}
-
-                     {usernameField && 
-                        <form onSubmit={handleChangeUsername}>
-                           <input 
-                              value={newUsername}
-                              onChange={handleNewUserChange}
-                              style={inputStyle}
-                              placeholder='change username' 
-                           />
-                        </form>
-                     }
-
-                     {usernameField && <div style={{marginBottom: ".75em"}}>
-                        <button style={nestedButtonOk} onClick={handleChangeUsername}>change username</button>
-                        <button style={nestedButtonCancel} onClick={handleCUCancel}>cancel</button>
-                     </div>}
-                     
-                     <p style={textStyle}>Email: {userCred ? userCred[0].email : 'loading...'}</p>
-                     
-                     {!emailField && <button style={changeButton} onClick={handleCEClick}>change email</button>}
-                     
-                     {emailField && 
-                        <form onSubmit={handleChangeEmail}>
-                           <input 
-                              value={newEmail}
-                              onChange={handleNewEmailChange}
-                              style={inputStyle}
-                              placeholder="change email" 
-                           />
-                        </form>
-                     }
-
-                     {emailField && <div style={{marginBottom: ".75em"}}>
-                        <button style={nestedButtonOk} onClick={handleChangeEmail}>change email</button>
-                        <button style={nestedButtonCancel} onClick={handleCECancel}>cancel</button>
-                     </div>}
-                     
-                     
-                     
-                     <button style={changePasswordButton} onClick={handleCPClick}>change password</button>
-                     
-                     <p style={timeStamp}>{createdAt()}</p>
-                     
-                     
+      {!jumpEditPage ? (
+        <>
+          {passwordField ? (
+            userValidated ? (
+              <div style={settingsStyle}>
+                <p style={textStyle}>Enter Your New Password</p>
+                <input
+                  style={inputStyle}
+                  type="password"
+                  placeholder="new password"
+                  value={newUserPassword}
+                  onChange={handleNewUserPasswordChange}
+                />
+                {checkValidPassword() && (
+                  <div>
+                    <p style={textStyle}>Confirm Your New Password</p>
+                    <input
+                      style={inputStyle}
+                      placeholder="new password"
+                      type="password"
+                      value={checkNewUserPassword}
+                      onChange={handleCheckNewUserPasswordChange}
+                    />
                   </div>
-               }
+                )}
+                <div>
+                  {checkValidPassword() && (
+                    <button style={nestedButtonOk} onClick={handleChangePassword}>
+                      Change Password
+                    </button>
+                  )}
+                  <button style={nestedButtonCancel} onClick={handleCPCancel}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form style={settingsStyle} onSubmit={handleValidate}>
+                <p style={textStyle}>Enter Your Current Password</p>
+                <div style={{ marginBottom: '.75em' }}>
+                  <input
+                    style={inputStyle}
+                    value={validatePassword}
+                    onChange={handleValidatePasswordChange}
+                    type="password"
+                    placeholder="password"
+                  />
+                  <button style={nestedButtonOk} onClick={handleValidate}>
+                    Enter
+                  </button>
+                  <button style={nestedButtonCancel} onClick={handleCPCancel}>
+                    cancel
+                  </button>
+                </div>
+              </form>
+            )
+          ) : (
+            <div style={settingsStyle}>
+              <p style={textStyle}>User: {user ? user.name : 'loading...'}</p>
+              {!usernameField && (
+                <button style={changeButton} onClick={handleCUCLick}>
+                  change username
+                </button>
+              )}
+              {usernameField && (
+                <form onSubmit={handleChangeUsername}>
+                  <input
+                    value={newUsername}
+                    onChange={handleNewUserChange}
+                    style={inputStyle}
+                    placeholder="change username"
+                  />
+                </form>
+              )}
+              {usernameField && (
+                <div style={{ marginBottom: '.75em' }}>
+                  <button style={nestedButtonOk} onClick={handleChangeUsername}>
+                    change username
+                  </button>
+                  <button style={nestedButtonCancel} onClick={handleCUCancel}>
+                    cancel
+                  </button>
+                </div>
+              )}
+              <p style={textStyle}>
+                Email: {userCred ? userCred[0].email : 'loading...'}
+              </p>
+              {!emailField && (
+                <button style={changeButton} onClick={handleCEClick}>
+                  change email
+                </button>
+              )}
+              {emailField && (
+                <form onSubmit={handleChangeEmail}>
+                  <input
+                    value={newEmail}
+                    onChange={handleNewEmailChange}
+                    style={inputStyle}
+                    placeholder="change email"
+                  />
+                </form>
+              )}
+              {emailField && (
+                <div style={{ marginBottom: '.75em' }}>
+                  <button style={nestedButtonOk} onClick={handleChangeEmail}>
+                    change email
+                  </button>
+                  <button style={nestedButtonCancel} onClick={handleCECancel}>
+                    cancel
+                  </button>
+                </div>
+              )}
+              <button style={changePasswordButton} onClick={handleCPClick}>
+                change password
+              </button>
+              <p style={timeStamp}>{createdAt()}</p>
+            </div>
+          )}
 
-               <div style={settingsStyle}>
-
-                  <p style={textStyle}>Edit Stored Jumps</p>
-                  <button style={changeButton}>edit records</button>
-
-
-
-                  <p style={textStyle}>Home DZ {defaultDZ ? defaultDZ : 'none'}</p>
-                  {!dzField && <button style={changeButton} onClick={handleDDF}>change Home DZ</button>}
-                  {dzField && DZList}
-                  {dzField &&
-                     <form onSubmit={handleDZInput}>
-                        <input 
-                           style={inputStyle}
-                           id="newDZ"
-                           type="text" 
-                           placeholder="new DZ"
-                           value={addJumpDZ}
-                           onChange={handleAddJumpDZChange}
-                        />
-                        <button style={nestedButtonOk}  onClick={handleDZInput}>add</button> 
-                     </form>
-                  }
-                  {dzField && 
-                     <button style={nestedButtonCancel} onClick={handleDZFCancel}>hide</button>
-                  }
+          <div style={settingsStyle}>
+            <p style={textStyle}>Edit Stored Jumps</p>
+            <button style={changeButton} onClick={handleERClick}>edit records</button>
 
 
 
-                  <p style={textStyle}>Default Rig {defaultRig ? defaultRig :'none'}</p>
-                  {!rigField && <button style={changeButton} onClick={handleDRF}>change default rig</button>}
-                  {rigField && rigList}
-                  {rigField && 
-                     <form onSubmit={handleRigInput}>
-                        <input 
-                           style={inputStyle}
-                           id="newRig"
-                           type="text" 
-                           placeholder="new Rig"
-                           value={addJumpRig}
-                           onChange={handleAddJumpRigChange}
-                        />
-                        <button style={nestedButtonOk}  onClick={handleRigInput}>add</button>
-                        <button style={nestedButtonCancel} onClick={handleRFCancel}>hide</button>
-                     </form>  
-                  }
+            <p style={textStyle}>Home DZ {defaultDZ ? defaultDZ : 'none'}</p>
+            {!dzField && (
+              <button style={changeButton} onClick={handleDDF}>
+                change Home DZ
+              </button>
+            )}
+            {dzField && DZList}
+            {dzField && (
+              <form onSubmit={handleDZInput}>
+                <input
+                  style={inputStyle}
+                  id="newDZ"
+                  type="text"
+                  placeholder="new DZ"
+                  value={addJumpDZ}
+                  onChange={handleAddJumpDZChange}
+                />
+                <button style={nestedButtonOk} onClick={handleDZInput}>
+                  add
+                </button>
+              </form>
+            )}
+            {dzField && (
+              <button style={nestedButtonCancel} onClick={handleDZFCancel}>
+                hide
+              </button>
+            )}
 
-                  <p style={textStyle}>Default Aircraft {defaultAircraft ? defaultAircraft :'none'}</p>
-                  {!aircraftField && <button style={changeButton} onClick={handleDAF}>change default aircraft</button>}
-                  {aircraftField && planeList}
-                  {aircraftField && 
-                     <form onSubmit={handleAircraftInput}>
-                        <input 
-                           style={inputStyle}
-                           id="newAircraft"
-                           type="text" 
-                           placeholder="new Aircraft"
-                           value={addJumpAircraft}
-                           onChange={handleAddJumpAircraftChange}
-                        />
-                        <button style={nestedButtonOk}  onClick={handleAircraftInput}>add</button>
-                     </form>  
-                  }
-                  {aircraftField && 
-                     <button style={nestedButtonCancel} onClick={handleAFCancel}>hide</button>
-                  }
-               </div>
+            <p style={textStyle}>Default Rig {defaultRig ? defaultRig : 'none'}</p>
+            {!rigField && (
+              <button style={changeButton} onClick={handleDRF}>
+                change default rig
+              </button>
+            )}
+            {rigField && rigList}
+            {rigField && (
+              <form onSubmit={handleRigInput}>
+                <input
+                  style={inputStyle}
+                  id="newRig"
+                  type="text"
+                  placeholder="new Rig"
+                  value={addJumpRig}
+                  onChange={handleAddJumpRigChange}
+                />
+                <button style={nestedButtonOk} onClick={handleRigInput}>
+                  add
+                </button>
+                <button style={nestedButtonCancel} onClick={handleRFCancel}>
+                  hide
+                </button>
+              </form>
+            )}
 
+            <p style={textStyle}>
+              Default Aircraft {defaultAircraft ? defaultAircraft : 'none'}
+            </p>
+            {!aircraftField && (
+              <button style={changeButton} onClick={handleDAF}>
+                change default aircraft
+              </button>
+            )}
+            {aircraftField && planeList}
+            {aircraftField && (
+              <form onSubmit={handleAircraftInput}>
+                <input
+                  style={inputStyle}
+                  id="newAircraft"
+                  type="text"
+                  placeholder="new Aircraft"
+                  value={addJumpAircraft}
+                  onChange={handleAddJumpAircraftChange}
+                />
+                <button style={nestedButtonOk} onClick={handleAircraftInput}>
+                  add
+                </button>
+              </form>
+            )}
+            {aircraftField && (
+              <button style={nestedButtonCancel} onClick={handleAFCancel}>
+                hide
+              </button>
+            )}
+          </div>
+        </>
+      ) : (
+        
+         <div style={{width: '100%', margin: "auto", display: "flex", flexFlow: "column", justifyContent: "center"}}>
+
+            <div style={{width: "100%",display: "flex", justifyContent: "center", margin: "auto"}}>
+               <button style={backButton} onClick={handleERCancel}>{backIcon}back</button>
+            </div>
+
+            <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
+               <button onClick={handlePrevPage}>prev</button>
+               <button onClick={handleNextPage}>next</button>
+            </div>
+
+            {jumpList}
             
          </div>
-      </div>
-   )
+      )}
+    </div>
+  </div>
+);
 
 }
 
