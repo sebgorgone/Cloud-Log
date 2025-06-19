@@ -53,6 +53,7 @@ function SettingsPage(props) {
 
    const [addJumpDZ, setAddJumpDZ] = useState();
    const [addJumpRig, setAddJumpRig] = useState();
+   const [addJumpAircraft, setAddJumpAircraft] = useState();
 
    //handlers
 
@@ -65,8 +66,9 @@ function SettingsPage(props) {
       setRigField(false);
       setAircraftField(false);
 
-      setAddJumpDZ("")
-      setAddJumpRig("")
+      setAddJumpDZ("");
+      setAddJumpRig("");
+      setAddJumpAircraft("");
 
       setUsernameField(true);
    }
@@ -91,8 +93,9 @@ function SettingsPage(props) {
       setRigField(false);
       setAircraftField(false);
 
-      setAddJumpDZ("")
-      setAddJumpRig("")
+      setAddJumpDZ("");
+      setAddJumpRig("");
+      setAddJumpAircraft("");
 
       setEmailField(true);
 
@@ -121,8 +124,9 @@ function SettingsPage(props) {
       setRigField(false);
       setAircraftField(false);
 
-      setAddJumpDZ("")
-      setAddJumpRig("")
+      setAddJumpDZ("");
+      setAddJumpRig("");
+      setAddJumpAircraft("");
 
       setPasswordField(true);
 
@@ -194,7 +198,8 @@ function SettingsPage(props) {
       setAircraftField(false);
       setDzField(false);
 
-      setAddJumpDZ("")
+      setAddJumpDZ("");
+      setAddJumpAircraft("");
 
       setNewUsername(null);
       setNewEmail(null);
@@ -214,7 +219,8 @@ function SettingsPage(props) {
       setAircraftField(false);
       setRigField(false);
 
-      setAddJumpRig("")
+      setAddJumpRig("");
+      setAddJumpAircraft("");
 
       setNewUsername(null);
       setNewEmail(null);
@@ -284,7 +290,10 @@ function SettingsPage(props) {
   }
 
    function handleDZInput (e) {
-    e.preventDefault()
+    e.preventDefault();
+    for (let d of DZs){
+      if (addJumpDZ === d) return alert('Dropzone already exists')
+    }
     if (addJumpDZ.trim() !== ""){
       storeDZ(addJumpDZ)
       getDZs();
@@ -302,8 +311,17 @@ function SettingsPage(props) {
    setRigField(false);
   }
 
+  function handleAFCancel (e) {
+   e.preventDefault();
+   setAddJumpAircraft("");
+   setAircraftField(false);
+  }
+
   function handleAircraftInput (e) {
-    e.preventDefault()
+    e.preventDefault();
+    for (let a of planes){
+      if (addJumpAircraft === a) return alert('Aircraft already exists')
+    }
     if (addJumpAircraft.trim() !== ""){
       storePlane(addJumpAircraft);
       getPlanes();
@@ -312,7 +330,10 @@ function SettingsPage(props) {
   }
 
   function handleRigInput (e) {
-    e.preventDefault()
+    e.preventDefault();
+    for (let r of rigs) {
+      if (addJumpRig === r) return alert('rig already exists')
+    }
     if (addJumpRig.trim() !== ""){
       storeRig();
       getRigs();
@@ -521,7 +542,7 @@ function SettingsPage(props) {
      const DZList = DZs.map((DZ, index) => 
        <div key={index} style={listDiv}>
          <p style={rlStyle}>{DZ}</p>
-         {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+         {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
        </div>
      );
 
@@ -1027,6 +1048,23 @@ function SettingsPage(props) {
 
                   <p style={textStyle}>Default Aircraft {defaultAircraft ? defaultAircraft :'none'}</p>
                   {!aircraftField && <button style={changeButton} onClick={handleDAF}>change default aircraft</button>}
+                  {aircraftField && planeList}
+                  {aircraftField && 
+                     <form onSubmit={handleAircraftInput}>
+                        <input 
+                           style={inputStyle}
+                           id="newAircraft"
+                           type="text" 
+                           placeholder="new Aircraft"
+                           value={addJumpAircraft}
+                           onChange={handleAddJumpAircraftChange}
+                        />
+                        <button style={nestedButtonOk}  onClick={handleAircraftInput}>add</button>
+                     </form>  
+                  }
+                  {aircraftField && 
+                     <button style={nestedButtonCancel} onClick={handleAFCancel}>hide</button>
+                  }
                </div>
 
             

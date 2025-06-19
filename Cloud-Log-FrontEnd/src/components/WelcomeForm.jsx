@@ -10,6 +10,8 @@ function WelcomeForm (props) {
    //environment
    const pallette = getPallette();
 
+   const favoriteIcon = <img style={{width: "1.5em", marginRight: "1.15em"}} src="/favorite-svgrepo-com.svg" />
+
    //state
 
   const [eqpmPage, setEqpmPage] = useState(true);
@@ -79,7 +81,7 @@ function WelcomeForm (props) {
    const listStyle = {
    fontFamily: "L1",
    fontSize: "1em",
-   padding: "none",
+   paddingLeft: ".5em",
    color: pallette[3]
    }
 
@@ -157,7 +159,7 @@ function WelcomeForm (props) {
     width: "60%", 
     borderRadius: "1em", 
     background: pallette[0], 
-    padding: ".3em", 
+    padding: "0", 
     margin: "1em"
   }
 
@@ -357,21 +359,21 @@ function WelcomeForm (props) {
   const planeList = planes.map((plane, index) => 
     <div key={index} style={listDiv}>
     <p style={listStyle}>{plane}</p>
-    {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+    {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : plane !== 'No saved planes yet' && favoriteIcon}
   </div>
   );
 
   const rigList = rigs.map((rig, index) => 
     <div key={index} style={listDiv}>
       <p style={listStyle}>{rig}</p>
-      {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+      {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : rig !== 'No saved rigs yet' && favoriteIcon}
     </div>
   );
 
   const DZList = DZs.map((DZ, index) => 
     <div key={index} style={listDiv}>
       <p style={listStyle}>{DZ}</p>
-      {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+      {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : DZ !== 'No saved dropzones yet' && favoriteIcon}
     </div>
   );
 
@@ -410,7 +412,10 @@ function WelcomeForm (props) {
   }
 
   function handleDZInput (e) {
-    e.preventDefault()
+    e.preventDefault();
+    for (let d of DZs){
+      if (addJumpDZ === d) return alert('Dropzone already exists')
+    }
     if (addJumpDZ.trim() !== ""){
       storeDZ(addJumpDZ)
       getDZs();
@@ -419,7 +424,10 @@ function WelcomeForm (props) {
   }
 
   function handleAircraftInput (e) {
-    e.preventDefault()
+    e.preventDefault();
+    for (let a of planes){
+      if (addJumpAircraft === a) return alert('Aircraft already exists')
+    }
     if (addJumpAircraft.trim() !== ""){
       storePlane(addJumpAircraft);
       getPlanes();
@@ -429,6 +437,9 @@ function WelcomeForm (props) {
 
   function handleRigInput (e) {
     e.preventDefault()
+    for (let r of rigs) {
+      if (addJumpRig === r) return alert('rig already exists')
+    }
     if (addJumpRig.trim() !== ""){
       storeRig();
       getRigs();
