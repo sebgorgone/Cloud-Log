@@ -111,7 +111,7 @@ function WelcomeForm (props) {
       backgroundColor: pallette[2],
       minWidth: "65%",
       height: "2.3em",
-      marginRight: "15%"
+      marginRight: "15 %"
    }
 
    const textSection = {
@@ -163,7 +163,7 @@ function WelcomeForm (props) {
 
 
    //api
-   const getRigs = async () => {
+     const getRigs = async () => {
     try {
       const response = await fetch('http://localhost:5009/getrigs', {
         method: 'POST',

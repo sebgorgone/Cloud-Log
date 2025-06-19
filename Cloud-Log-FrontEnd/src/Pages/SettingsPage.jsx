@@ -13,6 +13,8 @@ function SettingsPage(props) {
 
    const { updateUsername } = useAuth();
 
+   const favoriteIcon = <img style={{width: "1.5em"}} src="/favorite-svgrepo-com.svg" />
+
    //state
 
    const [userCred, setUserCred] = useState(null);
@@ -424,7 +426,7 @@ function SettingsPage(props) {
    const inputStyle = {
       width: "60%",
       fontFamily: "L1",
-      fontSize: "1.em",
+      fontSize: "1em",
       padding: ".2em",
       textAlign: "center",
       margin: "0",
@@ -479,8 +481,7 @@ function SettingsPage(props) {
     paddingTop: ".5em",
     paddingBottom: ".3em",
     borderRadius: "3em",
-    marginRight: ".5em",
-    marginLeft: ".5em",
+    marginLeft: ".1em",
   }
 
   const listDiv = {
@@ -496,7 +497,7 @@ function SettingsPage(props) {
 
   const rlStyle = {
    fontFamily: "L1",
-   fontSize: "1em",
+   fontSize: ".6em",
    padding: ".1em",
    color: pallette[3]
    }
@@ -506,21 +507,21 @@ function SettingsPage(props) {
    const planeList = planes.map((plane, index) => 
        <div key={index} style={listDiv}>
        <p style={rlStyle}>{plane}</p>
-       {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+       {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
      </div>
      );
 
      const rigList = rigs.map((rig, index) => 
        <div key={index} style={listDiv}>
          <p style={rlStyle}>{rig}</p>
-         {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+         {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
        </div>
      );
 
      const DZList = DZs.map((DZ, index) => 
        <div key={index} style={listDiv}>
          <p style={rlStyle}>{DZ}</p>
-         {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1.5em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
+         {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : <p>favorited</p>}
        </div>
      );
 
