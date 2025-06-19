@@ -3,6 +3,7 @@ import {getPallette} from "../logInputWidget";
 import '../style/loginScreen.css';
 import { useAuth } from '../contexts/authContext';
 import JumpWidget from '../components/JumpWidget';
+import EditJumpWidget from '../components/EditJumpWidget';
 
 function SettingsPage(props) {
 
@@ -44,8 +45,11 @@ function SettingsPage(props) {
 
    const [checkNewUserPassword, setCheckNewUserPassword] = useState();
 
+   const [editedJump, setEditedJump] = useState(null);
 
-   const [jumpEditPage, setJumpEditPage] = useState();
+
+   const [jumpEditPage, setJumpEditPage] = useState(false);
+   const [editAJump, setEditAJump] = useState(false);
    const [dzField, setDzField] = useState(false);
    const [rigField, setRigField] = useState(false);
    const [aircraftField, setAircraftField] = useState(false);
@@ -387,6 +391,8 @@ function SettingsPage(props) {
   function handleERCancel (e) {
    e.preventDefault();
 
+   setEditAJump(false);
+
    setJumpEditPage(false);
   }
 
@@ -400,6 +406,19 @@ function SettingsPage(props) {
    if (page === 0) return
    setPage(page - 1)
 
+  }
+
+    function handleEJCancel (e) {
+   e.preventDefault();
+
+   setEditAJump(false);
+
+  }
+
+  function handleEditJumpButton(jump) {
+   console.log('set edited jump', jump);
+   setEditedJump(jump);
+   setEditAJump(true);
   }
 
    //time stamp jsx
@@ -581,11 +600,24 @@ function SettingsPage(props) {
    const backButton = {
       border: "none",
       fontFamily: "L1",
-      width: "40%",
+      width: "30%",
       borderRadius: "1em",
       paddingBottom: ".2em",
       background: pallette[3],
       color: pallette[0],
+      marginBottom: "1.5em",
+   }
+
+   const returnButton = {
+      border: "none",
+      fontFamily: "L1",
+      borderRadius: "1em",
+      paddingBottom: ".2em",
+      background: pallette[4],
+      color: pallette[1],
+      marginLeft: ".6em",
+      width: "9em",
+      marginBottom: "1.5em",
    }
 
    const editOk = {
@@ -594,10 +626,11 @@ function SettingsPage(props) {
       fontFamily: "L1",
       borderRadius: "1em",
       marginLeft: ".5em",
+      marginRight: ".7em",
       background: pallette[1],
       color: pallette[4],
       width: "5em",
-      height: "2em"
+      height: "2em",
 
    }
 
@@ -643,7 +676,7 @@ function SettingsPage(props) {
           tags="no tags display in settings"
           context="gathered"
         />
-        <button style={editOk}>edit</button>
+        <button type="button" style={editOk} onClick={() => handleEditJumpButton(jump)}>edit</button>
       </div>
     ))
   : null;
@@ -1000,7 +1033,7 @@ function SettingsPage(props) {
         }}
         src="/CloudLogBannerWhite.svg"
       />
-      <h1 style={headerStyle}>{!jumpEditPage ? 'Settings' : 'Edit Jumps'}</h1>
+      {editAJump ? <h1 style={headerStyle}>Edit Jump Number: {editedJump.jump_num}</h1> : <h1 style={headerStyle}>{!jumpEditPage ? 'Settings' : 'Edit Jumps'}</h1>}
 
       {!jumpEditPage ? (
         <>
@@ -1214,7 +1247,7 @@ function SettingsPage(props) {
         </>
       ) : (
         
-         <div style={{width: '100%', margin: "auto", display: "flex", flexFlow: "column", justifyContent: "center"}}>
+         !editAJump ? <div style={{width: '100%', margin: "auto", display: "flex", flexFlow: "column", justifyContent: "center"}}>
 
             <div style={{width: "100%",display: "flex", justifyContent: "center", margin: "auto"}}>
                <button style={backButton} onClick={handleERCancel}>{backIcon}back</button>
@@ -1228,9 +1261,26 @@ function SettingsPage(props) {
             {jumpList}
             
          </div>
+         : 
+         <div style={{width: '100%', margin: "auto", display: "flex", flexFlow: "column", justifyContent: "center"}}>
+            <div style={{width: "100%",display: "flex", justifyContent: "center", margin: "auto", alignItems: "center"}}>
+               <button style={backButton} onClick={handleEJCancel}>{backIcon}Back</button>
+               <button style={returnButton} onClick={handleERCancel}>Return to Settings</button>
+            </div>
+            <EditJumpWidget 
+               jumpNum={editedJump.jump_num} 
+               jumpDate={editedJump.jump_date.slice(0,10)}
+               dz={editedJump.dz}
+               aircraft={editedJump.aircraft}
+               rig={editedJump.equipment}
+               exitAlt={editedJump.alt}
+               time={editedJump.t}
+               notes={editedJump.notes}
+            />
+         </div>
       )}
     </div>
-  </div>
+  </div> 
 );
 
 }
