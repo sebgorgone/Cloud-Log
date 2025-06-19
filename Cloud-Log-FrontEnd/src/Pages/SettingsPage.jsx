@@ -622,7 +622,7 @@ function SettingsPage(props) {
 
    const editOk = {
       border: "none",
-      fontSize: "1.5em",
+      fontSize: ".8em",
       fontFamily: "L1",
       borderRadius: "1em",
       marginLeft: ".5em",
@@ -632,6 +632,32 @@ function SettingsPage(props) {
       width: "5em",
       height: "2em",
 
+   }
+
+   const pageButton = {
+      border: "none",
+      fontFamily: "L1",
+      width: "3em",
+      borderRadius: "1em",
+      paddingBottom: ".2em",
+      background: pallette[3],
+      color: pallette[0],
+      marginBottom: "0em",
+      marginTop: "1em",
+   }
+
+   const textHeaderStyle = {
+      fontFamily: "L1",
+      marginTop: "1em",
+      marginBottom: "0",
+
+
+      background: pallette[4],
+      borderRadius: "1em",
+      color: pallette[0],
+      width: "30%",
+      padding: ".5em",
+      textAlign: "center",
    }
 
    
@@ -1254,11 +1280,18 @@ function SettingsPage(props) {
             </div>
 
             <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
-               <button onClick={handlePrevPage}>prev</button>
-               <button onClick={handleNextPage}>next</button>
+               <button onClick={handlePrevPage} style={pageButton}>prev</button>
+               <p style={textHeaderStyle}>page: {page + 1}</p>
+               <button onClick={handleNextPage} style={pageButton}>next</button>
             </div>
 
             {jumpList}
+
+            <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
+               <button onClick={handlePrevPage} style={pageButton}>prev</button>
+               <p style={textHeaderStyle}>page: {page + 1}</p>
+               <button onClick={handleNextPage} style={pageButton}>next</button>
+            </div>
             
          </div>
          : 

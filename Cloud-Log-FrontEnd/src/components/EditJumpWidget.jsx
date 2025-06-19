@@ -52,7 +52,6 @@ function EditJumpWidget(props) {
       paddingRight: "1em",
       margin: "0",
       borderRight: "solid .1em",
-      borderBottom: "solid .1em",
       borderColor: pallette[3],
 
    }
@@ -67,7 +66,7 @@ function EditJumpWidget(props) {
 
    const showButton= {
       fontFamily: "L1",
-      fontSize: ".6em",
+      fontSize: ".5em",
       border: "none",
       borderRadius: "1em",
       padding: ".3em",
@@ -76,14 +75,14 @@ function EditJumpWidget(props) {
    }
 
    const header= {
-      color: pallette[0],
+      color: pallette[2],
       padding: "0",
       paddingLeft: ".2em",
-      fontSize: ".85em",
+      fontSize: ".55em",
    }
 
    const line = {
-      border: "solid .2em",
+      border: "solid .3em",
       margin: "0",
       borderColor: pallette[3]
    }
@@ -92,6 +91,14 @@ function EditJumpWidget(props) {
       padding: ".1em",
       margin: "0",
       color: pallette[0],
+      fontSize: ".55em",
+   }
+
+   const numProp = {
+      padding: ".1em",
+      margin: "0",
+      color: pallette[1],
+      fontSize: "2em",
    }
 
 
@@ -101,7 +108,7 @@ function EditJumpWidget(props) {
       <div style={row}>
          <div style={section}>
             <p style={header}>Jump Number: </p>
-            <p style={properties}>{props.jumpNum}</p>
+            <p style={numProp}>{props.jumpNum}</p>
          </div>
 
          <div style={section}>
@@ -132,12 +139,12 @@ function EditJumpWidget(props) {
 
       <div style={row}>
          <div style={section}>
-         <p style={header}>Exit Altitude(ft): </p>
+         <p style={header}>Exit Altitude (ft): </p>
          <p style={properties}>{props.exitAlt}</p>
       </div>
 
       <div style={section}>
-         <p style={header}>Free Fall Time(s): </p>
+         <p style={header}>Free Fall Time (s): </p>
          <p style={properties}>{props.time}</p>
       </div>
 
@@ -157,7 +164,7 @@ function EditJumpWidget(props) {
       <div style={showNotes ? line : {display : "none"}}></div>
       <div style={showNotes ? row : {display: "none"}}>
          <h4 style={{color: pallette[0], fontSize: "1.6em", margin: "0",display: "flex",flexFlow: "column", justifyContent: "center"}}>Notes:</h4> 
-         <p style={{color: pallette[0], fontSize: "1.1em", padding: ".05em"}}>{props.notes}</p>
+         <p style={{color: pallette[0], fontSize: "1.1em", padding: ".05em"}}>{props.notes ? props.notes : "no notes"}</p>
       </div>
       
    </div>)
