@@ -480,6 +480,7 @@ function SettingsPage(props) {
       marginLeft: ".5em",
       background: pallette[1],
       color: pallette[4],
+      width: "5em"
    }
 
    const nestedButtonCancel = {
@@ -491,7 +492,8 @@ function SettingsPage(props) {
       background: pallette[4],
       color: pallette[1],
       marginLeft: ".6em",
-      marginBottom: "1.6em"
+      marginBottom: "1.6em",
+      width: "6em"
    }
 
    const favoriteButtonNull = {
@@ -509,27 +511,28 @@ function SettingsPage(props) {
     display: "flex", 
     alignItems: "center", 
     justifyContent: "space-between", 
-    width: "60%", 
+    width: "100%", 
     borderRadius: "1em", 
     background: pallette[0], 
     paddingRight: "1em", 
-    margin: "1em"
+    margin: ".3em"
   }
 
   const rlStyle = {
    fontFamily: "L1",
-   fontSize: ".6em",
-   padding: ".1em",
+   fontSize: ".7em",
+   paddingLeft: ".7em",
+   paddingBottom: "0em",
    color: pallette[3]
    }
 
 //rendered lists
 
    const planeList = planes.map((plane, index) => 
-       <div key={index} style={listDiv}>
-       <p style={rlStyle}>{plane}</p>
-       {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
-     </div>
+      <div key={index} style={listDiv}>
+         <p style={rlStyle}>{plane}</p>
+         {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
+      </div>
      );
 
      const rigList = rigs.map((rig, index) => 
@@ -889,7 +892,7 @@ function SettingsPage(props) {
          <div style={shell}>
             <br />
 
-            <img style={{aspectRatio: '5 /1', width: '100%',paddingTop: "2em", margin: "0"}} src="/CloudLogBannerWhite.svg" />
+            <img style={{aspectRatio: '5 /1', width: '80%',paddingTop: "2em",paddingRight: "8%", margin: "0"}} src="/CloudLogBannerWhite.svg" />
             <h1 style={headerStyle}>Settings</h1>
 
             {passwordField ? 
@@ -1040,10 +1043,8 @@ function SettingsPage(props) {
                            onChange={handleAddJumpRigChange}
                         />
                         <button style={nestedButtonOk}  onClick={handleRigInput}>add</button>
+                        <button style={nestedButtonCancel} onClick={handleRFCancel}>hide</button>
                      </form>  
-                  }
-                  {rigField && 
-                     <button style={nestedButtonCancel} onClick={handleRFCancel}>hide</button>
                   }
 
                   <p style={textStyle}>Default Aircraft {defaultAircraft ? defaultAircraft :'none'}</p>
