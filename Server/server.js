@@ -737,22 +737,21 @@ app.post('/validatedelete', (req, res) => {
         console.error('Error validating passed jumps:', err);
         return res.status(500).json({
           message: 'validation failed',
+          result,
           error: err.code || err.message
         });
       }
-      if (result.length === 0) {
-        console.log('valid ->', result)
-        return res.status(200).json({
-          message: 'No jump found',
-          ok: true
+      if (result.length > 0) {
+        console.log('invalid jump', result);
+        return res.status(409).json({
+          ok: false,
+          message: `${field} is stored with jumps`,
+          result  // now your front end will actually receive the jump_num array
         });
       }
       console.log('invalid jump', result)
-      res.status(400).json({
-        error: 'PREVIOUS_JUMP_UT',
-        message: `found jumps for: ${value} --- ${result}`,
-        result,
-        ok: false,
+      res.status(204).json({
+        message: `${field} is stored with jumps ${result}`,
       });
     }
   );

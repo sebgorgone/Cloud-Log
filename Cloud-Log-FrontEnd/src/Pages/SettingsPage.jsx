@@ -743,7 +743,7 @@ function SettingsPage(props) {
            <p style={rlStyle}>{dz}</p>
            {dz !== 'No saved dropzones yet' && dz !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(dz)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
          </div>
-         <button style={delButton} type="button" onClick={() => handleDelDZ(dz)}>delete</button>
+         <button style={delButton} type="button" onClick={() => validDel(dz, 'dz')}>delete</button>
       </>
    );
 
@@ -1158,12 +1158,16 @@ function SettingsPage(props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: val, field: field}),
+         
       });
-      if(response.ok){
+      // console.log(response)
+      if(response.status === 200){
         console.log('not associated to any jumps--> ', 'value: ', val, ' field: ', field)
 
       } else{
-        console.error('invalid delete');
+         alert(response.result)
+         console.error(`invlaid Delete`);
+        
       }
     } catch (err) {
       console.error('client failed deleting ', err);
