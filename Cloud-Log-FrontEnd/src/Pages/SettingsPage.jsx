@@ -49,7 +49,14 @@ function SettingsPage(props) {
 
    const [passwordField, setPasswordField] = useState(false);
 
+   const [validateField, setValidateField] = useState(false)
+
+
    const [userValidated, setUserValidated] = useState(false);
+   // const [validated, setValidated] = useState(false)
+
+   const [validateValue, setValidateValue] = useState(false)
+
 
    const [validatePassword, setValidatePassword] = useState();
 
@@ -214,6 +221,10 @@ function SettingsPage(props) {
       changeEmail();
       setNewEmail('');
       setEmailField(false);
+   }
+
+   function handleChangeValidVal (e) {
+      setValidateValue(e.target.value)
    }
 
 
@@ -407,6 +418,9 @@ function SettingsPage(props) {
    setEditAJump(false);
    setEditedJump(null);
 
+   setValidateValue('');
+   // setValidated(false);
+
    setJumpEditPage(false);
   }
 
@@ -438,8 +452,26 @@ function SettingsPage(props) {
 
   function handleDeleteJumpButton(jump) {
    console.log('deleting jump', jump.jump_id);
+   setValidateField(true);
    setEditedJump(jump);
-   deleteJump(jump.jump_id)
+   
+  }
+
+  function checkValidPasswordDel (e) {
+   e.preventDefault();
+   validate1(editedJump);
+   console.log('checking valid password')
+  }
+
+  function handleDVCancel (e) {
+   e.preventDefault();
+
+   setPage(0);
+   setValidateField(false);
+   setEditedJump(null);
+
+   setValidateValue('');
+
   }
 
   
@@ -773,7 +805,42 @@ function SettingsPage(props) {
       console.error('error', err);
       alert('Error');
     }
-  };
+   };
+
+   const validate1 = async (jump) => {
+      const Jump = jump
+      console.log(jump)
+    try {
+      const response = await fetch('http://localhost:5009/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: user.ID, password: validateValue }),
+      });
+
+      const contentType = response.headers.get('content-type');
+      let returnedData;
+      if (contentType && contentType.includes('application/json')) {
+        returnedData = await response.json();
+      } else {
+        returnedData = await response.text();
+      }
+
+      if (response.ok) {
+        
+        console.log('✅ validation success', response.ok);
+        deleteJump(jump.jump_id);
+        setValidateField(false);
+        setValidateValue('')
+
+      } else {
+        console.error('❌ validation failed:', returnedData);
+        alert(returnedData.error || returnedData.message || 'bad password')
+      }
+    } catch (err) {
+      console.error('error', err);
+      alert('Error');
+    }
+   };
 
   const changePassword = async () => {
     try {
@@ -1074,6 +1141,10 @@ function SettingsPage(props) {
       getDZs();
       getRigs();
       getPlanes();
+
+      setEditAJump(false);
+      setValidateField('')
+
       console.log('useEffect')
    }, [])
 
@@ -1308,23 +1379,47 @@ function SettingsPage(props) {
          !editAJump ? <div style={{width: '100%', margin: "auto", display: "flex", flexFlow: "column", justifyContent: "center"}}>
 
             <div style={{width: "100%",display: "flex", justifyContent: "center", margin: "auto"}}>
+               {!validateField ? 
                <button style={backButton} onClick={handleERCancel}>{backIcon}back</button>
+            :
+               <button style={backButton} onClick={handleDVCancel}>{backIcon}back</button>
+            }
             </div>
 
             {jumpList ? <>
-               <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
-                  <button onClick={handlePrevPage} style={pageButton}>prev</button>
-                  <p style={textHeaderStyle}>page: {page + 1}</p>
-                  <button onClick={handleNextPage} style={pageButton}>next</button>
-               </div>
+               {!validateField ? <>
+                  <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
+                     <button onClick={handlePrevPage} style={pageButton}>prev</button>
+                     <p style={textHeaderStyle}>page: {page + 1}</p>
+                     <button onClick={handleNextPage} style={pageButton}>next</button>
+                  </div>
 
-               {jumpList}
+                  {jumpList}
 
-               <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
-                  <button onClick={handlePrevPage} style={pageButton}>prev</button>
-                  <p style={textHeaderStyle}>page: {page + 1}</p>
-                  <button onClick={handleNextPage} style={pageButton}>next</button>
-               </div>
+                  <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
+                     <button onClick={handlePrevPage} style={pageButton}>prev</button>
+                     <p style={textHeaderStyle}>page: {page + 1}</p>
+                     <button onClick={handleNextPage} style={pageButton}>next</button>
+                  </div>
+               </> :
+               <>
+
+                  <div style={{width: "60%",display: "flex", margin: "auto", }}>
+                     <p style={textStyle}>Enter Password to Delete Jump #{editedJump.jump_num}</p>
+                  </div>
+
+                  <form style={{width: "100%",display: "flex", justifyContent: "center", }} onSubmit={checkValidPasswordDel}>
+                     <input 
+                        style={inputStyle}
+                        type="password"
+                        placeholder="Enter Password"
+                        value={validateValue}
+                        onChange={handleChangeValidVal}
+                     />
+                  </form>
+
+               </>
+               }
             </>: 
             <div style={{width: "100%",display: "flex", justifyContent: "center", margin: "auto", alignItems: "center"}}>
                   <p style={textHeaderStyle}>loading...</p>
