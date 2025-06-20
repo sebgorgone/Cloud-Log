@@ -2,8 +2,8 @@ import {useState, useEffect} from 'react';
 import {getPallette} from "../logInputWidget";
 import '../style/loginScreen.css';
 import { useAuth } from '../contexts/authContext';
-import JumpWidget from '../components/JumpWidget';
 import EditJumpWidget from '../components/EditJumpWidget';
+import JumpWidgetDisp from '../components/JumpWidgetDisp';
 
 function SettingsPage(props) {
 
@@ -15,9 +15,21 @@ function SettingsPage(props) {
 
    const jumps = props.jumps;
 
-   const { updateUsername } = useAuth();
+   // const jumps = [{ 
+   //    jump_num: 62, 
+   //    jump_date: "2025-06-17", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Cessna 206", 
+   //    equipment: "Tandem Harness!!", 
+   //    alt: 4, 
+   //    t: 7,
+   //    notes: "hello retard" ,
+   //    jump_id: "2"
+   // }];
 
-   console.log('jump history for the settings', jumps)
+   // console.log(props)
+
+   const { updateUsername } = useAuth();
 
    const favoriteIcon = <img style={{width: "1.5em"}} src="/favorite-svgrepo-com.svg" />
 
@@ -391,7 +403,9 @@ function SettingsPage(props) {
   function handleERCancel (e) {
    e.preventDefault();
 
+   setPage(0);
    setEditAJump(false);
+   setEditedJump(null);
 
    setJumpEditPage(false);
   }
@@ -411,8 +425,9 @@ function SettingsPage(props) {
     function handleEJCancel (e) {
    e.preventDefault();
 
-   setEditAJump(false);
+   setEditedJump(null);
 
+   setEditAJump(false);
   }
 
   function handleEditJumpButton(jump) {
@@ -620,20 +635,6 @@ function SettingsPage(props) {
       marginBottom: "1.5em",
    }
 
-   const editOk = {
-      border: "none",
-      fontSize: ".8em",
-      fontFamily: "L1",
-      borderRadius: "1em",
-      marginLeft: ".5em",
-      marginRight: ".7em",
-      background: pallette[1],
-      color: pallette[4],
-      width: "5em",
-      height: "2em",
-
-   }
-
    const pageButton = {
       border: "none",
       fontFamily: "L1",
@@ -650,8 +651,6 @@ function SettingsPage(props) {
       fontFamily: "L1",
       marginTop: "1em",
       marginBottom: "0",
-
-
       background: pallette[4],
       borderRadius: "1em",
       color: pallette[0],
@@ -659,6 +658,10 @@ function SettingsPage(props) {
       padding: ".5em",
       textAlign: "center",
    }
+
+
+
+   
 
    
 
@@ -669,42 +672,41 @@ function SettingsPage(props) {
          <p style={rlStyle}>{plane}</p>
          {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
       </div>
-     );
+   );
 
-     const rigList = rigs.map((rig, index) => 
+   const rigList = rigs.map((rig, index) => 
        <div key={index} style={listDiv}>
          <p style={rlStyle}>{rig}</p>
          {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
        </div>
-     );
+   );
 
-     const DZList = DZs.map((DZ, index) => 
+   const DZList = DZs.map((DZ, index) => 
        <div key={index} style={listDiv}>
          <p style={rlStyle}>{DZ}</p>
          {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
        </div>
-     );
+   );
 
-     const jumpList = Array.isArray(jumps)
-  ? jumps.slice(page * 15, (page * 15) + 15).map((jump, idx) => (
-      <div key={idx} style={{marginTop: "2em", display: "flex", alignItems: "center"}}>
-        <JumpWidget 
-          jumpNum={jump.jump_num}
-          jumpDate={jump.jump_date.slice(0,10)}
-          dz={jump.dz}
-          aircraft={jump.aircraft}
-          rig={jump.equipment}
-          exitAlt={jump.alt}
-          time={jump.t}
-          notes={jump.notes}
-          signature="no pdf display in settings"
-          jump_id={jump.jump_id}
-          tags="no tags display in settings"
-          context="gathered"
-        />
-        <button type="button" style={editOk} onClick={() => handleEditJumpButton(jump)}>edit</button>
-      </div>
-    ))
+   const jumpList = Array.isArray(jumps)
+      ? jumps.slice(page * 15, (page * 15) + 15).map((jump, idx) => (
+         <div key={idx} style={{marginTop: "2em", display: "flex", alignItems: "center"}}>
+           <JumpWidgetDisp 
+             jumpNum={jump.jump_num}
+             jumpDate={jump.jump_date.slice(0,10)}
+             dz={jump.dz}
+             aircraft={jump.aircraft}
+             rig={jump.equipment}
+             exitAlt={jump.alt}
+             time={jump.t}
+             notes={jump.notes}
+             jump_id={jump.jump_id}
+             context="gathered"
+             edit={() => handleEditJumpButton(jump)}
+           />
+           {/* <button type="button" style={editOk} onClick={() => handleEditJumpButton(jump)}>edit</button> */}
+         </div>
+      ))
   : null;
 
    //api
@@ -1043,6 +1045,7 @@ function SettingsPage(props) {
       getDZs();
       getRigs();
       getPlanes();
+      console.log('useEffect')
    }, [])
 
    return (
@@ -1279,20 +1282,25 @@ function SettingsPage(props) {
                <button style={backButton} onClick={handleERCancel}>{backIcon}back</button>
             </div>
 
-            <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
-               <button onClick={handlePrevPage} style={pageButton}>prev</button>
-               <p style={textHeaderStyle}>page: {page + 1}</p>
-               <button onClick={handleNextPage} style={pageButton}>next</button>
-            </div>
+            {jumpList ? <>
+               <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
+                  <button onClick={handlePrevPage} style={pageButton}>prev</button>
+                  <p style={textHeaderStyle}>page: {page + 1}</p>
+                  <button onClick={handleNextPage} style={pageButton}>next</button>
+               </div>
 
-            {jumpList}
+               {jumpList}
 
-            <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
-               <button onClick={handlePrevPage} style={pageButton}>prev</button>
-               <p style={textHeaderStyle}>page: {page + 1}</p>
-               <button onClick={handleNextPage} style={pageButton}>next</button>
+               <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
+                  <button onClick={handlePrevPage} style={pageButton}>prev</button>
+                  <p style={textHeaderStyle}>page: {page + 1}</p>
+                  <button onClick={handleNextPage} style={pageButton}>next</button>
+               </div>
+            </>: 
+            <div style={{width: "100%",display: "flex", justifyContent: "center", margin: "auto", alignItems: "center"}}>
+                  <p style={textHeaderStyle}>loading...</p>
             </div>
-            
+            }
          </div>
          : 
          <div style={{width: '100%', margin: "auto", display: "flex", flexFlow: "column", justifyContent: "center"}}>
@@ -1309,6 +1317,11 @@ function SettingsPage(props) {
                exitAlt={editedJump.alt}
                time={editedJump.t}
                notes={editedJump.notes}
+               rigList={Array.isArray(rigs) && rigs}
+               dzList={Array.isArray(DZs) && DZs}
+               planeList={Array.isArray(planes) && planes}
+               jump_id={editedJump.jump_id}
+               rst={() => {props.rst(); setPage(0); setEditAJump(false);}}
             />
          </div>
       )}

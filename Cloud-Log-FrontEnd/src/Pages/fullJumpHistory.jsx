@@ -107,7 +107,7 @@ function FullJumpLedg (props) {
 
    const pageNum = {
       fontFamily: "L1",
-      fontSize: "1.75em",
+      fontSize: "1em",
       padding: ".3em",
       borderRadius: ".3em",
       color: pallette[4],
@@ -254,7 +254,7 @@ const tagsRoute = async (array) => {
 
          {!showAddWidget && Array.isArray(pageJumps) && <div style ={pageNav}>
             {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}
-            <p style={pageJumps > 0 ? pageNum: {}}>Page {page + 1}/{Math.floor((props.jump_num / 30) + 1)}</p>
+            <p style={pageJumps.length > 0 ? pageNum: {}}>Page {page + 1}/{Math.floor((props.jump_num / 30) + 1)}</p>
             {page < Math.floor(props.jump_num / 30) && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
          </div>}
       </div>
