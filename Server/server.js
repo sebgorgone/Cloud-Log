@@ -724,6 +724,40 @@ app.post('/deletejump', (req, res) => {
   );
 });
 
+//delete rig-plane-dz
+
+app.post('/validatedelete', (req, res) => {
+  const {value, field} = req.body;
+  console.log(`validating ${field}-- value: ${value}`)
+  db.query(
+    `SELECT jump_num FROM jumps WHERE ${field}=?`,
+    [value],
+    (err, result) => {
+      if (err) {
+        console.error('Error validating passed jumps:', err);
+        return res.status(500).json({
+          message: 'validation failed',
+          error: err.code || err.message
+        });
+      }
+      if (result.length === 0) {
+        console.log('valid ->', result)
+        return res.status(200).json({
+          message: 'No jump found',
+          ok: true
+        });
+      }
+      console.log('invalid jump', result)
+      res.status(400).json({
+        error: 'PREVIOUS_JUMP_UT',
+        message: `found jumps for: ${value} --- ${result}`,
+        result,
+        ok: false,
+      });
+    }
+  );
+});
+
 //ask db if user exists
 
 app.post('/askdbpos', (req, res) => {

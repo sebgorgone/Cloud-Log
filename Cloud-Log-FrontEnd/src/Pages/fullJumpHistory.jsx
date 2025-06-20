@@ -222,7 +222,7 @@ const tagsRoute = async (array) => {
          {!showAddWidget && Array.isArray(pageJumps)  && <div style ={pageNav}>
             {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}
             {pageJumps.length > 0 ? <p style={pageNum}>Page {page + 1}/{Math.floor((props.jump_num / 30) + 1)}</p> : <p style={pageNum}>No Jumps Logged Yet</p>}
-            {page < Math.floor(props.jump_num / 30) && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
+            {page < Math.floor(props.jump_num / 30) && (page * 30) + 30 !== props.jump_num && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
          </div>}
 
 

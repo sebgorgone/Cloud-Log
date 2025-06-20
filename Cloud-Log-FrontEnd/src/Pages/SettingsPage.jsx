@@ -4,6 +4,7 @@ import '../style/loginScreen.css';
 import { useAuth } from '../contexts/authContext';
 import EditJumpWidget from '../components/EditJumpWidget';
 import JumpWidgetDisp from '../components/JumpWidgetDisp';
+import JumpWidgetDel from '../components/JumpWidgetDel';
 
 function SettingsPage(props) {
 
@@ -426,7 +427,8 @@ function SettingsPage(props) {
 
 
   function handleNextPage (e) {
-   if (page > Math.floor(props.jump_num / 15) - 1) return 
+   if (page > Math.floor(props.jump_num / 15)-1) return
+   if ((page * 15) + 15 === props.jump_num)  return
    setPage(page + 1);
   }
 
@@ -473,6 +475,7 @@ function SettingsPage(props) {
    setValidateValue('');
 
   }
+
 
   
 
@@ -699,6 +702,19 @@ function SettingsPage(props) {
       textAlign: "center",
    }
 
+   const delButton = {
+      border: "none",
+      fontFamily: "L1",
+      fontSize: ".6em",
+      borderRadius: "1em",
+      paddingBottom: ".2em",
+      background: pallette[4],
+      color: 'red',
+      marginLeft: ".6em",
+      width: "4em",
+      marginBottom: ".5em",
+   }
+
 
 
    
@@ -721,11 +737,14 @@ function SettingsPage(props) {
        </div>
    );
 
-   const DZList = DZs.map((DZ, index) => 
-       <div key={index} style={listDiv}>
-         <p style={rlStyle}>{DZ}</p>
-         {DZ !== 'No saved dropzones yet' && DZ !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(DZ)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
-       </div>
+   const DZList = DZs.map((dz, index) => 
+      <>
+         <div key={index} style={listDiv}>
+           <p style={rlStyle}>{dz}</p>
+           {dz !== 'No saved dropzones yet' && dz !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(dz)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
+         </div>
+         <button style={delButton} type="button" onClick={() => handleDelDZ(dz)}>delete</button>
+      </>
    );
 
    const jumpList = Array.isArray(jumps)
@@ -1133,6 +1152,25 @@ function SettingsPage(props) {
     }
   }
 
+  const validDel = async ( val, field) => {
+   try {
+      const response = await fetch('http://localhost:5009/validatedelete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: val, field: field}),
+      });
+      if(response.ok){
+        console.log('not associated to any jumps--> ', 'value: ', val, ' field: ', field)
+
+      } else{
+        console.error('invalid delete');
+      }
+    } catch (err) {
+      console.error('client failed deleting ', err);
+      return false
+    }
+  }
+
    //useEffect
 
    useEffect(() => {
@@ -1143,7 +1181,8 @@ function SettingsPage(props) {
       getPlanes();
 
       setEditAJump(false);
-      setValidateField('')
+      setValidateField(false);
+      setValidateValue('')
 
       console.log('useEffect')
    }, [])
@@ -1408,7 +1447,7 @@ function SettingsPage(props) {
                      <p style={textStyle}>Enter Password to Delete Jump #{editedJump.jump_num}</p>
                   </div>
 
-                  <form style={{width: "100%",display: "flex", justifyContent: "center", }} onSubmit={checkValidPasswordDel}>
+                  <form style={{width: "100%",display: "flex", justifyContent: "center", alignItems: "center" }} onSubmit={checkValidPasswordDel}>
                      <input 
                         style={inputStyle}
                         type="password"
@@ -1416,7 +1455,21 @@ function SettingsPage(props) {
                         value={validateValue}
                         onChange={handleChangeValidVal}
                      />
+                     <div>
+                        <button style={nestedButtonOk} onClick={checkValidPasswordDel}>enter</button>
+                     </div>
+                     
                   </form>
+                  <JumpWidgetDel
+                     jumpNum={editedJump.jump_num} 
+                     jumpDate={editedJump.jump_date.slice(0,10)}
+                     dz={editedJump.dz}
+                     aircraft={editedJump.aircraft}
+                     rig={editedJump.equipment}
+                     exitAlt={editedJump.alt}
+                     time={editedJump.t}
+                     notes={editedJump.notes}
+                  />
 
                </>
                }
