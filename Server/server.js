@@ -647,7 +647,6 @@ app.post('/storejump', (req, res) => {
 });
 
 //edit jump route
-
 app.post('/editjump', (req, res) => {
   const {
     jump_id,
@@ -696,7 +695,34 @@ app.post('/editjump', (req, res) => {
   );
 });
 
-
+//delete jump 
+app.post('/deletejump', (req, res) => {
+  const {jump_id} = req.body;
+  db.query(
+    `DELETE FROM jumps WHERE jump_id=?`,
+    [jump_id],
+    (err, result) => {
+      if (err) {
+        console.error('Error deleting jump:', err);
+        return res.status(500).json({
+          message: 'delete failed',
+          error: err.code || err.message
+        });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          error: 'JUMP_NOT_FOUND',
+          message: 'No jump found'
+        });
+      }
+      res.status(200).json({
+        message: 'deleted jump successfully',
+        result,
+        ok: true,
+      });
+    }
+  );
+});
 
 //ask db if user exists
 

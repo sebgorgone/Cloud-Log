@@ -436,6 +436,14 @@ function SettingsPage(props) {
    setEditAJump(true);
   }
 
+  function handleDeleteJumpButton(jump) {
+   console.log('deleting jump', jump.jump_id);
+   setEditedJump(jump);
+   deleteJump(jump.jump_id)
+  }
+
+  
+
    //time stamp jsx
 
    function createdAt() {
@@ -703,6 +711,7 @@ function SettingsPage(props) {
              jump_id={jump.jump_id}
              context="gathered"
              edit={() => handleEditJumpButton(jump)}
+             delete={() => handleDeleteJumpButton(jump)}
            />
            {/* <button type="button" style={editOk} onClick={() => handleEditJumpButton(jump)}>edit</button> */}
          </div>
@@ -1036,6 +1045,26 @@ function SettingsPage(props) {
       console.error('client failed getting defaults', err);
     }
   }; 
+
+  const deleteJump = async (id) => {
+   try {
+      const response = await fetch('http://localhost:5009/deletejump', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jump_id: id}),
+      });
+      if(response.ok){
+        console.log('deleted user jump--> ', 'jump_id: ', id)
+        alert('Jump Deleted');
+        props.rst()
+
+      } else{
+        console.error('err while deleting jump', response);
+      }
+    } catch (err) {
+      console.error('client failed deleting jumps', err);
+    }
+  }
 
    //useEffect
 

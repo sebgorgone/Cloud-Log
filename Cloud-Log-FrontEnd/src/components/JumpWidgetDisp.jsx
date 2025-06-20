@@ -33,6 +33,11 @@ function JumpWidgetDisp(props) {
       props.edit();
    }
 
+   function handleDelete (e) {
+      e.preventDefault();
+      props.delete();
+   }
+
    //inline
    const Shell = {
       background: pallette[4],
@@ -114,6 +119,19 @@ function JumpWidgetDisp(props) {
       width: "7em"
    }
 
+   const nestedDELETE = {
+      border: "none",
+      fontSize: ".75em",
+      fontFamily: "L1",
+      borderRadius: "1em",
+      paddingBottom: ".15em",
+      marginTop: "1.7em",
+      marginBottom: "1.7em",
+      background: pallette[2],
+      color: "red",
+      width: "5em"
+   }
+
 
 
    return(<div style={Shell} className="jumpWidget">
@@ -139,7 +157,7 @@ function JumpWidgetDisp(props) {
             <p style={properties}>{props.aircraft}</p>
          </div>
 
-         
+         <button style={nestedDELETE} onClick={handleDelete}>delete</button>
 
       </div>
 
