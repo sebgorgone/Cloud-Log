@@ -728,7 +728,7 @@ function SettingsPage(props) {
    const planeList = planes.map((plane, index) => 
       <div key={index} style={listDiv}>
          <p style={rlStyle}>{plane}</p>
-         <button style={delButton} type="button" onClick={() => validDel(plane, 'aircraft', 'plane')}>delete</button>
+         <button style={delButton} type="button" onClick={() => validDel(plane, 'aircraft', 'planes')}>delete</button>
          {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
       </div>
    );
