@@ -733,25 +733,63 @@ function SettingsPage(props) {
       </div>
    );
 
-   const rigList = rigs.map((rig, index) => 
-       <div key={index} style={listDiv}>
-         <p style={rlStyle}>{rig}</p>
-         <button style={delButton} type="button" onClick={() => validDel(rig, 'equipment', 'rigs')}>delete</button>
-         {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
+   const rigList = Array.isArray(rigs) ? rigs.map((rig, index) => 
+          <div key={index} style={listDiv}>
+            <p style={rlStyle}>{rig}</p>
+            {rig !== 'No saved rigs yet' && <button style={delButton} type="button" onClick={() => validDel(rig, 'equipment', 'rigs')}>delete</button>}
+            {rig === 'No saved rigs yet'
+              ? null
+              : rig !== defaultRig
+                ? (
+                  <button
+                    type="button"
+                    style={favoriteButtonNull}
+                    onClick={() => handleSetFavoriteRig(rig)}
+                  >
+                    <img
+                      style={{ width: '1em', margin: 0, border: 'none' }}
+                      src="/favorite-off-svgrepo-com.svg"
+                      alt="mark favorite"
+                    />
+                  </button>
+                )
+                : favoriteIcon
+            }
          
-       </div>
-   );
-
-   const DZList = DZs.map((dz, index) => 
-      <>
-         <div key={index} style={listDiv}>
-           <p style={rlStyle}>{dz}</p>
-           <button style={delButton} type="button" onClick={() => validDel(dz, 'dz', 'dropzones')}>delete</button>
-           {dz !== 'No saved dropzones yet' && dz !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(dz)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
          </div>
+         ):
+         <div style={listDiv}>
+            <p style={rlStyle}>No saved rigs yet</p>
+         </div>;
+
+   const DZList = Array.isArray(DZs) ? DZs.map((dz, index) => 
+      <div key={index} style={listDiv}>
+        <p style={rlStyle}>{dz}</p>
+        {dz !== 'No saved dropzones yet' && <button style={delButton} type="button" onClick={() => validDel(dz, 'dz', 'dropzones')}>delete</button>}
+        {dz === 'No saved dropzones yet'
+              ? null
+              : dz !== defaultDZ
+                ? (
+                  <button
+                    type="button"
+                    style={favoriteButtonNull}
+                    onClick={() => handleSetFavoriteDZ(dz)}
+                  >
+                    <img
+                      style={{ width: '1em', margin: 0, border: 'none' }}
+                      src="/favorite-off-svgrepo-com.svg"
+                      alt="mark favorite"
+                    />
+                  </button>
+                )
+                : favoriteIcon
+            }
          
-      </>
-   );
+         </div>
+         ):
+         <div style={listDiv}>
+            <p style={rlStyle}>No saved dropzones yet</p>
+         </div>;
 
    const jumpList = Array.isArray(jumps)
       ? jumps.slice(page * 15, (page * 15) + 15).map((jump, idx) => (
@@ -985,6 +1023,7 @@ function SettingsPage(props) {
         setRigs([...foundRigs]);
       } else{
         console.error('no rigs imported', response);
+        setRigs('No saved rigs yet')
       }
     } catch (err) {
       console.error('client failed getting rigs', err);
@@ -1055,6 +1094,7 @@ function SettingsPage(props) {
         setDZs([...foundDZs]);
       } else{
         console.error('no DZs imported', response);
+        setDZs('No saved dropzones yer')
       }
     } catch (err) {
       console.error('client failed getting DZs', err);
