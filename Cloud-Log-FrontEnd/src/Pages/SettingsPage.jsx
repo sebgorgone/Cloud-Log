@@ -725,13 +725,33 @@ function SettingsPage(props) {
 
 //rendered lists
 
-   const planeList = planes.map((plane, index) => 
+   const planeList = Array.isArray(planes) ? planes.map((plane, index) => 
       <div key={index} style={listDiv}>
          <p style={rlStyle}>{plane}</p>
-         <button style={delButton} type="button" onClick={() => validDel(plane, 'aircraft', 'planes')}>delete</button>
-         {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
+         {plane !== 'No saved planes yet' && <button style={delButton} type="button" onClick={() => validDel(plane, 'aircraft', 'planes')}>delete</button>}
+         {plane === 'No saved planes yet'
+              ? null
+              : plane !== defaultAircraft
+                ? (
+                  <button
+                    type="button"
+                    style={favoriteButtonNull}
+                    onClick={() => handleSetFavoriteAircraft(plane)}
+                  >
+                    <img
+                      style={{ width: '1em', margin: 0, border: 'none' }}
+                      src="/favorite-off-svgrepo-com.svg"
+                      alt="mark favorite"
+                    />
+                  </button>
+                )
+                : favoriteIcon
+            }
       </div>
-   );
+   ):
+         <div style={listDiv}>
+            <p style={rlStyle}>No saved planes yet</p>
+         </div>;
 
    const rigList = Array.isArray(rigs) ? rigs.map((rig, index) => 
           <div key={index} style={listDiv}>
@@ -1039,6 +1059,8 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
+         getRigs();
+         props.rst();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing rig', err);}
   };
@@ -1059,9 +1081,12 @@ function SettingsPage(props) {
         setPlanes([...foundPlanes]);
       } else{
         console.error('no Planes imported', response);
+        setPlanes('No saved planes yet')
+        props.rst();
       }
     } catch (err) {
-      console.error('client failed plane rigs', err)
+      console.error('client failed plane rigs', err);
+      
     }
   };
 
@@ -1074,6 +1099,8 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
+         props.rst();
+         getPlanes();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing plane', err);}
   }
@@ -1094,7 +1121,7 @@ function SettingsPage(props) {
         setDZs([...foundDZs]);
       } else{
         console.error('no DZs imported', response);
-        setDZs('No saved dropzones yer')
+        setDZs('No saved dropzones yet')
       }
     } catch (err) {
       console.error('client failed getting DZs', err);
@@ -1110,6 +1137,8 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
+         getDZs();
+         props.rst();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing DZ', err);}
   };
@@ -1188,13 +1217,13 @@ function SettingsPage(props) {
       if(response.ok){
         console.log('deleted user jump--> ', 'jump_id: ', id)
         alert('Jump Deleted');
-        props.rst()
-
+        props.rst();
       } else{
         console.error('err while deleting jump', response);
       }
     } catch (err) {
       console.error('client failed deleting jumps', err);
+      props.rst();
     }
   }
 
@@ -1246,7 +1275,8 @@ function SettingsPage(props) {
       });
       if(response.ok){
         console.log(`deleted ${value}`)
-        setFlag(!flag)
+        setFlag(!flag);
+        props.rst();
 
       } else{
         console.error(`err while deleting ${value}`, response);
@@ -1339,7 +1369,7 @@ function SettingsPage(props) {
                     Enter
                   </button>
                   <button style={nestedButtonCancel} onClick={handleCPCancel}>
-                    cancel
+                    Cancel
                   </button>
                 </div>
               </form>
@@ -1365,10 +1395,10 @@ function SettingsPage(props) {
               {usernameField && (
                 <div style={{ marginBottom: '.75em' }}>
                   <button style={nestedButtonOk} onClick={handleChangeUsername}>
-                    change username
+                    Enter
                   </button>
                   <button style={nestedButtonCancel} onClick={handleCUCancel}>
-                    cancel
+                    Cancel
                   </button>
                 </div>
               )}
@@ -1393,10 +1423,10 @@ function SettingsPage(props) {
               {emailField && (
                 <div style={{ marginBottom: '.75em' }}>
                   <button style={nestedButtonOk} onClick={handleChangeEmail}>
-                    change email
+                    Enter
                   </button>
                   <button style={nestedButtonCancel} onClick={handleCECancel}>
-                    cancel
+                    Cancel
                   </button>
                 </div>
               )}
@@ -1433,13 +1463,12 @@ function SettingsPage(props) {
                 <button style={nestedButtonOk} onClick={handleDZInput}>
                   add
                 </button>
-              </form>
-            )}
-            {dzField && (
-              <button style={nestedButtonCancel} onClick={handleDZFCancel}>
+                <button style={nestedButtonCancel} onClick={handleDZFCancel}>
                 hide
               </button>
+              </form>
             )}
+
 
             <p style={textStyle}>Default Rig {defaultRig ? defaultRig : 'none'}</p>
             {!rigField && (
@@ -1488,14 +1517,12 @@ function SettingsPage(props) {
                 />
                 <button style={nestedButtonOk} onClick={handleAircraftInput}>
                   add
-                </button>
-              </form>
-            )}
-            {aircraftField && (
-              <button style={nestedButtonCancel} onClick={handleAFCancel}>
+                </button><button style={nestedButtonCancel} onClick={handleAFCancel}>
                 hide
               </button>
+              </form>
             )}
+
           </div>
         </>
       ) : (
@@ -1513,18 +1540,24 @@ function SettingsPage(props) {
             {jumpList ? <>
                {!validateField ? <>
                   <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
-                     <button onClick={handlePrevPage} style={pageButton}>prev</button>
-                     <p style={textHeaderStyle}>page: {page + 1}</p>
-                     <button onClick={handleNextPage} style={pageButton}>next</button>
+                     {jumps.length > 0 ? 
+                     <>
+                        <button onClick={handlePrevPage} style={pageButton}>prev</button>
+                        <p style={textHeaderStyle}>page: {page + 1}</p>
+                        <button onClick={handleNextPage} style={pageButton}>next</button>
+                     </> : 
+                     <div style={{width: "100%",display: "flex", justifyContent: "center", margin: "auto"}}>
+                     <p style={textHeaderStyle}>No Jumps</p>
+                     </div>}
                   </div>
 
                   {jumpList}
 
-                  <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
+                  {jumps.length > 0 && <div style={{width: "60%",display: "flex", justifyContent: "space-between", margin: "auto"}}>
                      <button onClick={handlePrevPage} style={pageButton}>prev</button>
                      <p style={textHeaderStyle}>page: {page + 1}</p>
                      <button onClick={handleNextPage} style={pageButton}>next</button>
-                  </div>
+                  </div>}
                </> :
                <>
 
