@@ -724,6 +724,36 @@ app.post('/deletejump', (req, res) => {
   );
 });
 
+//delete from associated table 
+
+app.post('/deleteft', (req, res) => {
+  const { value, table, user_id} = req.body;
+  db.query(
+    `DELETE FROM ${table} WHERE user_id=? AND name=?`,
+    [user_id, value],
+    (err, result) => {
+      if (err) {
+        console.error('Error deleting jump:', err);
+        return res.status(500).json({
+          message: 'delete failed',
+          error: err.code || err.message
+        });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          error: 'JUMP_NOT_FOUND',
+          message: 'No values found found'
+        });
+      }
+      res.status(200).json({
+        message: 'deleted jump successfully',
+        result,
+        ok: true,
+      });
+    }
+  );
+});
+
 //delete rig-plane-dz
 
 app.post('/validatedelete', (req, res) => {
@@ -751,7 +781,7 @@ app.post('/validatedelete', (req, res) => {
       }
       console.log('invalid jump', result)
       res.status(204).json({
-        message: `${field} is stored with jumps ${result}`,
+        message: `valid delete`,
       });
     }
   );

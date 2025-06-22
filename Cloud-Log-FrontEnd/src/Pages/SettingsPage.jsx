@@ -32,7 +32,7 @@ function SettingsPage(props) {
 
    const { updateUsername } = useAuth();
 
-   const favoriteIcon = <img style={{width: "1.5em"}} src="/favorite-svgrepo-com.svg" />
+   const favoriteIcon = <img style={{width: "1.5em", marginLeft: ".575em"}} src="/favorite-svgrepo-com.svg" />
 
    const backIcon = <img style={{width: ".8em", aspectRatio: "1 /1", paddingRight: "1em"}} src="/back-arrow-to-first-track-svgrepo-com(1).svg" />
 
@@ -50,7 +50,9 @@ function SettingsPage(props) {
 
    const [passwordField, setPasswordField] = useState(false);
 
-   const [validateField, setValidateField] = useState(false)
+   const [validateField, setValidateField] = useState(false);
+
+   const [flag, setFlag] = useState(false);
 
 
    const [userValidated, setUserValidated] = useState(false);
@@ -633,13 +635,13 @@ function SettingsPage(props) {
     paddingTop: ".5em",
     paddingBottom: ".3em",
     borderRadius: "3em",
-    marginLeft: ".1em",
+    marginLeft: ".5em",
   }
 
   const listDiv = {
     display: "flex", 
     alignItems: "center", 
-    justifyContent: "space-between", 
+    justifyContent: "right", 
     width: "100%", 
     borderRadius: "1em", 
     background: pallette[0], 
@@ -726,6 +728,7 @@ function SettingsPage(props) {
    const planeList = planes.map((plane, index) => 
       <div key={index} style={listDiv}>
          <p style={rlStyle}>{plane}</p>
+         <button style={delButton} type="button" onClick={() => validDel(plane, 'aircraft', 'planes')}>delete</button>
          {plane !== 'No saved planes yet' && plane !== defaultAircraft ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteAircraft(plane)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
       </div>
    );
@@ -733,7 +736,9 @@ function SettingsPage(props) {
    const rigList = rigs.map((rig, index) => 
        <div key={index} style={listDiv}>
          <p style={rlStyle}>{rig}</p>
+         <button style={delButton} type="button" onClick={() => validDel(rig, 'equipment', 'rigs')}>delete</button>
          {rig !== 'No saved rigs yet' && rig !== defaultRig ? <button type="button" style={favoriteButtonNull} onClick={() => handleSetFavoriteRig(rig)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
+         
        </div>
    );
 
@@ -741,9 +746,10 @@ function SettingsPage(props) {
       <>
          <div key={index} style={listDiv}>
            <p style={rlStyle}>{dz}</p>
+           <button style={delButton} type="button" onClick={() => validDel(dz, 'dz', 'dropzones')}>delete</button>
            {dz !== 'No saved dropzones yet' && dz !== defaultDZ ? <button type='button' style={favoriteButtonNull} onClick={() => handleSetFavoriteDZ(dz)}><img style={{ width: '1em', margin: "0", border: "none"}} src="/favorite-off-svgrepo-com.svg" /></button> : favoriteIcon}
          </div>
-         <button style={delButton} type="button" onClick={() => validDel(dz, 'dz')}>delete</button>
+         
       </>
    );
 
@@ -1152,26 +1158,61 @@ function SettingsPage(props) {
     }
   }
 
-  const validDel = async ( val, field) => {
+  const validDel = async (val, field, table) => {
+     try {
+       const response = await fetch('http://localhost:5009/validatedelete', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ value: val, field }),
+       });
+
+       if (response.status === 204) {
+         console.log(
+           'not associated to any jumps →',
+           'value:', val,
+           'field:', field
+         );
+         deleteFromTable(val, table);
+         return true
+       }
+
+       const data = await response.json();
+
+       if (response.ok && data.ok) {
+         console.log(
+           'not associated to any jumps →',
+           'value:', val,
+           'field:', field
+         );
+         
+         return
+       } else {
+         const numList = data.result.map (({ jump_num }) => jump_num);
+         alert(`Cannot Delete ${field} "${val}" - Delete or revise the jump numbers if you are going to delete this ${field}--  ${numList.join(' - ')}`);
+         console.error('invalid Delete', data);
+       }
+     } catch (err) {
+       console.error('client failed deleting', err);
+       return
+     }
+   };
+
+  const deleteFromTable = async (value, table) => {
    try {
-      const response = await fetch('http://localhost:5009/validatedelete', {
+      const response = await fetch('http://localhost:5009/deleteft', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: val, field: field}),
-         
+        body: JSON.stringify({ value: value, table: table, user_id: user.ID}),
       });
-      // console.log(response)
-      if(response.status === 200){
-        console.log('not associated to any jumps--> ', 'value: ', val, ' field: ', field)
+      if(response.ok){
+        console.log(`deleted ${value}`)
+        setFlag(!flag)
 
       } else{
-         alert(response.result)
-         console.error(`invlaid Delete`);
-        
+        console.error(`err while deleting ${value}`, response);
       }
     } catch (err) {
-      console.error('client failed deleting ', err);
-      return false
+      console.error(`client failed deleting ${value}`, err);
     }
   }
 
@@ -1189,7 +1230,7 @@ function SettingsPage(props) {
       setValidateValue('')
 
       console.log('useEffect')
-   }, [])
+   }, [flag])
 
    return (
   <div>
