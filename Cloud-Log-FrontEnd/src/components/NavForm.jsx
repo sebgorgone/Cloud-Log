@@ -16,9 +16,8 @@ function NavForm(props) {
    const headerButtonInputStyle = {
     background: pallette[4],
     width: "min(600px,50vw)",
-    border: ".1em solid",
-    borderColor: pallette[0],
-    borderRadius: "1.5vw",
+    border: "none",
+    borderRadius: "1.5em",
     padding: ".5em",
     margin: "1em",
     fontFamily: "L1",
@@ -37,8 +36,7 @@ function NavForm(props) {
       fontSize:"min(5vw, 200px)",
       width: "80%",
       fontFamily: "L1",
-      color: pallette[4],
-      background: pallette[0],
+      color: pallette[0],
       margin: "auto",
       textAlign: "center",
       borderRadius: "1.5em",
@@ -54,8 +52,8 @@ function NavForm(props) {
     margin: "1vh", padding: "1em", 
     background: pallette[3], 
     borderRadius:".3em",
-    border: ".25em solid",
-    borderColor: pallette[0]
+    border: "none",
+    borderRadius: '1em'
    };
 
    const inputSection = {

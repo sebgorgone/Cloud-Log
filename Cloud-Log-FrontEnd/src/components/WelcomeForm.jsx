@@ -45,8 +45,8 @@ function WelcomeForm (props) {
    const headerStyle = {
     fontFamily: "L1",
     fontSize: "1.2em",
-    color: pallette[4],
-    background: pallette[2],
+    color: pallette[0],
+    background: pallette[4],
     borderRadius: "1em",
     padding: "0",
     textAlign: "center",
@@ -60,16 +60,16 @@ function WelcomeForm (props) {
     borderRadius: "1.5vw",
     padding: "0",
     margin: "0",
+    marginLeft: "1em",
     fontFamily: "L1",
     fontSize: ".9em",
     color: pallette[0],
    };
 
    const headerButtonStyle = {
-    background: pallette[0],
+    background: pallette[2],
     width: "200px",
-    border: "solid",
-    borderColor: pallette[4],
+    border: "none",
     borderRadius: "1.5vw",
     padding: "0",
     margin: "0",
@@ -77,6 +77,19 @@ function WelcomeForm (props) {
     fontSize: "1.2em",
     color: pallette[4],
    };
+
+   const headerButton1Style = {
+    background: pallette[0],
+    width: "200px",
+    border: "none",
+    borderRadius: "1.5vw",
+    padding: "0",
+    margin: "0",
+    fontFamily: "L1",
+    fontSize: "1.2em",
+    color: pallette[4],
+   };
+
 
    const listStyle = {
    fontFamily: "L1",
@@ -97,8 +110,7 @@ function WelcomeForm (props) {
     margin: "1vh", padding: "1em", 
     background: pallette[3], 
     borderRadius:".3em",
-    border: ".25em solid",
-    borderColor: pallette[0]
+    borderRadius: '1em'
    };
 
    const inputSection = {
@@ -113,7 +125,8 @@ function WelcomeForm (props) {
       backgroundColor: pallette[2],
       minWidth: "65%",
       height: "2.3em",
-      marginRight: "15 %"
+      border: ".1em solid",
+    borderColor: pallette[0],
    }
 
    const textSection = {
@@ -124,7 +137,7 @@ function WelcomeForm (props) {
    const title = {      
       fontSize:"min(7vw, 250px)",
       fontFamily: "L1",
-      color: pallette[4],
+      color: pallette[0],
       margin: "auto",
       textAlign: "center",
    }
@@ -492,7 +505,7 @@ function WelcomeForm (props) {
             <div style={textSection}><p style={title}>Add your go-tos</p></div>
             <div style={inputSection}>
 
-               <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
+               <button style={eqpmPage ? headerButtonStyle : headerButton1Style} onClick={handleEquipmentForm}>Equipment</button>
                <form style ={eqpmPage ? {display: "none"} : {formStyle}}>
                   <p style={headerStyle}>
                     Add Your Rigs 
@@ -513,7 +526,7 @@ function WelcomeForm (props) {
             </div>
 
             <div style={inputSection}>
-               <button onClick={handleAircraftForm}style={headerButtonStyle}>Aircraft{aircraftPage ? ' (show)' : ' (hide)'}</button>
+               <button onClick={handleAircraftForm}style={aircraftPage ? headerButtonStyle : headerButton1Style}>Aircraft</button>
                <form style={!aircraftPage ? formStyle : {display: "none"}}>
 
                   <p style={headerStyle}>
@@ -539,7 +552,7 @@ function WelcomeForm (props) {
             </div>
 
             <div style={inputSection}>
-               <button onClick={handleDzForm}style={headerButtonStyle}>Drop-Zone{!dzPage ? "(hide)" : "(show)"}</button>
+               <button onClick={handleDzForm}style={dzPage ? headerButtonStyle : headerButton1Style}>Drop-Zone</button>
               <form style={!dzPage ? formStyle : {display: "none"}}>
                 <p style={headerStyle}>Add Drop-Zones</p>
                 
