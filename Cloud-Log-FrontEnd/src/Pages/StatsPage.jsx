@@ -11,48 +11,48 @@ function StatsPage(props) {
 
    const pallette = getPallette()
 
-   const jumps = props.jumps
+   // const jumps = props.jumps
 
-   // const jumps= [{ 
-   //    jump_num: 4, 
-   //    jump_date: "2025-06-17", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Navigator 220", 
-   //    alt: 4, 
-   //    t: 7,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 3, 
-   //    jump_date: "2025-04-12", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Caravan", 
-   //    equipment: "Vector 3 Storm 190", 
-   //    alt: 5000, 
-   //    t: 30,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 2, 
-   //    jump_date: "2025-02-25", 
-   //    dz: "Jumptown", 
-   //    aircraft: "Cessna 182", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 10293, 
-   //    t: 56,
-   //    notes: "hello retard" ,
-   // },
-   //    { 
-   //    jump_num: 1, 
-   //    jump_date: "2025-01-01", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 4000, 
-   //    t: 70,
-   //    notes: "hello retard" ,
-   // }]
+   const jumps= [{ 
+      jump_num: 4, 
+      jump_date: "2025-06-17", 
+      dz: "Connecticut Parachutists", 
+      aircraft: "Cessna 206", 
+      equipment: "Navigator 220", 
+      alt: 4, 
+      t: 7,
+      notes: "hello retard" ,
+   },
+   { 
+      jump_num: 3, 
+      jump_date: "2025-04-12", 
+      dz: "Connecticut Parachutists", 
+      aircraft: "Caravan", 
+      equipment: "Vector 3 Storm 190", 
+      alt: 5000, 
+      t: 30,
+      notes: "hello retard" ,
+   },
+   { 
+      jump_num: 2, 
+      jump_date: "2025-02-25", 
+      dz: "Jumptown", 
+      aircraft: "Cessna 182", 
+      equipment: "Tandem Harness!!", 
+      alt: 10293, 
+      t: 56,
+      notes: "hello retard" ,
+   },
+      { 
+      jump_num: 1, 
+      jump_date: "2025-01-01", 
+      dz: "Connecticut Parachutists", 
+      aircraft: "Cessna 206", 
+      equipment: "Tandem Harness!!", 
+      alt: 4000, 
+      t: 70,
+      notes: "hello retard" ,
+   }]
 
    // const user = props.user
 
@@ -70,11 +70,15 @@ function StatsPage(props) {
 
    const [DZs, setDZs] = useState('No saved dropzones yet');
 
+   const [tags, setTags] = useState([])
+
    const [dzPage, setDzPage] = useState(false);
 
    const [rigPage, setRigPage] = useState(false);
 
    const [planePage, setPlanePage] = useState(false);
+
+   const [tagsPage, setTagsPage] = useState(false)
 
 
 console.log('in the Stats page', jumps, rigs);
@@ -107,6 +111,16 @@ console.log('in the Stats page', jumps, rigs);
 
       setPlanePage(!planePage);
    }
+
+   function handleTagsPage (e) {
+      e. preventDefault();
+
+      setDzPage(false);
+      setRigPage(false);
+      setPlanePage(false);
+
+      setTagsPage(!tagsPage);
+   }
    //style
 
    const headerStyle = {
@@ -133,11 +147,21 @@ console.log('in the Stats page', jumps, rigs);
    const sectionBar = { 
       width: "100%",
       display: "flex",
+      flexWrap: "wrap",
       justifyContent: "space-evenly",
-      paddingTop: "7px",
       paddingBottom: "7px",
       background: pallette[3],
    }
+
+   const sectionBack = { 
+      width: "100%",
+      display: "flex",
+      alignItems: "left",
+      paddingTop: "7px",
+      paddingBottom: "0px",
+      background: pallette[3],
+   }
+
    const sectionList = { 
       width: "100%",
       display: "flex",
@@ -205,6 +229,31 @@ console.log('in the Stats page', jumps, rigs);
       color: pallette[4],
    }
 
+   const dd1Button = {
+      border: "none",
+      marginTop: "1em",
+      marginBottom: "1em",
+      fontFamily: "L1",
+      width: "20%",
+      borderRadius: ".9em",
+      paddingBottom: ".2em",
+      background: pallette[0],
+      color: pallette[4],
+   }
+
+   const ttButton = {
+      border: "none",
+      marginTop: "1em",
+      marginBottom: "1em",
+      fontFamily: "L1",
+      fontSize: ".7em",
+      width: "7em",
+      borderRadius: ".9em",
+      paddingBottom: ".2em",
+      background: pallette[2],
+      color: pallette[4],
+   }
+
    const listDiv = {
     display: "flex", 
     alignItems: "center", 
@@ -222,6 +271,19 @@ console.log('in the Stats page', jumps, rigs);
    paddingLeft: ".7em",
    paddingBottom: "0em",
    color: pallette[0]
+   }
+
+   const nestedButton = {
+      border: "none",
+      fontSize: ".6em",
+      fontFamily: "L1",
+      borderRadius: "1em",
+      paddingBottom: ".4em",
+      background: pallette[4],
+      color: pallette[1],
+      marginLeft: ".6em",
+      marginBottom: "1.6em",
+      width: "6em"
    }
 
 
@@ -426,6 +488,29 @@ console.log('in the Stats page', jumps, rigs);
     }
   };
 
+  const getAllTags = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getalltags', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID}),
+      });
+      const returnedData = await response.json();
+      if(response.ok){
+        let foundTags = [];
+        for (let tag of returnedData.results) {
+          foundRigs.push({name : tag.name, cat : tag.cat});
+        }
+        setTags([...foundRigs]);
+      } else{
+        console.error('no tags imported', response);
+        setTags([])
+      }
+    } catch (err) {
+      console.error('client failed getting tags', err);
+    }
+  };
+
   //useEffect
 
   useEffect(() => {
@@ -452,7 +537,7 @@ console.log('in the Stats page', jumps, rigs);
          
          <p style={headerStyle}>Statistics</p>
 
-         <div style={contentSection}>
+         {!tagsPage && <div style={contentSection}>
 
             <div style={sectionBar}>
 
@@ -469,9 +554,9 @@ console.log('in the Stats page', jumps, rigs);
             </div>
 
             <div style={sectionBar}>
-               <button style={ddButton} onClick={handledzPage}>Dropzones</button>
-               <button style={ddButton} onClick={handlePlanePage}>Aircraft</button>
-               <button style={ddButton} onClick={handleRigPage}>Rigs</button>
+               <button style={dzPage ? dd1Button : ddButton} onClick={handledzPage}>Dropzones</button>
+               <button style={planePage ? dd1Button : ddButton} onClick={handlePlanePage}>Aircraft</button>
+               <button style={rigPage ? dd1Button : ddButton} onClick={handleRigPage}>Rigs</button>
             </div>
 
             {(planePage || dzPage || rigPage) && <div style={sectionList}>
@@ -481,12 +566,39 @@ console.log('in the Stats page', jumps, rigs);
                </div>}
 
             <div style={sectionBar}>
-               <button style={npButton}>jump types and tags</button>
+               <button style={npButton} onClick={handleTagsPage}>jump types and tags</button>
             </div>
             
             
             
-         </div>
+         </div>}
+
+         {/* {tagsPage &&<div style={contentSection}>
+            <div style={sectionBack}>
+               <button style={nestedButton} onClick={handleTagsPage}>Back</button>
+            </div>
+            <div style={sectionBar}>
+               <p style={rlStyle}>select tag type</p>
+            </div>
+            <div style={sectionBar}>
+               <button style={ttButton}>Jump Types</button>
+               <button style={ttButton}>Openings</button>
+               <button style={ttButton}>Liscense + Rating</button>
+               <button style={ttButton}>group-size</button>
+               <button style={ttButton}>Canopy</button>
+               <button style={ttButton}>Emergency</button>
+               <button style={ttButton}>Malfunction</button>
+               <button style={ttButton}>Pre-Requisites</button>
+            </div>
+         </div>} */}
+         {tagsPage &&<div style={contentSection}>
+            <div style={sectionBack}>
+               <button style={nestedButton} onClick={handleTagsPage}>Back</button>
+            </div>
+            <div style={sectionBar}>
+               <p style={rlStyle}>This page is under construction...</p>
+            </div>
+         </div>}
 
 
       </div>
