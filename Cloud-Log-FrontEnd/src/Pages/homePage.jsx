@@ -346,7 +346,7 @@ function HomePage(props) {
             {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} skip={callLedg} stats={callStats} />: null}
             {router.fullList ? <FullJumpLedge rst={ () => getJumpHist()} jumps={userJumpHistory} jump_num={userJumpCount}/> : null}
             {router.download ? <DownloadPage user={user} /> : null}
-            {router.stats ? <StatsPage jumps={userJumpHistory} user={user} /> : null}
+            {router.stats ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount}/> : null}
             {router.settings ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}}/> : null}
             {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag} jump_num={userJumpCount}/> : null}
          </div>

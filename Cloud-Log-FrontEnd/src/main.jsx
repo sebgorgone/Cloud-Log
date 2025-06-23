@@ -1,14 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import LogInputWidget from './logInputWidget.jsx'
 import LoginScreen from './Pages/loginScreen.jsx'
 import {BrowserRouter, Routes, Route} from  'react-router-dom';
 import PrivateRoute from './routes/PrivateRoute.jsx';
 import { AuthProvider } from './contexts/authContext.jsx';
 import HomePage from './pages/homePage.jsx'
 import RegisterPage from './Pages/RegisterPage.jsx';
-import SettingsPage from './Pages/SettingsPage.jsx';
-
+import StatsPage from './Pages/StatsPage.jsx';
 
 
 createRoot(document.getElementById('root')).render(
@@ -31,9 +29,9 @@ createRoot(document.getElementById('root')).render(
               </PrivateRoute>
             } />
 
-            <Route path="/settingsbuild" element={
+            <Route path="/statsbuild" element={
               <PrivateRoute>
-              <SettingsPage />
+              <StatsPage />
               </PrivateRoute>
             } />
 
