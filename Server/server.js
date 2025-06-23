@@ -287,6 +287,27 @@ app.post('/userjumphistory', (req, res) => {
   )
 });
 
+//get all tags
+
+app.post('/getalltags', (req, res) => {
+  const { user_id } = req.body;
+
+  db.query ('SELECT name, cat FROM tags WHERE user_id=?',
+    user_id,
+    (err, results) => {
+      if (err){
+        console.error('DB error fetching all user tags', err);
+        return res.status(500).json({message: 'could not retrieve user tags'})
+      }
+      if (results.length === 0) {
+        console.log('empty logbook', results);
+        return res.status(201).json({message: 'no tags', results, ok: true})
+      }
+      return res.status(200).json({message: 'loaded tags', results, ok: true})
+    }
+  )
+});
+
 //get user info
 app.post('/user', (req, res) => {
   const { user_id } = req.body;

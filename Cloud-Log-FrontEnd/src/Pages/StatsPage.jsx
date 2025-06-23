@@ -14,7 +14,7 @@ function StatsPage(props) {
    // const jumps = props.jumps
 
    const jumps= [{ 
-      jump_num: 4, 
+      jump_num: 9, 
       jump_date: "2025-06-17", 
       dz: "Connecticut Parachutists", 
       aircraft: "Cessna 206", 
@@ -24,7 +24,7 @@ function StatsPage(props) {
       notes: "hello retard" ,
    },
    { 
-      jump_num: 3, 
+      jump_num: 8, 
       jump_date: "2025-04-12", 
       dz: "Connecticut Parachutists", 
       aircraft: "Caravan", 
@@ -34,7 +34,7 @@ function StatsPage(props) {
       notes: "hello retard" ,
    },
    { 
-      jump_num: 2, 
+      jump_num: 7, 
       jump_date: "2025-02-25", 
       dz: "Jumptown", 
       aircraft: "Cessna 182", 
@@ -43,9 +43,59 @@ function StatsPage(props) {
       t: 56,
       notes: "hello retard" ,
    },
-      { 
-      jump_num: 1, 
+   { 
+      jump_num: 6, 
       jump_date: "2025-01-01", 
+      dz: "Connecticut Parachutists", 
+      aircraft: "Cessna 206", 
+      equipment: "Tandem Harness!!", 
+      alt: 4000, 
+      t: 70,
+      notes: "hello retard" ,
+   },
+   { 
+      jump_num: 5, 
+      jump_date: "2025-01-01", 
+      dz: "Connecticut Parachutists", 
+      aircraft: "Cessna 206", 
+      equipment: "Tandem Harness!!", 
+      alt: 4000, 
+      t: 70,
+      notes: "hello retard" ,
+   },
+   { 
+      jump_num: 4, 
+      jump_date: "2025-01-01", 
+      dz: "Connecticut Parachutists", 
+      aircraft: "Cessna 206", 
+      equipment: "Tandem Harness!!", 
+      alt: 4000, 
+      t: 70,
+      notes: "hello retard" ,
+   },
+   { 
+      jump_num: 3, 
+      jump_date: "2025-01-01", 
+      dz: "Connecticut Parachutists", 
+      aircraft: "Cessna 206", 
+      equipment: "Tandem Harness!!", 
+      alt: 4000, 
+      t: 70,
+      notes: "hello retard" ,
+   },
+   { 
+      jump_num: 2, 
+      jump_date: "2023-01-01", 
+      dz: "Connecticut Parachutists", 
+      aircraft: "Cessna 206", 
+      equipment: "Tandem Harness!!", 
+      alt: 4000, 
+      t: 70,
+      notes: "hello retard" ,
+   },
+   { 
+      jump_num: 1, 
+      jump_date: "2022-01-01", 
       dz: "Connecticut Parachutists", 
       aircraft: "Cessna 206", 
       equipment: "Tandem Harness!!", 
@@ -60,7 +110,7 @@ function StatsPage(props) {
 
    // const jump_num = { props.jump_num}
 
-   const jump_num = 4 
+   const jump_num = 9; 
 
    //state
 
@@ -78,10 +128,37 @@ function StatsPage(props) {
 
    const [planePage, setPlanePage] = useState(false);
 
-   const [tagsPage, setTagsPage] = useState(false)
+   const [tagsPage, setTagsPage] = useState(false);
 
 
-console.log('in the Stats page', jumps, rigs);
+   const [favRig, setFavRig] = useState(null); 
+
+   const [favPlane, setFavPlane] = useState(null);
+
+   const [favDZ, setFavDZ] = useState(null);
+
+
+   const [favRigNum, setFavRigNum] = useState(0); 
+
+   const [favPlaneNum, setFavPlaneNum] = useState(0);
+
+   const [favDZNum, setFavDZNum] = useState(0);
+
+
+   const [JTTField, setJTTField] = useState(false);
+   const [OCField, setOCField] = useState(false);
+   const [LSCField, setLSCField] = useState(false);
+   const [GROUPField, setGROUPField] = useState(false);
+   const [WTHRField, setWTHRField] = useState(false);
+   const [EMRField, setEMRField] = useState(false);
+   const [MALField, setMALField] = useState(false);
+   const [REQField, setREQField] = useState(false);
+
+
+
+
+
+   console.log('in the Stats page', jumps, tags);
 
    //handlers
 
@@ -119,8 +196,88 @@ console.log('in the Stats page', jumps, rigs);
       setRigPage(false);
       setPlanePage(false);
 
+      handleCollapseAllTags()
+
       setTagsPage(!tagsPage);
    }
+
+
+
+   function handleCollapseAllTags () {
+      setJTTField(false);
+      setOCField(false);
+      setLSCField(false);
+      setGROUPField(false);
+      setWTHRField(false);
+      setEMRField(false);
+      setMALField(false);
+      setREQField(false);
+   }
+
+   function handleJTTPage(e) {
+      e.preventDefault()
+
+      handleCollapseAllTags()
+
+      setJTTField(true)
+   }
+
+   function handleOCPage(e) {
+      e.preventDefault()
+
+      handleCollapseAllTags()
+
+      setOCField(true)
+   }
+
+   function handleLSCPage(e) {
+      e.preventDefault()
+
+      handleCollapseAllTags()
+
+      setLSCField(true)
+   }
+
+   function handleGROUPPage(e) {
+      e.preventDefault()
+
+      handleCollapseAllTags()
+
+      setGROUPField(true)
+   }
+
+   function handleWTHRPage(e) {
+      e.preventDefault()
+
+      handleCollapseAllTags()
+
+      setWTHRField(true)
+   }
+
+   function handleEMRPage(e) {
+      e.preventDefault()
+
+      handleCollapseAllTags()
+
+      setEMRField(true)
+   }
+
+   function handleMALPage(e) {
+      e.preventDefault()
+
+      handleCollapseAllTags()
+
+      setMALField(true)
+   }
+
+   function handleREQPage(e) {
+      e.preventDefault()
+
+      handleCollapseAllTags()
+
+      setREQField(true)
+   }
+
    //style
 
    const headerStyle = {
@@ -129,6 +286,15 @@ console.log('in the Stats page', jumps, rigs);
       color: pallette[0],
       textAlign: "center",
       fontSize: "3em",
+      margin: "0"
+   }
+
+   const headerSubStyle = {
+      width: "100%",
+      fontFamily: "L1",
+      color: pallette[0],
+      textAlign: "center",
+      fontSize: "2em",
       margin: "0"
    }
 
@@ -179,6 +345,7 @@ console.log('in the Stats page', jumps, rigs);
       justifyContent: "center",
       border:`solid ${pallette[3]} 7px`,
       borderRadius: "1em",
+      margin: ".75em"
    }
 
    const textStyle = {
@@ -243,11 +410,10 @@ console.log('in the Stats page', jumps, rigs);
 
    const ttButton = {
       border: "none",
-      marginTop: "1em",
-      marginBottom: "1em",
+      margin: "1em",
       fontFamily: "L1",
-      fontSize: ".7em",
-      width: "7em",
+      fontSize: ".8em",
+      width: "17em",
       borderRadius: ".9em",
       paddingBottom: ".2em",
       background: pallette[2],
@@ -301,7 +467,6 @@ console.log('in the Stats page', jumps, rigs);
             totalJumpT = totalJumpT + jump.t
             
          }
-         console.log('total jump seconds: ', totalJumpT);
          sec = Math.floor((totalJumpT % 3600) % 60)
          min = Math.floor((totalJumpT % 3600) / 60);
          totalJumpT = Math.floor(totalJumpT / 3600);
@@ -319,7 +484,6 @@ console.log('in the Stats page', jumps, rigs);
          for (let j of jumps) {
             totalAlt = totalAlt + j.alt
          }
-         console.log('total altitude (ft): ', totalAlt)
          ft = Math.floor(totalAlt % 5280);
          totalAlt = Math.floor(totalAlt / 5280) 
          
@@ -357,6 +521,10 @@ console.log('in the Stats page', jumps, rigs);
             }
          }
       }
+      if (count > favRigNum) {
+         setFavRigNum(count);
+         setFavRig(rig)
+      }
       return count
    }
 
@@ -368,6 +536,10 @@ console.log('in the Stats page', jumps, rigs);
                count = count + 1;
             }
          }
+      }
+      if (count > favPlaneNum) {
+         setFavPlaneNum(count);
+         setFavPlane(plane)
       }
       return count
    }
@@ -381,9 +553,332 @@ console.log('in the Stats page', jumps, rigs);
             }
          }
       }
+      if (count > favDZNum) {
+         setFavDZNum(count);
+         setFavDZ(dz)
+      }
       return count
    }
 
+
+
+   function getThisYearsJumps(year) {
+      let num = 0;
+      for (let j of jumps) {
+         if (parseInt(j.jump_date.slice(0,4), 10) === year) {
+            num = num + 1
+         }
+      }
+
+      return num
+   }
+
+   function getThisYearsFFT(year) {
+      let totalJumpT = 0;
+      let min = 0;
+      let sec = 0;
+      for (let j of jumps) {
+         if (parseInt(j.jump_date.slice(0,4), 10) === year) {
+            totalJumpT = totalJumpT + j.t
+         }
+         
+      }
+      sec = Math.floor((totalJumpT % 3600) % 60)
+      min = Math.floor((totalJumpT % 3600) / 60);
+      totalJumpT = Math.floor(totalJumpT / 3600);
+      
+      return `${totalJumpT}:${min}:${sec}`      
+   }
+
+   function getThisYearsAlt(year) {
+      let totalAlt = 0;
+      let ft = 0;
+      for (let j of jumps) {
+         if (parseInt(j.jump_date.slice(0,4), 10) === year) {
+            totalAlt = totalAlt + j.alt
+         }
+      }
+      ft = Math.floor(totalAlt % 5280);
+      totalAlt = Math.floor(totalAlt / 5280) 
+         
+      
+
+      return `${totalAlt} mi : ${ft} ft`
+   }
+
+   function getStatsByYear () {
+      let SBY = <p style={headerSubStyle}>loading..</p>;
+      let firstJumpYear;
+      let thisYear = new Date().getFullYear();
+      let jumpYears = [thisYear];
+      
+      if (Array.isArray(jumps)){
+         firstJumpYear = parseInt(getFirstJump().slice(0,4), 10)
+         const yearsJumped = thisYear - firstJumpYear
+         
+         if (yearsJumped > 0) {
+            jumpYears = [];
+            for (let i = 0; i < yearsJumped + 1; i++) {
+               jumpYears.push(thisYear - i)
+            }
+         }
+         SBY = jumpYears.map((year, index) => {
+            return(<div style={contentSection} key={index}>
+
+               <div style={sectionBar}>
+                  <p style={rlStyle}>{year}</p>
+               </div>
+
+               <div style={sectionBar}>
+
+                  <p style={textStyle}>Total Jumps in {year}:<br /><span style={textStyleProps}>{getThisYearsJumps(year)}</span></p>
+
+                  <p style={textStyle}>Total Freefall in {year}:<br /><span style={textStyleProps}>{getThisYearsFFT(year)}</span></p>
+
+                  <p style={textStyle}>Total Descent in {year}:<br /><span style={textStyleProps}>{getThisYearsAlt(year)}</span></p>
+
+               </div>
+
+            </div>)
+         })
+
+      }
+
+      return SBY
+   }
+
+
+   function getJTT () {
+      let JTT = 'loading...';
+      if (Array.isArray(tags)) {
+         const counts = {}
+         for (let t of tags) {
+            if (t.cat !== 'JTT') continue;
+            if (!counts[t.name]) {
+               counts[t.name] = {name: t.name, count: 0}
+            }
+            counts[t.name].count += 1;
+
+         }
+         JTT = Object.values(counts)
+      }
+      console.log('JTT tags', JTT)
+
+      return (
+         JTT.map((tag, idx) => {
+            return (
+               <div key={idx} style={listDiv}>
+                  <p style={rlStyle}>{tag.name}</p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+               </div>
+            )
+         })
+      )
+      
+   }
+
+   function getOC () {
+      let OC = 'loading...';
+      if (Array.isArray(tags)) {
+         const counts = {}
+         for (let t of tags) {
+            if (t.cat !== 'OC') continue;
+            if (!counts[t.name]) {
+               counts[t.name] = {name: t.name, count: 0}
+            }
+            counts[t.name].count += 1;
+
+         }
+         OC = Object.values(counts)
+      }
+      console.log('OC tags', OC)
+
+      return (
+         OC.map((tag, idx) => {
+            return (
+               <div key={idx} style={listDiv}>
+                  <p style={rlStyle}>{tag.name}</p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+               </div>
+            )
+         })
+      )
+      
+   } 
+   
+   function getLSC () {
+      let LSC = 'loading...';
+      if (Array.isArray(tags)) {
+         const counts = {}
+         for (let t of tags) {
+            if (t.cat !== 'LSC') continue;
+            if (!counts[t.name]) {
+               counts[t.name] = {name: t.name, count: 0}
+            }
+            counts[t.name].count += 1;
+
+         }
+         LSC = Object.values(counts)
+      }
+      console.log('LSC tags', LSC)
+
+      return (
+         LSC.map((tag, idx) => {
+            return (
+               <div key={idx} style={listDiv}>
+                  <p style={rlStyle}>{tag.name}</p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+               </div>
+            )
+         })
+      )
+      
+   }
+
+   function getGROUP () {
+      let GROUP = 'loading...';
+      if (Array.isArray(tags)) {
+         const counts = {}
+         for (let t of tags) {
+            if (t.cat !== 'GROUP') continue;
+            if (!counts[t.name]) {
+               counts[t.name] = {name: t.name, count: 0}
+            }
+            counts[t.name].count += 1;
+
+         }
+         GROUP = Object.values(counts)
+      }
+      console.log('GROUP tags', GROUP)
+
+      return (
+         GROUP.map((tag, idx) => {
+            return (
+               <div key={idx} style={listDiv}>
+                  <p style={rlStyle}>{tag.name}</p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+               </div>
+            )
+         })
+      )
+      
+   }
+
+   function getWTHR () {
+      let WTHR = 'loading...';
+      if (Array.isArray(tags)) {
+         const counts = {}
+         for (let t of tags) {
+            if (t.cat !== 'WTHR') continue;
+            if (!counts[t.name]) {
+               counts[t.name] = {name: t.name, count: 0}
+            }
+            counts[t.name].count += 1;
+
+         }
+         WTHR = Object.values(counts)
+      }
+      console.log('WTHR tags', WTHR)
+
+      return (
+         WTHR.map((tag, idx) => {
+            return (
+               <div key={idx} style={listDiv}>
+                  <p style={rlStyle}>{tag.name}</p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+               </div>
+            )
+         })
+      )
+      
+   }
+
+   function getEMR () {
+      let EMR = 'loading...';
+      if (Array.isArray(tags)) {
+         const counts = {}
+         for (let t of tags) {
+            if (t.cat !== 'EMR') continue;
+            if (!counts[t.name]) {
+               counts[t.name] = {name: t.name, count: 0}
+            }
+            counts[t.name].count += 1;
+
+         }
+         EMR = Object.values(counts)
+      }
+      console.log('EMR tags', EMR)
+
+      return (
+         EMR.map((tag, idx) => {
+            return (
+               <div key={idx} style={listDiv}>
+                  <p style={rlStyle}>{tag.name}</p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+               </div>
+            )
+         })
+      )
+      
+   }
+
+   function getMAL () {
+      let MAL = 'loading...';
+      if (Array.isArray(tags)) {
+         const counts = {}
+         for (let t of tags) {
+            if (t.cat !== 'MAL') continue;
+            if (!counts[t.name]) {
+               counts[t.name] = {name: t.name, count: 0}
+            }
+            counts[t.name].count += 1;
+
+         }
+         MAL = Object.values(counts)
+      }
+      console.log('MAL tags', MAL)
+
+      return (
+         MAL.map((tag, idx) => {
+            return (
+               <div key={idx} style={listDiv}>
+                  <p style={rlStyle}>{tag.name}</p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+               </div>
+            )
+         })
+      )
+      
+   }
+
+   function getREQ () {
+      let REQ = 'loading...';
+      if (Array.isArray(tags)) {
+         const counts = {}
+         for (let t of tags) {
+            if (t.cat !== 'REQ') continue;
+            if (!counts[t.name]) {
+               counts[t.name] = {name: t.name, count: 0}
+            }
+            counts[t.name].count += 1;
+
+         }
+         REQ = Object.values(counts)
+      }
+      console.log('REQ tags', REQ)
+
+      return (
+         REQ.map((tag, idx) => {
+            return (
+               <div key={idx} style={listDiv}>
+                  <p style={rlStyle}>{tag.name}</p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+               </div>
+            )
+         })
+      )
+      
+   }
 
    // rendered lists
 
@@ -499,9 +994,9 @@ console.log('in the Stats page', jumps, rigs);
       if(response.ok){
         let foundTags = [];
         for (let tag of returnedData.results) {
-          foundRigs.push({name : tag.name, cat : tag.cat});
+          foundTags.push({name : tag.name, cat : tag.cat});
         }
-        setTags([...foundRigs]);
+        setTags([...foundTags]);
       } else{
         console.error('no tags imported', response);
         setTags([])
@@ -517,6 +1012,7 @@ console.log('in the Stats page', jumps, rigs);
    getDZs();
    getPlanes();
    getRigs();
+   getAllTags();
   }, [])
 
    return(
@@ -548,9 +1044,18 @@ console.log('in the Stats page', jumps, rigs);
                <p style={textStyle}>Total Descent Altitude:<br /> <span style={textStyleProps}>{getTotalAlt()}</span></p>
 
             </div>
+
             <div style={sectionBar}>
                <p style={textStyle}>First Jump:<br /> <span style={textStyleProps}>{getFirstJump()}</span></p>
                <p style={textStyle}>Last Jump:<br /> <span style={textStyleProps}>{getLastJump()}</span></p>
+            </div>
+
+            <div style={sectionBar}>
+
+               <p style={textStyle}>Favorite DZ:<br /> <span style={rlStyle}>{favDZ}</span><br /><span style={textStyleProps}>{favDZNum} Jumps</span></p>
+               <p style={textStyle}>Favorite Aircraft:<br /> <span style={rlStyle}>{favPlane}</span><br /><span style={textStyleProps}>{favPlaneNum} Jumps</span></p>
+               <p style={textStyle}>Favorite Rig:<br /> <span style={rlStyle}>{favRig}</span><br /><span style={textStyleProps}>{favRigNum} Jumps</span></p>
+
             </div>
 
             <div style={sectionBar}>
@@ -566,39 +1071,81 @@ console.log('in the Stats page', jumps, rigs);
                </div>}
 
             <div style={sectionBar}>
-               <button style={npButton} onClick={handleTagsPage}>jump types and tags</button>
+               <button style={npButton} onClick={handleTagsPage}>Tags</button>
             </div>
             
             
             
          </div>}
 
-         {/* {tagsPage &&<div style={contentSection}>
+         {!tagsPage &&
+         <div>
+            <p style={headerSubStyle}>stats by year</p>
+            {getStatsByYear()}
+            <p style={rlStyle}>lists of jumps by year can be  displayed by entering "YYYY" into the search field (ex: 2025)</p>
+         </div>
+         }
+
+
+
+
+         {tagsPage &&<div style={contentSection}>
             <div style={sectionBack}>
                <button style={nestedButton} onClick={handleTagsPage}>Back</button>
             </div>
             <div style={sectionBar}>
                <p style={rlStyle}>select tag type</p>
             </div>
-            <div style={sectionBar}>
-               <button style={ttButton}>Jump Types</button>
-               <button style={ttButton}>Openings</button>
-               <button style={ttButton}>Liscense + Rating</button>
-               <button style={ttButton}>group-size</button>
-               <button style={ttButton}>Canopy</button>
-               <button style={ttButton}>Emergency</button>
-               <button style={ttButton}>Malfunction</button>
-               <button style={ttButton}>Pre-Requisites</button>
+            <div style={contentSection}>
+               <div style={sectionBar}>
+                  <button style={ttButton} onClick={handleJTTPage}>Jump Types</button>
+                  <button style={ttButton} onClick={handleOCPage}>Openings</button>
+                  <button style={ttButton} onClick={handleLSCPage}>Liscense and Rating</button>
+                  <button style={ttButton} onClick={handleGROUPPage}>group-size</button>
+                  <button style={ttButton} onClick={handleWTHRPage}>Canopy</button>
+                  <button style={ttButton} onClick={handleEMRPage}>Emergency</button>
+                  <button style={ttButton} onClick={handleMALPage}>Malfunction</button>
+                  <button style={ttButton} onClick={handleREQPage}>Pre-Requisite</button>
+               </div>
             </div>
-         </div>} */}
-         {tagsPage &&<div style={contentSection}>
+
+            <div style={sectionBar}>
+               {
+                  <>
+                     {JTTField && <p style={headerSubStyle}>Jump Types</p>}
+                     {OCField && <p style={headerSubStyle}>Openings</p>}
+                     {LSCField && <p style={headerSubStyle}>Liscenses and Ratings</p>}
+                     {GROUPField && <p style={headerSubStyle}>Groups</p>}
+                     {WTHRField && <p style={headerSubStyle}>Canopy and Weather</p>}
+                     {EMRField && <p style={headerSubStyle}>Emergencies</p>}
+                     {MALField && <p style={headerSubStyle}>Malfunctions</p>}
+                     {REQField && <p style={headerSubStyle}>Prerequisites</p>}
+                  </>
+               }
+            </div>
+
+            <div style={sectionBar}>
+               {JTTField && getJTT()}
+               {OCField && getOC()}
+               {LSCField && getLSC()}
+               {GROUPField && getGROUP()}
+               {WTHRField && getWTHR()}
+               {EMRField && getEMR()}
+               {MALField && getMAL()}
+               {REQField && getREQ()}
+
+            </div>
+         </div>}
+
+
+         {/* {tagsPage &&<div style={contentSection}>
             <div style={sectionBack}>
                <button style={nestedButton} onClick={handleTagsPage}>Back</button>
             </div>
             <div style={sectionBar}>
                <p style={rlStyle}>This page is under construction...</p>
             </div>
-         </div>}
+         </div>} */}
 
 
       </div>

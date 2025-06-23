@@ -1593,7 +1593,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
 
           <div style={tagListStyle}>
 
-            <button onClick={handlePreReqTagsForm} style={tagListButtonStyleEMER}>Emergencies{!emergencyTagsPage ? ' (show)' : ' (hide)'}</button>
+            <button onClick={handlePreReqTagsForm} style={tagListButtonStyleEMER}>Prerequisites{!emergencyTagsPage ? ' (show)' : ' (hide)'}</button>
 
             <div style={preReqTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
               <button style={tagAcc33REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc33}>Accuracy Landing (within 33ft)</button>
