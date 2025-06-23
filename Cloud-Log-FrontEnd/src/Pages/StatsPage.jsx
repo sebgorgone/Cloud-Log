@@ -1096,17 +1096,15 @@ function StatsPage(props) {
             <div style={sectionBar}>
                <p style={rlStyle}>select tag type</p>
             </div>
-            <div style={contentSection}>
-               <div style={sectionBar}>
-                  <button style={ttButton} onClick={handleJTTPage}>Jump Types</button>
-                  <button style={ttButton} onClick={handleOCPage}>Openings</button>
-                  <button style={ttButton} onClick={handleLSCPage}>Liscense and Rating</button>
-                  <button style={ttButton} onClick={handleGROUPPage}>group-size</button>
-                  <button style={ttButton} onClick={handleWTHRPage}>Canopy</button>
-                  <button style={ttButton} onClick={handleEMRPage}>Emergency</button>
-                  <button style={ttButton} onClick={handleMALPage}>Malfunction</button>
-                  <button style={ttButton} onClick={handleREQPage}>Pre-Requisite</button>
-               </div>
+            <div style={sectionBar}>
+               <button style={ttButton} onClick={handleJTTPage}>Jump Types</button>
+               <button style={ttButton} onClick={handleOCPage}>Openings</button>
+               <button style={ttButton} onClick={handleLSCPage}>Liscense and Rating</button>
+               <button style={ttButton} onClick={handleGROUPPage}>group-size</button>
+               <button style={ttButton} onClick={handleWTHRPage}>Canopy</button>
+               <button style={ttButton} onClick={handleEMRPage}>Emergency</button>
+               <button style={ttButton} onClick={handleMALPage}>Malfunction</button>
+               <button style={ttButton} onClick={handleREQPage}>Pre-Requisite</button>
             </div>
 
             <div style={sectionBar}>
