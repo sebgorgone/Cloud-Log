@@ -11,106 +11,106 @@ function StatsPage(props) {
 
    const pallette = getPallette()
 
-   // const jumps = props.jumps
+   const jumps = props.jumps
 
-   const jumps= [{ 
-      jump_num: 9, 
-      jump_date: "2025-06-17", 
-      dz: "Connecticut Parachutists", 
-      aircraft: "Cessna 206", 
-      equipment: "Navigator 220", 
-      alt: 4, 
-      t: 7,
-      notes: "hello retard" ,
-   },
-   { 
-      jump_num: 8, 
-      jump_date: "2025-04-12", 
-      dz: "Connecticut Parachutists", 
-      aircraft: "Caravan", 
-      equipment: "Vector 3 Storm 190", 
-      alt: 5000, 
-      t: 30,
-      notes: "hello retard" ,
-   },
-   { 
-      jump_num: 7, 
-      jump_date: "2025-02-25", 
-      dz: "Jumptown", 
-      aircraft: "Cessna 182", 
-      equipment: "Tandem Harness!!", 
-      alt: 10293, 
-      t: 56,
-      notes: "hello retard" ,
-   },
-   { 
-      jump_num: 6, 
-      jump_date: "2025-01-01", 
-      dz: "Connecticut Parachutists", 
-      aircraft: "Cessna 206", 
-      equipment: "Tandem Harness!!", 
-      alt: 4000, 
-      t: 70,
-      notes: "hello retard" ,
-   },
-   { 
-      jump_num: 5, 
-      jump_date: "2025-01-01", 
-      dz: "Connecticut Parachutists", 
-      aircraft: "Cessna 206", 
-      equipment: "Tandem Harness!!", 
-      alt: 4000, 
-      t: 70,
-      notes: "hello retard" ,
-   },
-   { 
-      jump_num: 4, 
-      jump_date: "2025-01-01", 
-      dz: "Connecticut Parachutists", 
-      aircraft: "Cessna 206", 
-      equipment: "Tandem Harness!!", 
-      alt: 4000, 
-      t: 70,
-      notes: "hello retard" ,
-   },
-   { 
-      jump_num: 3, 
-      jump_date: "2025-01-01", 
-      dz: "Connecticut Parachutists", 
-      aircraft: "Cessna 206", 
-      equipment: "Tandem Harness!!", 
-      alt: 4000, 
-      t: 70,
-      notes: "hello retard" ,
-   },
-   { 
-      jump_num: 2, 
-      jump_date: "2023-01-01", 
-      dz: "Connecticut Parachutists", 
-      aircraft: "Cessna 206", 
-      equipment: "Tandem Harness!!", 
-      alt: 4000, 
-      t: 70,
-      notes: "hello retard" ,
-   },
-   { 
-      jump_num: 1, 
-      jump_date: "2022-01-01", 
-      dz: "Connecticut Parachutists", 
-      aircraft: "Cessna 206", 
-      equipment: "Tandem Harness!!", 
-      alt: 4000, 
-      t: 70,
-      notes: "hello retard" ,
-   }]
+   // const jumps= [{ 
+   //    jump_num: 9, 
+   //    jump_date: "2025-06-17", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Cessna 206", 
+   //    equipment: "Navigator 220", 
+   //    alt: 4, 
+   //    t: 7,
+   //    notes: "hello retard" ,
+   // },
+   // { 
+   //    jump_num: 8, 
+   //    jump_date: "2025-04-12", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Caravan", 
+   //    equipment: "Vector 3 Storm 190", 
+   //    alt: 5000, 
+   //    t: 30,
+   //    notes: "hello retard" ,
+   // },
+   // { 
+   //    jump_num: 7, 
+   //    jump_date: "2025-02-25", 
+   //    dz: "Jumptown", 
+   //    aircraft: "Cessna 182", 
+   //    equipment: "Tandem Harness!!", 
+   //    alt: 10293, 
+   //    t: 56,
+   //    notes: "hello retard" ,
+   // },
+   // { 
+   //    jump_num: 6, 
+   //    jump_date: "2025-01-01", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Cessna 206", 
+   //    equipment: "Tandem Harness!!", 
+   //    alt: 4000, 
+   //    t: 70,
+   //    notes: "hello retard" ,
+   // },
+   // { 
+   //    jump_num: 5, 
+   //    jump_date: "2025-01-01", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Cessna 206", 
+   //    equipment: "Tandem Harness!!", 
+   //    alt: 4000, 
+   //    t: 70,
+   //    notes: "hello retard" ,
+   // },
+   // { 
+   //    jump_num: 4, 
+   //    jump_date: "2025-01-01", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Cessna 206", 
+   //    equipment: "Tandem Harness!!", 
+   //    alt: 4000, 
+   //    t: 70,
+   //    notes: "hello retard" ,
+   // },
+   // { 
+   //    jump_num: 3, 
+   //    jump_date: "2025-01-01", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Cessna 206", 
+   //    equipment: "Tandem Harness!!", 
+   //    alt: 4000, 
+   //    t: 70,
+   //    notes: "hello retard" ,
+   // },
+   // { 
+   //    jump_num: 2, 
+   //    jump_date: "2023-01-01", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Cessna 206", 
+   //    equipment: "Tandem Harness!!", 
+   //    alt: 4000, 
+   //    t: 70,
+   //    notes: "hello retard" ,
+   // },
+   // { 
+   //    jump_num: 1, 
+   //    jump_date: "2022-01-01", 
+   //    dz: "Connecticut Parachutists", 
+   //    aircraft: "Cessna 206", 
+   //    equipment: "Tandem Harness!!", 
+   //    alt: 4000, 
+   //    t: 70,
+   //    notes: "hello retard" ,
+   // }]
 
-   // const user = props.user
+   const user = props.user
 
-   const user = { ID : 1 }
+   // const user = { ID : 1 }
 
-   // const jump_num = { props.jump_num}
+   const jump_num = props.jump_num
 
-   const jump_num = 9; 
+   // const jump_num = 9; 
 
    //state
 
@@ -494,17 +494,33 @@ function StatsPage(props) {
 
    function getFirstJump() {
       let firstJumpDate = 'loading';
-      if (Array.isArray(jumps)) {
+      if (Array.isArray(jumps) && jumps.length > 0) {
          firstJumpDate = jumps[jumps.length - 1].jump_date.slice(0, 10)
+         
       }
+
+      if (Array.isArray(jumps)){ 
+        if (jumps.length === 0) {
+            firstJumpDate = 'none'
+         } 
+      }
+
+      
 
       return firstJumpDate
    }
 
    function getLastJump() {
       let LastJumpDate = 'loading';
-      if (Array.isArray(jumps)) {
+      if (Array.isArray(jumps) && jumps.length > 0) {
          LastJumpDate = jumps[0].jump_date.slice(0, 10)
+
+      }
+
+      if (Array.isArray(jumps)){ 
+        if (jumps.length === 0) {
+            LastJumpDate = 'none';
+         } 
       }
 
       return LastJumpDate
@@ -889,7 +905,7 @@ function StatsPage(props) {
             <p style={textStyle}>Jumps: <span style={textStyleProps}>{getRigJumpCount(rig)}</span></p>            
           </div>
         ))
-      : null;
+      : <p style={rlStyle}>none</p>;
 
    const planeList = Array.isArray(planes)
       ? planes.map((plane, idx) => (
@@ -898,7 +914,7 @@ function StatsPage(props) {
             <p style={textStyle}>Jumps: <span style={textStyleProps}>{getPlaneJumpCount(plane)}</span></p>
           </div>
         ))
-      : null;
+      : <p style={rlStyle}>none</p>;
 
       const dzList = Array.isArray(DZs)
       ? DZs.map((dz, idx) => (
@@ -907,7 +923,7 @@ function StatsPage(props) {
             <p style={textStyle}>Jumps: <span style={textStyleProps}>{getDZJumpCount(dz)}</span></p>
           </div>
         ))
-      : null;
+      : <p style={rlStyle}>none</p>;
 
 
    //api
@@ -1094,7 +1110,7 @@ function StatsPage(props) {
                <button style={nestedButton} onClick={handleTagsPage}>Back</button>
             </div>
             <div style={sectionBar}>
-               <p style={rlStyle}>select tag type</p>
+               <p style={rlStyle}>Select Tag Type</p>
             </div>
             <div style={sectionBar}>
                <button style={ttButton} onClick={handleJTTPage}>Jump Types</button>
@@ -1134,18 +1150,6 @@ function StatsPage(props) {
 
             </div>
          </div>}
-
-
-         {/* {tagsPage &&<div style={contentSection}>
-            <div style={sectionBack}>
-               <button style={nestedButton} onClick={handleTagsPage}>Back</button>
-            </div>
-            <div style={sectionBar}>
-               <p style={rlStyle}>This page is under construction...</p>
-            </div>
-         </div>} */}
-
-
       </div>
    )
 
