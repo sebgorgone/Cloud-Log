@@ -52,12 +52,16 @@ function FullJumpLedg (props) {
 
    const newJumpButton= {
       margin: ".7em",
-      display: "inline-block",
+      display: "flex",
       alignItems: "center",
       justifyContent: "center",
       color: pallette[0],
       background: pallette[3],
-      border: "none"
+      padding: ".9em",
+      border: "none",
+      borderRadius: "1em",
+      fontFamily: "L1",
+      verticleAlign: "center"
    }
 
       const widgetMenu = {
@@ -205,6 +209,7 @@ const tagsRoute = async (array) => {
             <div style={showAddWidget ? {display: "block", width: "80%", marginLeft: "2em"} : {display: "none"}}>
                <LogInputWidget 
                   numOfJumps={Array.isArray(props.jumps) ? props.jumps.length : null}
+                  rst={() => props.rst()}
                />
             </div>
             <br />
@@ -213,7 +218,7 @@ const tagsRoute = async (array) => {
                <button 
                   title={!showAddWidget ? "Add New Jumps" : "Hide 'Add Jump' menu"}
                   style={newJumpButton} onClick={toggleWidgetDropdown}>
-                     {!showAddWidget ? 'Add New Jumps' : 'Hide Add Menu'}
+                     <img style={{width: '2em', height: '2em', paddingRight: "1.3em"}} src="/cloudLogIconWhite.svg" />{!showAddWidget ? 'Add New Jumps' : 'Hide Add Menu'}
                </button>
             </div>
             

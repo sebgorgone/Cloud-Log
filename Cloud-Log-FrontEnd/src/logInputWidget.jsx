@@ -1,4 +1,4 @@
-import {useState, useEffect, } from 'react';
+import {useState, useEffect, use, } from 'react';
 import './style/logInputWidget.css'
 import { useAuth } from './contexts/authContext';
 import JumpWidget from './components/JumpWidget.jsx'
@@ -52,9 +52,11 @@ function LogInputWidget(props) {
 
   const [malfunctionTagsPage, setMalfunctionTagsPage] = useState(false);
 
+  const [nextJump, setNextJump] = useState(props.numOfJumps + 1);
+
 
 //newjump variables
-  const [newJumpNum, setNewJumpNum] = useState(null);
+  const [newJumpNum, setNewJumpNum] = useState(nextJump);
 
   const [newJumpDate, setNewJumpDate] = useState(null);
 
@@ -1004,6 +1006,18 @@ useEffect(() => {
   getDZs();
 }, [])
 
+useEffect(() => {
+  setNextJump(props.numOfJumps + 1)
+}, [props.numOfJumps]);
+
+useEffect (() => {
+  setNewJumpNum(nextJump)
+}, [nextJump])
+
+useEffect(() => {
+  if (newJumpNum - props.jump_num > 1) props.rst();
+}, [newJumpNum])
+
 //api calls
 
   function fileToBase64(pdfFile) {
@@ -1159,7 +1173,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     const responseData = await response.json();
     if(responseData.ok){
       alert(responseData.message);
-      setNewJumpNum('');
+      setNextJump(newJumpNum + 1);
       setNewJumpCom('');
       setNewJumpSigUpload(null);
       setNewJumpTagList([]);
