@@ -1177,6 +1177,8 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       setNewJumpCom('');
       setNewJumpSigUpload(null);
       setNewJumpTagList([]);
+
+      props.add();
       // Notify parent to reload after successful storage
     } else {
       alert(responseData.message);
@@ -1189,28 +1191,40 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
   //revised Div Styles
 
   const shell = {
-    background: pallette[0],
+    background: pallette[1],
     borderRadius: "1em",
     padding: "1em"
   };
 
-    const headerStyle = {
+  const headerStyle = {
     fontFamily: "L1",
     fontSize: "1.2em",
-    color: pallette[4],
-    background: pallette[2],
+    color: pallette[0],
+    background: pallette[4],
     borderRadius: "1em",
     padding: ".3em",
   };
 
   const headerButtonStyle = {
+    background: pallette[2],
+    border: "none",
+    borderRadius: "1em",
+    marginTop: ".5em",
+    padding: ".6vw",
+    fontFamily: "L1",
+    color: pallette[0],
+    marginLeft: "1em",
+  };
+
+  const headerButtonStyle1 = {
     background: pallette[0],
-    border: "solid",
-    borderColor: pallette[4],
-    borderRadius: "1.5vw",
-    padding: ".5vw",
+    border: "none",
+    borderRadius: "1em",
+    marginTop: ".5em",
+    padding: ".6vw",
     fontFamily: "L1",
     color: pallette[4],
+    marginLeft: "1em",
   };
 
   const inputButtonStyle = {
@@ -1241,9 +1255,20 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
   const rowStyle = {
     display: "flex", 
     justifyContent: "space-evenly", 
-    margin: "1vh", padding: ".5em", 
-    background: pallette[1], 
-    borderRadius:".3em" 
+    margin: "0", padding: ".2em", 
+    background: pallette[3], 
+    verticalAlign: "top"
+  };
+
+  const rowLastStyle = {
+    display: "flex", 
+    justifyContent: "space-evenly", 
+    margin: "0", padding: ".2em", 
+    background: pallette[3], 
+    borderBottomLeftRadius: ".7em",
+    borderBottomRightRadius: ".7em",
+    paddingBottom: "1em",
+    
   };
 
   //jump upload
@@ -1291,9 +1316,9 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     <div style={shell}>
 
       {/* title */}
-      <div style={{ display: "flex", justifyContent: "center", margin: "1vh", padding: ".5em", background: pallette[1], borderRadius:".3em" }}>
+      <div style={{ display: "flex", justifyContent: "center", margin: "", padding: ".5em", background: pallette[3], borderTopLeftRadius:".7em", borderTopRightRadius:".7em" }}>
         <img style={{width: '5em', height: '5em', paddingTop: ".5em"}} src="/CloudLogLogo.svg" />
-        <h1 style={{fontFamily: "L1", padding: ".2em", color: pallette[4],fontSize: "2em"}}>Add Jump</h1>
+        <h1 style={{fontFamily: "L1", padding: ".2em", color: pallette[0],fontSize: "2em"}}>Add Jump</h1>
       </div>
 
           {/* first row*/}
@@ -1326,8 +1351,30 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
           <div style={rowStyle}>
             {/* DZ */}
           <div style={inputSection}>
-              <button onClick={handleDzForm}style={headerButtonStyle}>Drop-Zone{!dzPage ? "(hide)" : "(show)"}</button>
-              <form style={!dzPage ? formStyle : {display: "none"}}>
+              <button onClick={handleDzForm}style={dzPage ? headerButtonStyle: headerButtonStyle1}>Drop-Zone</button>
+          </div>
+
+
+            {/* Aircraft */}
+          <div style={inputSection}>
+          <button onClick={handleAircraftForm}style={aircraftPage ? headerButtonStyle: headerButtonStyle1}>Aircraft</button>
+          </div>
+
+
+            {/* equipment */}
+          <div style={inputSection}>
+            <button style={eqpmPage ? headerButtonStyle: headerButtonStyle1} onClick={handleEquipmentForm}>Equipment</button>
+          </div>
+
+
+
+          </div>
+
+          {/* intermediate */}
+
+          <div style={rowStyle}>
+
+            <form style={!dzPage ? formStyle : {display: "none"}}>
                 <p style={headerStyle}>Select Drop-Zone</p>
                 {DZList}
                 <input 
@@ -1337,16 +1384,10 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
                   value={addJumpDZ}
                   onChange={handleAddJumpDZChange}
                 />
-              <button style={headerButtonStyle} onClick={handleDZInput}>add DZ</button>
+              <button style={headerButtonStyle1} onClick={handleDZInput}>add DZ</button>
             </form>
-          </div>
 
-
-            {/* Aircraft */}
-          <div style={inputSection}>
-          <button onClick={handleAircraftForm}style={headerButtonStyle}>Aircraft{aircraftPage ? ' (show)' : ' (hide)'}</button>
-
-          <form style={!aircraftPage ? formStyle : formHiddenStyle}>
+            <form style={!aircraftPage ? formStyle : formHiddenStyle}>
 
             <p style={headerStyle}>
               select your aircraft 
@@ -1361,17 +1402,12 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
                 value={addJumpAircraft}
                 onChange={handleAddJumpAircraftChange}
               /> 
-              <button style={headerButtonStyle} onClick={handleAircraftInput}>Add Aircraft</button>
+              <button style={headerButtonStyle1} onClick={handleAircraftInput}>Add Aircraft</button>
             </div>
 
-          </form>
-          </div>
+            </form>
 
-
-            {/* equipment */}
-          <div style={inputSection}>
-            <button style={headerButtonStyle} onClick={handleEquipmentForm}>Equipment{eqpmPage ? ' (show)' : ' (hide)'}</button>
-          <form style ={!eqpmPage ? formStyle : {display: "none"}}>
+            <form style ={!eqpmPage ? formStyle : {display: "none"}}>
             <p style={headerStyle}>select your rig </p>
             {rigList}
             <div>
@@ -1381,17 +1417,12 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
                 value={addJumpRig}
                 onChange={handleAddJumpRigChange}
               />
-              <button style={headerButtonStyle} onClick={handleRigInput}>Add Rig</button>
+              <button style={headerButtonStyle1} onClick={handleRigInput}>Add Rig</button>
 
             </div>
           </form>
-          </div>
-
-
 
           </div>
-
-
           {/* third row */}
         <div style={rowStyle}>
 
@@ -1454,7 +1485,13 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
             <button style={headerButtonStyle} onClick={handleTagsForm}>Tags{tagsPage ? ' (show)' : ' (hide)'}</button>
           </div>
 
-        <form style={!tagsPage ? overlayStyle : {display: "none"}}>
+
+        </div>
+
+        {/* intermediate */}
+
+        <div style={rowStyle}>
+          <form>
           <h3 style={tagsHeaderStyle}>Select Tags for This Jump</h3>
           <button style={xButtonStyle} onClick={handleTagsForm}>X</button>
 
@@ -1622,13 +1659,11 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
           </div>
           
         </form>
-
-
         </div>
 
 
         {/* final */}
-        <div style={rowStyle}>
+        <div style={rowLastStyle}>
 
 
           {/* LB signature */}
@@ -1659,7 +1694,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
 
         <p style={headerStyle}>Output Preview</p>
 
-          <div>
+          <div style={{width: "100%"}}>
       <JumpWidget 
             jumpNum={newJumpNum}
             jumpDate={newJumpDate}

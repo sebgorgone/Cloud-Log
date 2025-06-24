@@ -21,8 +21,7 @@ function FullJumpLedg (props) {
       //handlers
    function toggleWidgetDropdown (e) {
       e.preventDefault()
-      setShowAddWidget(!showAddWidget);
-      props.rst();
+      showAddWidget? props.rst() : setShowAddWidget(!showAddWidget);
    }
 
    function handlePage() {
@@ -68,7 +67,7 @@ function FullJumpLedg (props) {
       background: pallette[1],
       borderBottom: "solid .2em",
       borderColor: pallette[3],
-      marginLeft: "2em",
+      marginLeft: ".4em",
       width: "100%",
       marginTop: "3.1em",
       padding: "1em",
@@ -206,10 +205,11 @@ const tagsRoute = async (array) => {
       <div>
 
          <div style={widgetMenu}>
-            <div style={showAddWidget ? {display: "block", width: "80%", marginLeft: "2em"} : {display: "none"}}>
+            <div style={showAddWidget ? {display: "block", width: "90%", marginLeft: "1.5em"} : {display: "none"}}>
                <LogInputWidget 
                   numOfJumps={Array.isArray(props.jumps) ? props.jumps.length : null}
                   rst={() => props.rst()}
+                  add={() => props.add()}
                />
             </div>
             <br />

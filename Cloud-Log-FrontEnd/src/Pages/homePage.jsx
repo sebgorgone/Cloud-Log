@@ -47,6 +47,7 @@ function HomePage(props) {
 
    const getJumpHist = async () => { 
       setUserJumpHistory(null);
+      setUserJumpCount('loading...')
       // console.log('getting user jump history')
       try {
          const response = await fetch('http://localhost:5009/userjumphistory', {
@@ -61,6 +62,7 @@ function HomePage(props) {
                jumpHist.push(jump);
             }
             setUserJumpHistory(jumpHist);
+            setUserJumpCount(jumpHist.length)
             // console.log('set user jump history')
                
          }
@@ -259,9 +261,6 @@ function HomePage(props) {
       !router.searchedList && getJumpHist();
    }, [router, flag]);
 
-   useEffect(() => {
-      userJumpHistory && setUserJumpCount(userJumpHistory.length)
-   }, [userJumpHistory])
 
 
    return(
@@ -344,7 +343,7 @@ function HomePage(props) {
 
          <div style={mainPageArea}>
             {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} skip={callLedg} stats={callStats} />: null}
-            {router.fullList ? <FullJumpLedge rst={ () => getJumpHist()} jumps={userJumpHistory} jump_num={userJumpCount}/> : null}
+            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => getJumpHist()} add={() => setUserJumpCount(userJumpCount + 1)} jumps={userJumpHistory} jump_num={userJumpCount}/> : null}
             {router.download ? <DownloadPage user={user} /> : null}
             {router.stats ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount}/> : null}
             {router.settings ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}}/> : null}
