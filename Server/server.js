@@ -5,26 +5,87 @@ const cors = require('cors');
 const path = require('path');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-
+const helmet = require('helmet')
 
 
 
  const app = express();
 
+ const allowedOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map(o => o.trim())
+  .filter(o => o);
+
+
+
+app.use(helmet());
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+      ],
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+      ],
+      imgSrc: ["'self'", 'data:'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+      connectSrc: ["'self'", 'https://api.yourdomain.com'], 
+      frameAncestors: ["'none'"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  })
+);
+
+app.use(helmet.frameguard({ action: 'deny' }));
+
+app.use(helmet.noSniff());
+
+app.use(
+  helmet.hsts({
+    maxAge: 90 * 24 * 60 * 60, // 90 days in seconds
+    includeSubDomains: true,   // apply to subdomains too
+    preload: true,
+  })
+);
+
+app.use(
+  helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' })
+);
+
+app.disable('x-powered-by');
+
+
  app.use(express.static(path.join(__dirname, "public")));
- app.use(cors());
+ app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET','POST','PUT','DELETE'],
+  credentials: true,            // if you need to send cookies/auth headers
+}));
  app.use(express.json({ limit: 
   '10mb' }));
 
  app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
- const port = 5009;
+ const port = process.env.PORT;
 
  const db = mysql.createConnection({
-   host: "localhost",
-   user: "root",
-   password: "",
-   database: "cloudLog"
+   host: process.env.DB_HOST,
+   user: process.env.DB_USER,
+   password: process.env.DB_PASSWORD,
+   database: process.env.DB_NAME
  });
 
  db.connect(err => {
@@ -911,6 +972,6 @@ app.post('/search', (req, res) => {
 });
 
  app.listen(port, ()=> {
-   console.log('listening')
+   console.log('listening on port: ', port)
  }); 
 
