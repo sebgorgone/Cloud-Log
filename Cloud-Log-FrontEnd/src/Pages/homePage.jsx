@@ -7,6 +7,7 @@ import StatsPage from './StatsPage.jsx'
 import DownloadPage from './DownloadPage.jsx'
 import SettingsPage from './SettingsPage.jsx'
 import SearchedList from './SearchedList.jsx'
+import LogInputWidget from '../logInputWidget.jsx'
 
 
 function HomePage(props) {
@@ -30,6 +31,7 @@ function HomePage(props) {
       download: false,
       stats: false,
       settings: false,
+      add: false,
     })
 
    const [wcField, setWcField] = useState();
@@ -86,6 +88,7 @@ function HomePage(props) {
       download: false,
       stats: false,
       settings: false,
+      add: false
     })
    }
    function callLedg () {
@@ -96,6 +99,7 @@ function HomePage(props) {
       download: false,
       stats: false,
       settings: false,
+      add: false
     })
    }
    function handleNavToStats (e) {
@@ -107,6 +111,7 @@ function HomePage(props) {
       download: false,
       stats: true,
       settings: false,
+      add: false
     })
    }
    function callStats () {
@@ -117,6 +122,7 @@ function HomePage(props) {
       download: false,
       stats: true,
       settings: false,
+      add: false
     })
    }
    function handleNavToDownload (e) {
@@ -128,6 +134,7 @@ function HomePage(props) {
       download: true,
       stats: false,
       settings: false,
+      add: false
     })
    }
    function handleNavToSettings (e) {
@@ -139,6 +146,7 @@ function HomePage(props) {
       download: false,
       stats: false,
       settings: true,
+      add: false
     });
    }
    function handleLogout (e) {
@@ -157,6 +165,7 @@ function HomePage(props) {
          download: false,
          stats: false,
          settings: false,
+         add: false
       })
 
       setFlag(prev => !prev);
@@ -164,6 +173,18 @@ function HomePage(props) {
     }
     function updateWildCardField (e) {
       setWcField(e.target.value)
+    }
+    function handleNavToAdd(e) {
+      e.preventDefault();
+      setRouter({
+      welcome: false,
+      fullList: false,
+      searchedList: false,
+      download: false,
+      stats: false,
+      settings: false,
+      add: true
+    })
     }
 
 
@@ -299,10 +320,18 @@ function HomePage(props) {
 
             <div style={{marginTop: "5.2em"}}>
 
+               <button 
+                  title='Add to Jumps'
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "3vh", background: pallette[0]}}
+                  onClick={handleNavToAdd}
+               >
+                     <img style={{width: '1.9em', height: '1.8em',padding: ".25em", paddingTop: ".37em"}} src="/new-indicator-svgrepo-com.svg" />
+               </button>
+
 
                <button 
                   title='Full Logbook Ledgar'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2vh", background: pallette[0]}}
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2.5vh", background: pallette[0]}}
                   onClick={handleNavToLedg}
                >
                      <img style={{width: '1.8em', height: '1.8em', padding: ".3em"}} src="/list-svgrepo-com.svg" />
@@ -336,6 +365,7 @@ function HomePage(props) {
                </button>
 
 
+
             </div>
             
          </div>
@@ -348,6 +378,8 @@ function HomePage(props) {
             {router.stats ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount}/> : null}
             {router.settings ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}}/> : null}
             {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag} jump_num={userJumpCount}/> : null}
+            {router.add ? <div style={{display: "block", width: "85%", marginLeft: "5.75em", marginTop: "3.5em"}}>
+               <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null}/></div> : null}
          </div>
 
 

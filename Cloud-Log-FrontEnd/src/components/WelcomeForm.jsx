@@ -454,7 +454,7 @@ function WelcomeForm (props) {
       if (addJumpRig === r) return alert('rig already exists')
     }
     if (addJumpRig.trim() !== ""){
-      storeRig();
+      storeRig(addJumpRig);
       getRigs();
       setAddJumpRig("");
     }

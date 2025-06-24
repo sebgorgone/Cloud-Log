@@ -7,9 +7,6 @@ import {getPallette} from "../logInputWidget"
 
 function FullJumpLedg (props) {
 
-
-   console.log('in the jump ledger', props.jumps)
-
    const pallette = getPallette()
 
    const [showAddWidget, setShowAddWidget]= useState(false);

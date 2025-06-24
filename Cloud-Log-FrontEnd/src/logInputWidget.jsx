@@ -9,7 +9,6 @@ function LogInputWidget(props) {
   //get user data
   const userData = useAuth();
 
-
   //state hooks vv
 
 //list states
@@ -58,7 +57,7 @@ function LogInputWidget(props) {
 //newjump variables
   const [newJumpNum, setNewJumpNum] = useState(nextJump);
 
-  const [newJumpDate, setNewJumpDate] = useState(null);
+  const [newJumpDate, setNewJumpDate] = useState(new Date().toISOString().slice(0, 10));
 
   const [newJumpDZ, setNewJumpDZ] = useState(null);
 
@@ -76,10 +75,18 @@ function LogInputWidget(props) {
 
   const [newJumpCom, setNewJumpCom] = useState(null);
 
+  //defaults
+
+  const [defaultRig, setDefualtRig] = useState(null)  
+  const [defaultPlane, setDefaultAircraft] = useState(null)
+  const [defaultDZ, setDefaultDZ] = useState(null)  
+
   //state hooks ^^
   
   //functional elements vv
 //page elements
+
+  
 
   function handleEquipmentForm() {
     setDzPage(true);
@@ -101,48 +108,60 @@ function LogInputWidget(props) {
 
   function handleTagsForm(e) {
       e.preventDefault();
+      collapseAll();
     setTagsPage(!tagsPage);
   }
 
 
         //tags pages
+  function collapseAll() {
+    setJumpTypeTagsPage(false);
+    setOpenCharTagsPage(false);
+    setLiscTagsPage(false);
+    setGroupTagsPage(false);
+    setCnpyTagsPage(false);
+    setEmergencyTagsPage(false);
+    setMalfunctionTagsPage(false);
+    setPreReqTagsPage(false);
+  }
   function handleJumpTypeTagsForm(e) {
-      e.preventDefault();
+    e.preventDefault();
+    collapseAll();
     setJumpTypeTagsPage(!jumpTypeTagsPage);
   }
-
   function handleOpenCharTagsForm(e) {
     e.preventDefault();
+    collapseAll();
     setOpenCharTagsPage(!openCharTagsPage);
   }
-
   function handleLiscTagsForm(e) {
     e.preventDefault();
+    collapseAll();
     setLiscTagsPage(!liscTagsPage);
   }
-
   function handleGroupTagsForm(e) {
     e.preventDefault();
+    collapseAll();
     setGroupTagsPage(!groupTagsPage);
   }
-
   function handleCnpyTagsForm(e) {
     e.preventDefault();
+    collapseAll();
     setCnpyTagsPage(!cnpyTagsPage);
   }
-
   function handleEmergencyTagsForm(e) {
     e.preventDefault();
+    collapseAll();
     setEmergencyTagsPage(!emergencyTagsPage);
   }
-
   function handleMalfunctionTagsForm(e) {
     e.preventDefault();
+    collapseAll();
     setMalfunctionTagsPage(!malfunctionTagsPage);
   }
-
   function handlePreReqTagsForm(e) {
     e.preventDefault();
+    collapseAll();
     setPreReqTagsPage(!preReqTagsPage);
   }
 
@@ -150,41 +169,36 @@ function LogInputWidget(props) {
   function handleJumpNumChange (e) {
     setNewJumpNum(e.target.value);
   }
-
   function handleJumpDateChange (e) {
     setNewJumpDate(e.target.value);
   }
-
   function handleAddJumpDZChange (e) {
     setAddJumpDZ(e.target.value);
   }
-
   function handleAddJumpAircraftChange (e) {
     setAddJumpAircraft(e.target.value);
   }
-
   function handleAddJumpRigChange (e) {
     setAddJumpRig(e.target.value);
   }
-
   function handleAddJumpAltChange (e) {
     setNewJumpAlt(e.target.value);
   }
-
   function handleAddJumpDurChange (e) {
     setNewJumpDur(e.target.value);
   }
-
   function handleGroupSizeChange (e) {
     setTagGroupSize(e.target.value);
   }
-
   function handleComForm (e) {
     setNewJumpCom(e.target.value)
   }
 //buttons
   function handleDZInput (e) {
     e.preventDefault()
+    for (let d of DZs){
+      if (addJumpDZ === d) return alert('Dropzone already exists')
+    }
     if (addJumpDZ.trim() !== ""){
       storeDZ(addJumpDZ)
       getDZs();
@@ -197,6 +211,9 @@ function LogInputWidget(props) {
 
   function handleAircraftInput (e) {
     e.preventDefault()
+    for (let p of planes){
+      if (addJumpAircraft === p) return alert('Aircraft already exists')
+    }
     if (addJumpAircraft.trim() !== ""){
       storePlane(addJumpAircraft);
       getPlanes();
@@ -206,28 +223,16 @@ function LogInputWidget(props) {
   }
 
   function handleRigInput (e) {
-    e.preventDefault()
+    e.preventDefault();
+    for (let r of rigs){
+      if (addJumpRig === r) return alert('Rig already exists')
+    }
     if (addJumpRig.trim() !== ""){
       storeRig(addJumpRig);
       getRigs();
       setAddJumpRig("");
     }
 
-  }
-//radio buttons
-  function handleJumpDZChange(e) {
-    // console.log("Clicked DZ value:", e.target.value);
-    setNewJumpDZ(e.target.value);
-  }
-
-  function handleJumpAircraftChange(e) {
-    // console.log("Clicked Aircraft value:", e.target.value);
-    setNewJumpAircraft(e.target.value);
-  }  
-
-  function handleJumpRigChange(e) {
-    // console.log("Clicked Rig value:", e.target.value);
-    setNewJumpRig(e.target.value);
   }
 
 //file upload
@@ -251,61 +256,68 @@ function LogInputWidget(props) {
   //functional elements ^^
 
   //rendered lists vv
-
-  const planeList = planes.map((plane, index) => 
-    <div key={index}>
-    <input
-      type="radio"
-      id={`plane-${index}`}
-      name="plane"
-      value={plane}
-      checked={newJumpAircraft === plane}
-      onChange={handleJumpAircraftChange}
-      style={{marginTop: "1.5vh"}}
-    />
-    <label htmlFor={`plane-${index}`}>{plane}</label>
-  </div>
-  );
-
-  const rigList = rigs.map((rig, index) => 
-    <div key={index}>
-      <input
-        type="radio"
-        id={`rig-${index}`}
-        name="rig"
-        value={rig}
-        checked={newJumpRig === rig}
-        onChange={handleJumpRigChange}
-        style={{marginTop: "1.5vh"}}
-      />
-      <label htmlFor={`rig-${index}`}>{rig}</label>
-    </div>
-  );
-
-  const DZList = DZs.map((DZ, index) => 
-    <div key={index}>
-      <input
-        type="radio"
-        id={`DZ-${index}`}
-        name="DZ"
-        value={DZ}
-        checked={newJumpDZ === DZ}
-        onChange={handleJumpDZChange}
-        style={{marginTop: "1.5vh"}}
-      />
-      <label htmlFor={`DZ-${index}`}>{DZ}</label>
-    </div>
-  )
-
-  //rendered lists ^^
-
   //Color Pallette vv
 
-  const pallette  = ["#22223b", "#4a4e69", "#9a8c98", "#c9ada7", "#f2e9e4"].reverse();  
+  const pallette  = ["#22223b", "#4a4e69", "#9a8c98", "#c9ada7", "#f2e9e4"].reverse(); 
 
-//
 
-  //color Pallette ^^
+
+  const listDiv = {
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "space-between", 
+    width: "80%", 
+    borderRadius: "1em", 
+    background: pallette[0], 
+    padding: "0", 
+    margin: "1em"
+  }
+   const rlStyle = {
+   fontFamily: "L1",
+   fontSize: "1.1em",
+   paddingLeft: ".7em",
+   paddingBottom: "0em",
+   color: pallette[3]
+   }
+   const dispStyle = {
+   fontFamily: "L1",
+   fontSize: ".6em",
+   paddingLeft: ".7em",
+   paddingRight: ".7em",
+   color: pallette[3]
+   }
+   const nestedButton = {
+      border: "none",
+      fontSize: ".8em",
+      fontFamily: "L1",
+      borderRadius: "1.5em",
+      paddingBottom: ".4em",
+      background: pallette[4],
+      color: pallette[1],
+      marginRight: ".6em",
+      marginBottom: "0",
+      width: "3em",
+      height: "3em",
+   }
+  const planeList = planes.map((plane, index) => 
+    <div key={index} style={listDiv}>
+      <p style={rlStyle}>{plane === defaultPlane && <span><img style={{ width: '1em', marginRight: ".5em", border: 'none' }} src="/favorite-svgrepo-com.svg" /></span>}{plane}</p>
+      {plane !== newJumpAircraft ? <button type="button" style={nestedButton} onClick={() => setNewJumpAircraft(plane)}>set</button> : <img src='/check-svgrepo-com.svg' style={{aspectRatio: "1/1", width: "1.8em", marginRight: "1.5em"}}/>}
+    </div>
+  );
+  const rigList = rigs.map((rig, index) => 
+    <div key={index} style={listDiv}>
+      <p style={rlStyle}>{rig === defaultRig && <span><img style={{ width: '1em', marginRight: ".5em", border: 'none' }} src="/favorite-svgrepo-com.svg" /></span>}{rig}</p>
+      {rig !== newJumpRig ? <button type="button" style={nestedButton} onClick={() => setNewJumpRig(rig)}>set</button> : <img src='/check-svgrepo-com.svg' style={{aspectRatio: "1/1", width: "1.8em", marginRight: "1.5em"}}/>}
+    </div>
+  );
+  const DZList = DZs.map((DZ, index) => 
+    <div key={index} style={listDiv}>
+      <p style={rlStyle}>{DZ === defaultDZ && <span><img style={{ width: '1em', marginRight: ".5em", border: 'none' }} src="/favorite-svgrepo-com.svg" /></span>}{DZ}</p>
+      {DZ !== newJumpDZ ? <button type="button" style={nestedButton} onClick={() => setNewJumpDZ(DZ)}>set</button> : <img src='/check-svgrepo-com.svg' style={{aspectRatio: "1/1", width: "1.8em", marginRight: "1.5em"}}/>}
+    </div>
+  );
+  //rendered lists ^^
 
   //tags state and logic VV   (info: info bundled b tagBulder() - state variables for selector buttons and output check)
 
@@ -667,29 +679,29 @@ function LogInputWidget(props) {
   //button styles
   const tagButtonOff = {
     fontFamily: "L1",
-    paddingLeft: "1.5vw",
-    paddingRight: "1.5vw",
-    fontSize: "max(1.6vh,1.4vw)",
-    marginTop: "1vh",
-    display:"block",
+    padding: "1em",
+    fontSize: ".6em",
+    margin: "1vh",
     backgroundColor: pallette[4],
     color: pallette[0],
     border: "solid .3vh",
-    borderRadius: "1.1vh"
+    borderRadius: "1em",
+    width: "fit-content",
+    
   }
 
   const tagButtonOn = {
     fontFamily: "L1",
-    paddingLeft: "1.5vw",
-    paddingRight: "1.5vw",
-    fontSize: "max(1.6vh,1.4vw)",
-    marginTop: "1vh",
-    display:"block",
+    padding: "1em",
+    fontSize: ".6em",
+    margin: "1vh",
     backgroundColor: pallette[1],
     color: pallette[4],
     border: "solid .3vh",
     borderColor: pallette[4],
-    borderRadius: "1.1vh"
+    borderRadius: "1em",
+    width: "fit-content",
+
   }
   //tags and state logic ^^
 
@@ -707,49 +719,24 @@ function LogInputWidget(props) {
 
   const tagsHeaderStyle = {
     fontFamily: "L1",
-    postion: "absolute"
-  }
-
-  const overlayStyle = {
-    position: "fixed",
-    zIndex: "2",
-    width: "80%",
-    height: "max(65%, 180px)",
-    overflowY: "scroll",
-    right: "5%",
-    top: "13%",
-    color: pallette[4],
-    backgroundColor: pallette[1],
-    border: "solid .15em",
-    borderColor: pallette[4],
-    borderRadius: ".25em",
-
-  }
-
-  const xButtonStyle ={
-    position: "absolute",
-    fontSize: "1.2em",
-    fontWieght: "Bold",
-    top: "2vh",
-    right: "2vw",
-    backgroundColor: pallette[0],
-    border: "solid .15em",
-    borderColor: pallette[4],
-    borderRadius: ".25em",
+    postion: "absolute",
+    color: pallette[0]
   }
 
   const GsizeInpStye = {
     fontFamily: "L1",
-    fontSize: "2vh",
-    height: "1.5vh"
+    fontSize: "1em",
+    height: "2em",
+    width: "100%"
   }
 
   const tagShellStyle= {
     display: "flex",
+    flexWrap: "wrap",
     justifyContent: "space-evenly",
     borderRadius: "3vw",
     margin: "1em",
-    background: pallette[2],
+    background: pallette[3],
   }
 
   const tagListStyle = {
@@ -761,70 +748,141 @@ function LogInputWidget(props) {
   const tagListButtonStyleJT={
     fontFamily: "L1",
     fontSize: "1.7vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
+    background: pallette[2],
+    border: "none",
     borderRadius: "1.5vw",
     padding: ".5vw",
+    color: pallette[0]
+  }
+
+  const tagListButtonStyleJT1={
+    fontFamily: "L1",
+    fontSize: "1.7vw",
+    background: pallette[0],
+    border: "none",
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+    color: pallette[4]
   }
 
   const tagListButtonStyleOC={
     fontFamily: "L1",
     fontSize: "1.8vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
+    background: pallette[2],
+    border: "none",
     borderRadius: "1.5vw",
     padding: ".5vw",
+    color: pallette[0]
+  }
+
+  const tagListButtonStyleOC1={
+    fontFamily: "L1",
+    fontSize: "1.8vw",
+    background: pallette[0],
+    border: "none",
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+    color: pallette[4]
   }
 
   const tagListButtonStyleLI={
     fontFamily: "L1",
     fontSize: "1.55vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
+    background: pallette[2],
+    border: "none",
     borderRadius: "1.5vw",
     padding: ".5vw",
+    color: pallette[0]
+  }
+
+  const tagListButtonStyleLI1={
+    fontFamily: "L1",
+    fontSize: "1.55vw",
+    background: pallette[0],
+    border: "none",
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+    color: pallette[4]
   }
   
   const tagListButtonStyleGRP = {
     fontFamily: "L1",
     fontSize: "1.55vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
+    background: pallette[2],
+    border: "none",
     borderRadius: "1.5vw",
     padding: ".5vw",
+    color: pallette[0]
+  }
+
+  const tagListButtonStyleGRP1 = {
+    fontFamily: "L1",
+    fontSize: "1.55vw",
+    background: pallette[0],
+    border: "none",
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+    color: pallette[4]
   }
 
   const tagListButtonStyleCNPY = {
     fontFamily: "L1",
     fontSize: "1.45vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
+    background: pallette[2],
+    border: "none",
     borderRadius: "1.5vw",
     padding: ".5vw",
+    color: pallette[0]
+  }
+
+  const tagListButtonStyleCNPY1 = {
+    fontFamily: "L1",
+    fontSize: "1.45vw",
+    background: pallette[0],
+    border: "none",
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+    color: pallette[4]
   }
 
   const tagListButtonStyleEMER = {
     fontFamily: "L1",
     fontSize: "1.35vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
+    background: pallette[2],
+    border: "none",
     borderRadius: "1.5vw",
     padding: ".5vw",
+    color: pallette[0]
   }
 
-  const tagListButtonStyleMAL = {fontFamily: "L1",
-    fontSize: "1.5vw",
-    background: pallette[1],
-    border: "solid .1em",
-    borderColor: pallette[4],
+  const tagListButtonStyleEMER1 = {
+    fontFamily: "L1",
+    fontSize: "1.35vw",
+    background: pallette[0],
+    border: "none",
     borderRadius: "1.5vw",
     padding: ".5vw",
+    color: pallette[4]
+  }
+
+  const tagListButtonStyleMAL = {
+    fontFamily: "L1",
+    fontSize: "1.5vw",
+    background: pallette[2],
+    border: "none",
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+    color: pallette[0]
+  }
+
+  const tagListButtonStyleMAL1 = {
+    fontFamily: "L1",
+    fontSize: "1.5vw",
+    background: pallette[0],
+    border: "none",
+    borderRadius: "1.5vw",
+    padding: ".5vw",
+    color: pallette[4]
   }
 
   //inline styles ^^
@@ -1004,6 +1062,7 @@ useEffect(() => {
   getRigs()
   getPlanes();
   getDZs();
+  getDefaults();
 }, [])
 
 useEffect(() => {
@@ -1016,9 +1075,42 @@ useEffect (() => {
 
 useEffect(() => {
   if (newJumpNum - props.jump_num > 1) props.rst();
+  getDefaults();
 }, [newJumpNum])
 
+useEffect(() => {
+  setNewJumpDZ(defaultDZ);
+  setNewJumpRig(defaultRig);
+  setNewJumpAircraft(defaultPlane);
+}, [defaultDZ, defaultPlane, defaultRig])
+
 //api calls
+
+const getDefaults = async () => {
+    try {
+      const response = await fetch('http://localhost:5009/getdefaults', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userData.user.id}),
+      });
+      const returnedData = await response.json();
+      const data = returnedData.results[0]
+      if(response.ok){
+        console.log('retrieved user defaults--> ', 'data: ', data, ' rig: ', data.rig, ' dz: ', data.dz, ' aircraft: ', data.aircraft)
+        setDefualtRig(data.rig);
+        setDefaultAircraft(data.aircraft);
+        setDefaultDZ(data.dz);
+      } else{
+        console.error('no defaults retrieved', response);
+      }
+    } catch (err) {
+      console.error('client failed getting defaults', err);
+    }
+  }; 
+
+
+
+
 
   function fileToBase64(pdfFile) {
   return new Promise((resolve, reject) => {
@@ -1214,6 +1306,18 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     fontFamily: "L1",
     color: pallette[0],
     marginLeft: "1em",
+    width: "10em",
+  };
+
+  const headerButtonStyleUpload = {
+    background: pallette[4],
+    border: "none",
+    borderRadius: "1em",
+    marginTop: ".5em",
+    padding: ".6vw",
+    fontFamily: "L1",
+    color: pallette[1],
+    marginLeft: "1em",
   };
 
   const headerButtonStyle1 = {
@@ -1225,6 +1329,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     fontFamily: "L1",
     color: pallette[4],
     marginLeft: "1em",
+    width: "10em",
   };
 
   const inputButtonStyle = {
@@ -1240,6 +1345,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
 
   const formStyle = {
     display: "block", 
+    width: "80%",
     textAlignLast: "center", 
     fontFamily: "L1", 
     color: pallette[4],
@@ -1301,10 +1407,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     if (newJumpSigUpload === null){
       return alert('Signature PDF upload is missing or invalid')
     };
-
     storeJump(newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList);
-
-
   }
 
 
@@ -1351,19 +1454,22 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
           <div style={rowStyle}>
             {/* DZ */}
           <div style={inputSection}>
-              <button onClick={handleDzForm}style={dzPage ? headerButtonStyle: headerButtonStyle1}>Drop-Zone</button>
+              <button onClick={handleDzForm}style={dzPage ? headerButtonStyle: headerButtonStyle1}>Drop-Zone<sub> change</sub></button>
+              {newJumpDZ ? <div style={listDiv}><p style={dispStyle}>{newJumpDZ}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
           </div>
 
 
             {/* Aircraft */}
           <div style={inputSection}>
-          <button onClick={handleAircraftForm}style={aircraftPage ? headerButtonStyle: headerButtonStyle1}>Aircraft</button>
+          <button onClick={handleAircraftForm}style={aircraftPage ? headerButtonStyle: headerButtonStyle1}>Aircraft<sub> change</sub></button>
+          {newJumpAircraft ? <div style={listDiv}><p style={dispStyle}>{newJumpAircraft}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
           </div>
 
 
             {/* equipment */}
           <div style={inputSection}>
-            <button style={eqpmPage ? headerButtonStyle: headerButtonStyle1} onClick={handleEquipmentForm}>Equipment</button>
+            <button style={eqpmPage ? headerButtonStyle: headerButtonStyle1} onClick={handleEquipmentForm}>Equipment<sub> change</sub></button>
+            {newJumpRig ? <div style={listDiv}><p style={dispStyle}>{newJumpRig}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
           </div>
 
 
@@ -1482,7 +1588,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
 
           {/* tags */}
           <div style={inputSection}>
-            <button style={headerButtonStyle} onClick={handleTagsForm}>Tags{tagsPage ? ' (show)' : ' (hide)'}</button>
+            <button style={tagsPage ? headerButtonStyle: headerButtonStyle1} onClick={handleTagsForm}>Tags</button>
           </div>
 
 
@@ -1491,16 +1597,131 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
         {/* intermediate */}
 
         <div style={rowStyle}>
-          <form>
+          {!tagsPage && <form>
           <h3 style={tagsHeaderStyle}>Select Tags for This Jump</h3>
-          <button style={xButtonStyle} onClick={handleTagsForm}>X</button>
-
           <div style={tagShellStyle}>
 
 
             <div style={tagListStyle}>
 
-              <button onClick={handleJumpTypeTagsForm} style={tagListButtonStyleJT}>Jump Types{!jumpTypeTagsPage ? ' (show)' : ' (hide)'}</button>
+              <button onClick={handleJumpTypeTagsForm} style={jumpTypeTagsPage ? tagListButtonStyleJT1 : tagListButtonStyleJT}>Jump Types</button>
+            
+            </div>
+
+            <div style={tagListStyle}>
+
+              <button onClick={handleOpenCharTagsForm} style={openCharTagsPage ? tagListButtonStyleOC1 : tagListButtonStyleOC}>Openings</button>
+
+            </div>
+
+            <div style={tagListStyle}>
+
+              <button onClick={handleLiscTagsForm} style={liscTagsPage ? tagListButtonStyleLI1 : tagListButtonStyleLI}>Liscensces and ratings</button>
+
+            </div> 
+
+           <div style={tagListStyle}>
+              <button onClick={handleGroupTagsForm} style={groupTagsPage ? tagListButtonStyleGRP1 : tagListButtonStyleGRP}>group Size</button>
+            </div>
+
+          <div style={tagListStyle}>
+              <button onClick={handleCnpyTagsForm} style={cnpyTagsPage ? tagListButtonStyleCNPY1 : tagListButtonStyleCNPY}>Canopy and weather</button> 
+          </div>
+
+          <div style={tagListStyle}>
+            <button onClick={handleEmergencyTagsForm} style={emergencyTagsPage ? tagListButtonStyleEMER1 : tagListButtonStyleEMER}>Emergencies</button>
+          </div>
+
+          <div style={tagListStyle}>
+              <button onClick={handleMalfunctionTagsForm} style={malfunctionTagsPage ? tagListButtonStyleMAL1 : tagListButtonStyleMAL}>Malfunctions</button> 
+          </div>
+
+          <div style={tagListStyle}>
+            <button onClick={handlePreReqTagsForm} style={preReqTagsPage ? tagListButtonStyleEMER1 : tagListButtonStyleEMER}>Prerequisites</button>             
+          </div>
+
+          </div>
+          
+        </form>}
+        </div>
+
+        {!tagsPage && <div style={rowStyle}>
+
+            <div style={preReqTagsPage ? rowStyle : {display: "none"}}>
+              <button style={tagAcc33REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc33}>Accuracy Landing (within 33ft)</button>
+              <button style={tagAcc7REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc7}>Accuracy Landing (within 7ft)</button>
+              <button style={tagDemoREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQDemo}>Demo Jump</button>
+              <button style={tagWaterREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQWater}>Intentional Water Landing</button>
+              <button style={tagNightREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQNight}>Night Jump</button>
+            </div>
+
+            <div style={malfunctionTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+                <button style={tagEvaMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALEva}>Bag Lock</button>
+                <button style={tagBiPlaneMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>2 out (bi-plane)</button>
+                <button style={tagLineOverMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>Line Over</button>
+                <button style={tagSideBySideMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALSideBySIde}>2 out (Side by Side)</button>
+                <button style={tagStuckSliderMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStuckSlider}>Hung Slider</button>
+                <button style={tagPCInTowMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPCInTow}>Piolot Chute in Tow</button>
+                <button style={tagStreamerMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStreamer}>Streamer</button>
+                <button style={tagHorshoeMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHorshoe}>Horshoe</button>
+                <button style={tagPrematureMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPremature}>Premature Deployment</button>
+                <button style={tagHardPullMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHardPull}>Hard Pull</button>
+                <button style={tagToggleLockMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleLock}>Toggle Lock</button>
+                <button style={tagToggleFireMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleFire}>Toggle Fire</button>
+                <button style={tagDivingLineTwistMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALDivingLineTwist}>Diving Line Twist</button>
+                <button style={tagTensionKnotMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALTensionKnot}>Tension knot</button>
+            </div>
+
+            <div style={emergencyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+              <button style={tagCutAwayEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRCutAway}>Cut Away</button>
+              <button style={tagOffLandingEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMROffLanding}>Off Landing</button>
+              <button style={tagAircraftEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRAircraft}>Aircraft Emergency</button>
+              <button style={tagInjuryEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRInjury}>Injury</button>
+            </div> 
+
+            <div style={cnpyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+                <button style={tagHighWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRHighWind}>High Winds</button>
+                <button style={tagLowWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLowWind}>Low Winds</button>
+                <button style={tagDownWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRDownWind}>Down Wind Landing</button>
+                <button style={tagCrossWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRCrossWind}>Cross Wind Landing</button>
+                <button style={tagLongSpotWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLongSpot}>Long Spot</button>
+                <button style={tagRainWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRRain}>Rain</button>
+                <button style={tagSnowWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRSnow}>Snow</button>
+              </div>
+
+              <div style={groupTagsPage ? rowStyle : {display: "none"}}>
+              <input 
+                style={GsizeInpStye}
+                type="number" 
+                value={tagGroupSize} 
+                onChange={handleGroupSizeChange}
+                placeholder='enter group size'
+                />
+              </div>
+
+              <div style={liscTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+                <button style={tagTILSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCTI}>Tandem Instructor</button>
+                <button style={tagVideoLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCVideographer}>Videogrpaher</button>
+                <button style={tagAffiLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCAffi}>AFFI</button>
+                <button style={tagCoachLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCoach}>Coach </button>
+                <button style={tagOrganizerLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCOrganizer}>Organizer</button>
+                <button style={tagJumpMasterLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCJumpMaster}>Jump Master</button>
+                <button style={tagCheckLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCheck}>Check Dive</button>
+                <button style={tagRecurrencyLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCRecurrency}>Recurrency</button>
+                <button style={tagStudentLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCStudent}>Student</button>
+
+              </div>
+
+              <div style={openCharTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
+
+                <button style={tagGoodOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCGood}>Good Opening</button>
+                <button style={tagHardOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCHard}>Hard Opening</button>
+                <button style={tagOffHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOffHeading}>Off Heading Opening</button>
+                <button style={tagPCDelayOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCPCDelay}>Pilot Chute Hesitation</button>
+                <button style={tagLineBreakOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCLineBreak}>Broken Line</button>
+                <button style={tagUnstableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCUnstable}>Unstable Opening</button>
+
+              </div>
 
               <div style={jumpTypeTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
 
@@ -1523,143 +1744,9 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
                 <button style={tagNightJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTNight}>Night</button>
                 <button style={tagHighPullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHighPull}>High Pull</button>
                 <button style={tagHighJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHigh}>High</button>
-              </div>            
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleOpenCharTagsForm} style={tagListButtonStyleOC}>Openings{!openCharTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={openCharTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-
-                <button style={tagGoodOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCGood}>Good Opening</button>
-                <button style={tagHardOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCHard}>Hard Opening</button>
-                <button style={tagOffHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOffHeading}>Off Heading Opening</button>
-                <button style={tagPCDelayOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCPCDelay}>Pilot Chute Hesitation</button>
-                <button style={tagLineBreakOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCLineBreak}>Broken Line</button>
-                <button style={tagUnstableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCUnstable}>Unstable Opening</button>
-
               </div>
 
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleLiscTagsForm} style={tagListButtonStyleLI}>Liscensces <br />and ratings{!liscTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={liscTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-                <button style={tagTILSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCTI}>Tandem Instructor</button>
-                <button style={tagVideoLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCVideographer}>Videogrpaher</button>
-                <button style={tagAffiLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCAffi}>AFFI</button>
-                <button style={tagCoachLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCoach}>Coach </button>
-                <button style={tagOrganizerLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCOrganizer}>Organizer</button>
-                <button style={tagJumpMasterLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCJumpMaster}>Jump Master</button>
-                <button style={tagCheckLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCheck}>Check Dive</button>
-                <button style={tagRecurrencyLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCRecurrency}>Recurrency</button>
-                <button style={tagStudentLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCStudent}>Student</button>
-
-              </div>
-
-            </div>
-
-
-          </div>
-
-
-          <div style={tagShellStyle}>
-
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleGroupTagsForm} style={tagListButtonStyleGRP}>group Size{!groupTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={groupTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-              <input 
-                style={GsizeInpStye}
-                type="number" 
-                value={tagGroupSize} 
-                onChange={handleGroupSizeChange}
-                />
-
-            </div> 
-
-
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleCnpyTagsForm} style={tagListButtonStyleCNPY}>Canopy <br /> weather{!cnpyTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={cnpyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-                <button style={tagHighWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRHighWind}>High Winds</button>
-                <button style={tagLowWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLowWind}>Low Winds</button>
-                <button style={tagDownWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRDownWind}>Down Wind Landing</button>
-                <button style={tagCrossWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRCrossWind}>Cross Wind Landing</button>
-                <button style={tagLongSpotWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLongSpot}>Long Spot</button>
-                <button style={tagRainWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRRain}>Rain</button>
-                <button style={tagSnowWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRSnow}>Snow</button>
-              </div> 
-          </div>
-
-
-          </div>
-
-
-          <div style={tagShellStyle}>
-
-          <div style={tagListStyle}>
-
-            <button onClick={handleEmergencyTagsForm} style={tagListButtonStyleEMER}>Emergencies{!emergencyTagsPage ? ' (show)' : ' (hide)'}</button>
-
-            <div style={emergencyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-              <button style={tagCutAwayEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRCutAway}>Cut Away</button>
-              <button style={tagOffLandingEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMROffLanding}>Off Landing</button>
-              <button style={tagAircraftEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRAircraft}>Aircraft Emergency</button>
-              <button style={tagInjuryEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRInjury}>Injury</button>
-
-            </div> 
-          </div>
-
-          <div style={tagListStyle}>
-
-              <button onClick={handleMalfunctionTagsForm} style={tagListButtonStyleMAL}>Malfunctions{!malfunctionTagsPage ? ' (show)' : ' (hide)'}</button>
-
-              <div style={malfunctionTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-                <button style={tagEvaMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALEva}>Bag Lock</button>
-                <button style={tagBiPlaneMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>2 out (bi-plane)</button>
-                <button style={tagLineOverMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>Line Over</button>
-                <button style={tagSideBySideMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALSideBySIde}>2 out (Side by Side)</button>
-                <button style={tagStuckSliderMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStuckSlider}>Hung Slider</button>
-                <button style={tagPCInTowMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPCInTow}>Piolot Chute in Tow</button>
-                <button style={tagStreamerMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStreamer}>Streamer</button>
-                <button style={tagHorshoeMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHorshoe}>Horshoe</button>
-                <button style={tagPrematureMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPremature}>Premature Deployment</button>
-                <button style={tagHardPullMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHardPull}>Hard Pull</button>
-                <button style={tagToggleLockMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleLock}>Toggle Lock</button>
-                <button style={tagToggleFireMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleFire}>Toggle Fire</button>
-                <button style={tagDivingLineTwistMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALDivingLineTwist}>Diving Line Twist</button>
-                <button style={tagTensionKnotMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALTensionKnot}>Tension knot</button>
-            </div> 
-          </div>
-
-          <div style={tagListStyle}>
-
-            <button onClick={handlePreReqTagsForm} style={tagListButtonStyleEMER}>Prerequisites{!emergencyTagsPage ? ' (show)' : ' (hide)'}</button>
-
-            <div style={preReqTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-              <button style={tagAcc33REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc33}>Accuracy Landing (within 33ft)</button>
-              <button style={tagAcc7REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc7}>Accuracy Landing (within 7ft)</button>
-              <button style={tagDemoREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQDemo}>Demo Jump</button>
-              <button style={tagWaterREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQWater}>Intentional Water Landing</button>
-              <button style={tagNightREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQNight}>Night Jump</button>
-
-            </div> 
-          </div>
-
-          </div>
-          
-        </form>
-        </div>
+        </div>}
 
 
         {/* final */}
@@ -1684,7 +1771,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
           {/* upload skydive */}
 
           <div style={inputSection}>
-            <button style={headerButtonStyle} onClick={handleJumpUpload}>Upload Skydive</button>
+            <button style={headerButtonStyleUpload} onClick={handleJumpUpload}>Upload Skydive</button>
           </div>
 
 
