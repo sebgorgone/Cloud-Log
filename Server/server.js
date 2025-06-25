@@ -1,4 +1,20 @@
 require('dotenv').config();
+const requiredEnvVars = [
+  'DB_HOST',
+  'DB_USER',
+  'DB_PASSWORD',
+  'DB_NAME',
+  'JWT_SECRET',
+  'PORT',
+  'CORS_ORIGINS'
+];
+
+const missingEnv = requiredEnvVars.filter(name => !process.env[name]);
+if (missingEnv.length > 0) {
+  console.error('Missing required environment variables:', missingEnv.join(', '));
+  process.exit(1);
+}
+
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -6,6 +22,7 @@ const path = require('path');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const helmet = require('helmet')
+const rateLimit = require('express-rate-limit');
 
 const permittedTables = [
   'rigs',
@@ -22,9 +39,28 @@ const permittedTables = [
   .map(o => o.trim())
   .filter(o => o);
 
+// General rate limiter: max 100 requests per 15 minutes per IP
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100,
+  message: { error: 'Too many requests, please try again later.' }
+});
+
+// Login-specific brute-force limiter: max 5 attempts per 15 minutes per IP
+const loginLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 15 minutes
+  max: 7,
+  message: { 
+    ok: false,
+    message: 'Too many login attempts, please try again after 10 minutes.' 
+  }
+});
+
 
 
 app.use(helmet());
+
+app.use(generalLimiter);
 
 app.use(
   helmet.contentSecurityPolicy({
@@ -100,6 +136,24 @@ db.getConnection((err, conn) => {  if (err) {
     console.log('✅ MySQL pool connected');
     conn.release();
   }
+});
+
+// Health check endpoint for load balancers / uptime monitors
+app.get('/healthz', (req, res) => {
+  db.getConnection((err, conn) => {
+    if (err) {
+      console.error('Health check DB connection failed:', err);
+      return res.status(500).json({ status: 'fail', db: 'down' });
+    }
+    conn.ping(pingErr => {
+      conn.release();
+      if (pingErr) {
+        console.error('Health check DB ping failed:', pingErr);
+        return res.status(500).json({ status: 'fail', db: 'down' });
+      }
+      res.status(200).json({ status: 'ok', db: 'up' });
+    });
+  });
 });
 
 //Password Encryption
@@ -257,7 +311,7 @@ app.post('/changeemail', (req, res) => {
 });
 
 //login route
-app.post('/login', (req, res) => {
+app.post('/login', loginLimiter, (req, res) => {
   const { identifier, password } = req.body;
 
   const isEmail = identifier.includes('@');
@@ -1038,6 +1092,10 @@ app.post('/search', (req, res) => {
         .json({ message: 'loaded jumps', results, ok: true });
     }
   );
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
  app.listen(port, ()=> {
