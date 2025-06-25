@@ -6,7 +6,9 @@ import PrivateRoute from './routes/PrivateRoute.jsx';
 import { AuthProvider } from './contexts/authContext.jsx';
 import HomePage from './pages/homePage.jsx'
 import RegisterPage from './Pages/RegisterPage.jsx';
-import StatsPage from './Pages/StatsPage.jsx';
+import NoPage from './Pages/NoPage.jsx';
+import LoadPage from './Pages/LoadPage.jsx';
+
 
 
 createRoot(document.getElementById('root')).render(
@@ -29,9 +31,9 @@ createRoot(document.getElementById('root')).render(
               </PrivateRoute>
             } />
 
-            <Route path="/statsbuild" element={
+            <Route path="/laodbuild" element={
               <PrivateRoute>
-              <StatsPage />
+              <LoadPage />
               </PrivateRoute>
             } />
 
@@ -40,7 +42,9 @@ createRoot(document.getElementById('root')).render(
               <RegisterPage />
             } />
 
-            <Route  path="/login" element={<LoginScreen />} />         
+            <Route  path="/login" element={<LoginScreen />} />    
+
+            <Route path="*" element={<NoPage />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>    

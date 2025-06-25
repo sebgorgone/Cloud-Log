@@ -8,6 +8,7 @@ import DownloadPage from './DownloadPage.jsx'
 import SettingsPage from './SettingsPage.jsx'
 import SearchedList from './SearchedList.jsx'
 import LogInputWidget from '../logInputWidget.jsx'
+import LoadPage from './LoadPage.jsx'
 
 
 function HomePage(props) {
@@ -198,12 +199,35 @@ function HomePage(props) {
       left: "0",
       width: "100%",
       height: "3em",
-      zIndex: "3",
+      zIndex: "4",
       padding: "1em",
       display: "flex",
       background: pallette[4],
-      borderBottom: "solid .25em",
-      borderColor: pallette[3],
+//       borderBottom: "solid .25em",
+//       borderColor: pallette[3],
+//       boxShadow: [
+//   "1em .5em 1em rgba(0,0,0,0.4)",   // darkest, tightest
+//   "1.5em .75em 1.5em rgba(0,0,0,0.3)",
+//   "2em 1em 2em rgba(0,0,0,0.2)",     // softer, more spread
+//   "4em 2em 4em rgba(0,0,0,0.1)"      // very light, wide fade
+// ].join(', '),
+   }
+   const headerBackground = {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: "100%",
+      height: "3.25em",
+      zIndex: "2",
+      padding: "1em",
+      display: "flex",
+      background: pallette[3],
+      boxShadow: [
+  "1em .5em 1em rgba(0,0,0,0.4)",   // darkest, tightest
+  "1.5em .75em 1.5em rgba(0,0,0,0.3)",
+  "2em 1em 2em rgba(0,0,0,0.2)",     // softer, more spread
+  "4em 2em 4em rgba(0,0,0,0.1)"      // very light, wide fade
+].join(', '),
    }
    const nameStyle= {
       color: pallette[0],
@@ -248,13 +272,24 @@ function HomePage(props) {
       height: "100%",
       top: "0",
       width: "3.5em",
-      zIndex: "3",
+      zIndex: "5",
       paddingLeft: ".7em",
       display: "flex",
       flexDirection: "column",
       background: pallette[4],
-      borderRight: "solid .25em",
-      borderColor: pallette[3]
+
+   }
+      const sidebarbacgroundStyle ={
+      position: "fixed",
+      height: "100%",
+      top: "0",
+      width: "3.75em",
+      zIndex: "3",
+      paddingLeft: ".7em",
+      display: "flex",
+      flexDirection: "column",
+      background: pallette[3],
+      borderRight: "none",
    }
    const mainPageArea = {
       margin: "0", 
@@ -263,15 +298,12 @@ function HomePage(props) {
       background: pallette[2]
    }
    const logOutButton = {
-      position: "fixed",
       fontFamily: "L1",
       color: pallette[0],
-      zIndex: "4",
-      bottom: "1.75em",
-      left: ".75em",
       background: "none",
       border: "none",
       boxShadow: "none",
+      marginTop: "1.75em"
    }
 
 
@@ -286,6 +318,8 @@ function HomePage(props) {
 
    return(
       <div style={homePageShell}>
+
+         <div style={headerBackground}></div>
 
 
          <div style={headerStyle}>
@@ -305,24 +339,26 @@ function HomePage(props) {
               />
             </form>
 
-            <div style={{ display: 'flex', alignItems: 'center', marginRight: "5vw"}}>
+            {/* <div style={{ display: 'flex', alignItems: 'center', marginRight: "5vw"}}>
               <button style={filterButtonStyle}>Filters</button>
-            </div>
+            </div> */}
 
             
          </div>
 
-         <button style={logOutButton} onClick={handleLogout}>log out</button>
+         
+
+         <div style={sidebarbacgroundStyle}></div>
 
          <div style={sidebarStyle}>
 
-            <img style={{width: '3em', height: '3em', paddingTop: ".5em"}} src="/cloudLogBoxLogo-white.svg" />
+            <img style={{width: '3em', height: '3em', paddingTop: "1em"}} src="/cloudLogBoxLogo-white.svg" />
 
-            <div style={{marginTop: "5.2em"}}>
+            <div style={{marginTop: "2.2em"}}>
 
                <button 
                   title='Add to Jumps'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "3vh", background: pallette[0]}}
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], background: pallette[0]}}
                   onClick={handleNavToAdd}
                >
                      <img style={{width: '1.9em', height: '1.8em',padding: ".25em", paddingTop: ".37em"}} src="/new-indicator-svgrepo-com.svg" />
@@ -331,7 +367,7 @@ function HomePage(props) {
 
                <button 
                   title='Full Logbook Ledgar'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "2.5vh", background: pallette[0]}}
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "1.5em", background: pallette[0]}}
                   onClick={handleNavToLedg}
                >
                      <img style={{width: '1.8em', height: '1.8em', padding: ".3em"}} src="/list-svgrepo-com.svg" />
@@ -340,7 +376,7 @@ function HomePage(props) {
 
                <button 
                   title='Statistics'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "3vh", background: pallette[0]}}
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "1.5em", background: pallette[0]}}
                   onClick={handleNavToStats}
                >
                      <img style={{width: '2em', height: '2em', padding: ".3em"}} src="/stats-svgrepo-com(2).svg" />
@@ -349,7 +385,7 @@ function HomePage(props) {
                
                <button 
                   title='Download Logbook Data'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "3vh", background: pallette[0]}}
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "1.5em", background: pallette[0]}}
                   onClick={handleNavToDownload}
                >
                      <img style={{width: '2em', height: '2em', padding: ".2em"}} src="/download-file-1-svgrepo-com(1).svg" />
@@ -358,13 +394,14 @@ function HomePage(props) {
 
                <button 
                   title='Settings'
-                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "3vh", background: pallette[0]}}
+                  style={{borderRadius: "50%", border: "solid .2em", borderColor: pallette[2], marginTop: "1.5em", background: pallette[0]}}
                   onClick={handleNavToSettings}
                >
                      <img style={{width: '1.8em', height: '1.8em', padding: ".4em"}} src="/settings-gear-part-2-svgrepo-com.svg" />
                </button>
-
-
+               
+               
+               <button style={logOutButton} onClick={handleLogout}>log out</button>
 
             </div>
             
@@ -372,14 +409,29 @@ function HomePage(props) {
 
 
          <div style={mainPageArea}>
-            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory : 'loading'} skip={callLedg} stats={callStats} />: null}
+            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} />: null}
+
             {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => getJumpHist()} add={() => setUserJumpCount(userJumpCount + 1)} jumps={userJumpHistory} jump_num={userJumpCount}/> : null}
+
             {router.download ? <DownloadPage user={user} /> : null}
+
             {router.stats ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount}/> : null}
+
             {router.settings ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}}/> : null}
+
             {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag} jump_num={userJumpCount}/> : null}
-            {router.add ? <div style={{display: "block", width: "85%", marginLeft: "5.75em", marginTop: "3.5em"}}>
-               <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null}/></div> : null}
+
+            {router.add ? <div style={{display: "flex",justifyContent: "space-around", paddingLeft: "4em", marginTop: "3.25em", width: "100%"}}>
+               <div style={{width: '75%'}}>
+                  <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null}/>
+               </div>
+            </div> : null}
+
+            {(router.fullList && !userJumpHistory) && 
+            <div style={{marginTop: "7em", marginLeft: "7em"}}>
+               <LoadPage />
+            </div>}
+                  
          </div>
 
 

@@ -747,7 +747,7 @@ function LogInputWidget(props) {
   
   const tagListButtonStyleJT={
     fontFamily: "L1",
-    fontSize: "1.7vw",
+    fontSize: ".75em",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
@@ -757,7 +757,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleJT1={
     fontFamily: "L1",
-    fontSize: "1.7vw",
+    fontSize: ".75em",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
@@ -767,7 +767,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleOC={
     fontFamily: "L1",
-    fontSize: "1.8vw",
+    fontSize: ".75em",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
@@ -777,7 +777,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleOC1={
     fontFamily: "L1",
-    fontSize: "1.8vw",
+    fontSize: ".75em",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
@@ -787,7 +787,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleLI={
     fontFamily: "L1",
-    fontSize: "1.55vw",
+    fontSize: ".75em",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
@@ -797,7 +797,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleLI1={
     fontFamily: "L1",
-    fontSize: "1.55vw",
+    fontSize: ".75em",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
@@ -807,7 +807,7 @@ function LogInputWidget(props) {
   
   const tagListButtonStyleGRP = {
     fontFamily: "L1",
-    fontSize: "1.55vw",
+    fontSize: ".75em",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
@@ -817,7 +817,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleGRP1 = {
     fontFamily: "L1",
-    fontSize: "1.55vw",
+    fontSize: ".75em",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
@@ -827,7 +827,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleCNPY = {
     fontFamily: "L1",
-    fontSize: "1.45vw",
+    fontSize: ".75em",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
@@ -837,7 +837,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleCNPY1 = {
     fontFamily: "L1",
-    fontSize: "1.45vw",
+    fontSize: ".75em",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
@@ -847,7 +847,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleEMER = {
     fontFamily: "L1",
-    fontSize: "1.35vw",
+    fontSize: ".75em",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
@@ -857,7 +857,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleEMER1 = {
     fontFamily: "L1",
-    fontSize: "1.35vw",
+    fontSize: ".75em",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
@@ -867,7 +867,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleMAL = {
     fontFamily: "L1",
-    fontSize: "1.5vw",
+    fontSize: ".75em",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
@@ -877,7 +877,7 @@ function LogInputWidget(props) {
 
   const tagListButtonStyleMAL1 = {
     fontFamily: "L1",
-    fontSize: "1.5vw",
+    fontSize: ".75em",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
@@ -1360,6 +1360,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
 
   const rowStyle = {
     display: "flex", 
+    flexWrap: "wrap",
     justifyContent: "space-evenly", 
     margin: "0", padding: ".2em", 
     background: pallette[3], 
