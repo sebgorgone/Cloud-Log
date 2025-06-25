@@ -266,33 +266,27 @@ app.post('/login', (req, res) => {
     ? 'SELECT * FROM users WHERE email = ?'
     : 'SELECT * FROM users WHERE name = ?';
 
-
-console.log("Login attempt from:", identifier);
-
 db.query(query, [identifier], (err, results) => {
   if (err) {
-    console.error("DB error:", err);
+    console.error("DB error:");
     return res.status(500).json({ error: 'Login error' });
   }
 
   if (results.length === 0) {
-    console.log("No user found for identifier:", identifier);
     return res.status(401).json({ error: 'User not found' });
   }
 
   const user = results[0];
-  console.log("User retrieved:", user);
 
   const { hash } = hashPassword(password, user.salt);
 
   if (hash !== user.password) {
-    console.log("❌ Bad password for", identifier);
+    console.log("❌ Bad password");
     return res.status(401).json({ error: 'Invalid credentials' });
   }
   const payload = { id: user.id, name: user.name, email: user.email };
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' });
 
-  console.log("✅ Logged in:", user.name);
   res.status(200).json({ message: 'Login successful', token , user: payload});
 });
 });
@@ -391,26 +385,35 @@ app.post('/user', (req, res) => {
   )
 });
 
-// get tags for multiple jumps
-app.post('/gettags', async (req, res) => {
+//get tags for all jumps
+app.post('/gettags', (req, res) => {
   const { jumpsIdArray } = req.body;
   if (!Array.isArray(jumpsIdArray) || jumpsIdArray.length === 0) {
     return res.status(400).json({ message: 'No jump IDs provided' });
   }
-  try {
-    const tagResults = await Promise.all(
-      jumpsIdArray.map(id => new Promise((resolve, reject) => {
-        db.query('SELECT name, cat, jump_ref FROM tags WHERE jump_ref = ?', [id], (err, results) => {
-          if (err) return reject(err);
-          resolve({ jump_ref: id, tags: results });
-        });
-      }))
-    );
-    return res.status(200).json({ ok: true, results: tagResults });
-  } catch (err) {
-    console.error('Error fetching tags:');
-    return res.status(500).json({ ok: false });
-  }
+
+  const placeholders = jumpsIdArray.map(() => '?').join(',');
+  const sql = `
+    SELECT name, cat, jump_ref 
+      FROM tags 
+     WHERE jump_ref IN (${placeholders})
+  `;
+  db.query(sql, jumpsIdArray, (err, rows) => {
+    if (err) {
+      console.error('Error fetching tags:', err);
+      return res.status(500).json({ ok: false });
+    }
+    const grouped = {};
+    for (const row of rows) {
+      if (!grouped[row.jump_ref]) grouped[row.jump_ref] = [];
+      grouped[row.jump_ref].push({ name: row.name, cat: row.cat });
+    }
+    const results = jumpsIdArray.map(id => ({
+      jump_ref: id,
+      tags: grouped[id] || []
+    }));
+    res.status(200).json({ ok: true, results });
+  });
 });
 
 //get user defaults 
@@ -594,20 +597,34 @@ app.post('/storedz', (req, res) => {
 app.post('/givebasket', (req, res) => {
   const { user_id } = req.body;
 
-  db.query('INSERT INTO welcome_basket (user_id) VALUES (?)',
-    user_id,
-    (err, results) => {
+  db.query(
+    'INSERT INTO welcome_basket (user_id) VALUES (?)',
+    [user_id],
+    (err, result) => {
       if (err) {
-        console.error('DB error while giving basket data');
-        return res.status(500).json({message: 'could not give basket'});
+        // Handle duplicate entry (already has a basket)
+        if (err.code === 'ER_DUP_ENTRY') {
+          return res.status(409).json({
+            error: 'BASKET_EXISTS',
+            message: 'Basket already given for this user'
+          });
+        }
+        console.error('DB error while giving basket data:', err);
+        return res.status(500).json({
+          error: 'DB_ERROR',
+          message: 'Could not create basket'
+        });
       }
-      if(results.length === 0){
-        return res.status(404).json({message: 'no basket yet'})
+
+      // Confirm insert happened
+      if (result.affectedRows === 0) {
+        return res.status(400).json({
+          error: 'INSERT_FAILED',
+          message: 'Failed to create basket'
+        });
       }
-      console.log('got basket for: ', results)
-      return res.status(200).json({message: 'Success! basket succesfully given', results, ok: true})
     }
-  )
+  );
 });
 
 app.post('/checkbasket', (req, res) => {
@@ -670,22 +687,61 @@ app.post('/storejump', (req, res) => {
           const newJumpId = jumpResult.insertId;
 
           // If no tags, commit immediately
-          if (!Array.isArray(tags) || tags.length === 0) {
-            return conn.commit(commitErr => {
-              conn.release();
-              if (commitErr) {
-                console.error('Commit error:', commitErr);
-                return res.status(500).json({ message: 'Failed to commit transaction' });
-              }
-              res.status(200).json({ 
-                message: 'Jump stored with no tags',     
-                jump_id: newJumpId,
-                ok: true
-              });
-            });
-          }
+          // After you’ve inserted the jump and have newJumpId…
+if (Array.isArray(tags) && tags.length > 0) {
+  // Build a 2D array of values: [ [user_id, name, cat, value, newJumpId], … ]
+  const values = tags.map(t => [
+    user_id,
+    t.name,
+    t.cat,
+    t.value != null ? t.value : null,
+    newJumpId
+  ]);
 
-          // Otherwise insert each tag in the same transaction
+  const insertTagsSql = `
+    INSERT INTO tags
+      (user_id, name, cat, value, jump_ref)
+    VALUES ?
+  `;
+
+  conn.query(insertTagsSql, [values], (bulkErr, bulkResult) => {
+    if (bulkErr) {
+      return conn.rollback(() => {
+        conn.release();
+        console.error('Error bulk inserting tags:', bulkErr);
+        return res.status(500).json({
+          message: 'Failed to store tags – Jump not catalogued'
+        });
+      });
+    }
+    // Commit once, after the bulk insert
+    conn.commit(commitErr => {
+      conn.release();
+      if (commitErr) {
+        console.error('Commit error:', commitErr);
+        return res.status(500).json({ message: 'Commit failed' });
+      }
+      res.status(200).json({
+        message: 'Jump and tags stored successfully',
+        jump_id: newJumpId,
+        ok: true
+      });
+    });
+  });
+} else { 
+  conn.commit(commitErr => {
+      conn.release();
+      if (commitErr) {
+        console.error('Commit error for no tags:', commitErr);
+        return res.status(500).json({ message: 'Failed to commit jump' });
+      }
+      res.status(200).json({
+        message: 'Jump stored with no tags',
+        jump_id: newJumpId,
+        ok: true
+      });
+    });
+}
           let completed = 0;
           let hasError = false;
 
