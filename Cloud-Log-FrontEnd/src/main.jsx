@@ -33,7 +33,7 @@ createRoot(document.getElementById('root')).render(
 
             <Route path="/laodbuild" element={
               <PrivateRoute>
-              <LoadPage />
+                <LoadPage />
               </PrivateRoute>
             } />
 

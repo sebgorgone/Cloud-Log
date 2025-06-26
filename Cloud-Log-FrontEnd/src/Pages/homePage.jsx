@@ -35,6 +35,24 @@ function HomePage(props) {
       add: false,
     })
 
+    function checkIfTrue (value) {
+      if (router.welcome === true && value !== router.welcome) return false
+      
+      if (router.fullList === true && value !== router.fullList) return false
+
+      if (router.searchedList === true && value !== router.searchedList) return false
+
+      if (router.download === true && value !== router.download) return false
+
+      if (router.stats === true && value !== router.stats) return false
+
+      if (router.settings === true && value !== router.settings) return false
+
+      if (router.add === true && value !== router.add) return false
+
+      return true
+    }
+
    const [wcField, setWcField] = useState();
 
    const [wildCard, setWildCard] = useState();
@@ -409,9 +427,9 @@ function HomePage(props) {
 
 
          <div style={mainPageArea}>
-            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} />: null}
+            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} />:  null}
 
-            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => getJumpHist()} add={() => setUserJumpCount(userJumpCount + 1)} jumps={userJumpHistory} jump_num={userJumpCount}/> : null}
+            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => getJumpHist()} add={() => setUserJumpCount(userJumpCount + 1)} jumps={userJumpHistory} jump_num={userJumpCount}/> : checkIfTrue(router.fullList) && <LoadPage />}
 
             {router.download ? <DownloadPage user={user} /> : null}
 
@@ -426,11 +444,6 @@ function HomePage(props) {
                   <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null}/>
                </div>
             </div> : null}
-
-            {(router.fullList && !userJumpHistory) && 
-            <div style={{marginTop: "7em", marginLeft: "7em"}}>
-               <LoadPage />
-            </div>}
                   
          </div>
 

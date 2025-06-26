@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "dotenv": "^16.5.0",
+    "p5": "^2.0.3",
+    "p5.js-svg": "^1.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-p5": "^1.4.1",
     "react-router-dom": "6.4"
   },
   "devDependencies": {
