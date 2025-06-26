@@ -207,7 +207,7 @@ function EditJumpWidget(props) {
       console.log('setting new values for number: ', n, ' date: ', d, ' dz: ', dz, 'plane: ', a, ' rig: ', r, ' alt: ', a, 't: ', t, ' notes: ', note, ' userID: ', id );
       
     try {
-    const response = await fetch('http://localhost:5009/editjump', {
+    const response = await fetch(`${process.env.SVR_URL}/editjump`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

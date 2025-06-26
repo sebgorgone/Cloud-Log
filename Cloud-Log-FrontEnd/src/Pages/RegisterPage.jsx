@@ -132,7 +132,7 @@ function RegisterPage () {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5009/login', {
+      const response = await fetch(`${process.env.SVR_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier: newUserName, password: newPassword }),
@@ -165,7 +165,7 @@ function RegisterPage () {
 
    const createUser = async () => {
     try {
-      const response = await fetch('http://localhost:5009/register', {
+      const response = await fetch(`${process.env.SVR_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newUserName, email: newEmail, password: newPassword }),
@@ -182,7 +182,7 @@ function RegisterPage () {
    setTimeOut(timeout - 1);
    console.log('attempts left', timeout);
    try {
-      const response = await fetch('http://localhost:5009/askdbpos', {
+      const response = await fetch(`${process.env.SVR_URL}/askdbpos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newUserName, email: newEmail }),

@@ -25,7 +25,7 @@ function SearchedList(props) {
       const Offset = page * 30;
       setResults([])
       try {
-         const response = await fetch('http://localhost:5009/search', {
+         const response = await fetch(`${process.env.SVR_URL}/search`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({user_id: user.ID, wildCard: wildCard, offset: Offset}),

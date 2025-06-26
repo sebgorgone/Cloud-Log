@@ -86,7 +86,7 @@ function LoginScreen () {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5009/login', {
+      const response = await fetch(`${process.env.SVR_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier: ident, password: psky }),

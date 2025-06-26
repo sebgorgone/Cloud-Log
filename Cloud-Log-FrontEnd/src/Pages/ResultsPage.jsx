@@ -43,7 +43,7 @@ function ResultsPage (props) {
 const tagsRoute = async (array) => { 
    console.log('async func data sees: ', array);
       try {
-         const response = await fetch('http://localhost:5009/gettags', {
+         const response = await fetch(`${process.env.SVR_URL}/gettags`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({jumpsIdArray: array}),

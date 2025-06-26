@@ -930,7 +930,7 @@ function StatsPage(props) {
 
    const getDZs = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getdzs', {
+      const response = await fetch(`${process.env.SVR_URL}/getdzs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -953,7 +953,7 @@ function StatsPage(props) {
 
   const getPlanes = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getplanes', {
+      const response = await fetch(`${process.env.SVR_URL}/getplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -978,7 +978,7 @@ function StatsPage(props) {
 
   const getRigs = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getrigs', {
+      const response = await fetch(`${process.env.SVR_URL}/getrigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -1001,7 +1001,7 @@ function StatsPage(props) {
 
   const getAllTags = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getalltags', {
+      const response = await fetch(`${process.env.SVR_URL}/getalltags`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),

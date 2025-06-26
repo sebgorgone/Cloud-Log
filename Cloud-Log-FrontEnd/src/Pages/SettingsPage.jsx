@@ -839,7 +839,7 @@ function SettingsPage(props) {
       setUserCred(null);
       // console.log('getting user credentials')
       try {
-         const response = await fetch('http://localhost:5009/user', {
+         const response = await fetch(`${process.env.SVR_URL}/user`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({user_id: user.ID}),
@@ -861,7 +861,7 @@ function SettingsPage(props) {
 
    const validate = async () => {
     try {
-      const response = await fetch('http://localhost:5009/validate', {
+      const response = await fetch(`${process.env.SVR_URL}/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: user.ID, password: validatePassword }),
@@ -894,7 +894,7 @@ function SettingsPage(props) {
       const Jump = jump
       console.log(jump)
     try {
-      const response = await fetch('http://localhost:5009/validate', {
+      const response = await fetch(`${process.env.SVR_URL}/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: user.ID, password: validateValue }),
@@ -927,7 +927,7 @@ function SettingsPage(props) {
 
   const changePassword = async () => {
     try {
-      const response = await fetch('http://localhost:5009/changepassword', {
+      const response = await fetch('${process.env.SVR_URL}/changepassword', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: user.ID, password: newUserPassword }),
@@ -967,7 +967,7 @@ function SettingsPage(props) {
 
   const changeUsername = async () => {
     try {
-      const response = await fetch('http://localhost:5009/changeusername', {
+      const response = await fetch(`${process.env.SVR_URL}/changeusername`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newUsername, id: user.ID }),
@@ -998,7 +998,7 @@ function SettingsPage(props) {
 
   const changeEmail = async () => {
     try {
-      const response = await fetch('http://localhost:5009/changeemail', {
+      const response = await fetch(`${process.env.SVR_URL}/changeemail`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: newEmail, id: user.ID }),
@@ -1029,7 +1029,7 @@ function SettingsPage(props) {
 
   const getRigs = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getrigs', {
+      const response = await fetch(`${process.env.SVR_URL}/getrigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -1052,7 +1052,7 @@ function SettingsPage(props) {
 
    const storeRig = async () => {
     try {
-      const response = await fetch('http://localhost:5009/storerigs', {
+      const response = await fetch(`${process.env.SVR_URL}/storerigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID, name: addJumpRig }),
@@ -1067,7 +1067,7 @@ function SettingsPage(props) {
 
   const getPlanes = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getplanes', {
+      const response = await fetch(`${process.env.SVR_URL}/getplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -1092,7 +1092,7 @@ function SettingsPage(props) {
 
   const storePlane = async () => {
     try {
-      const response = await fetch('http://localhost:5009/storeplanes', {
+      const response = await fetch(`${process.env.SVR_URL}/storeplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID, name: addJumpAircraft }),
@@ -1107,7 +1107,7 @@ function SettingsPage(props) {
 
   const getDZs = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getdzs', {
+      const response = await fetch(`${process.env.SVR_URL}/getdzs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -1130,7 +1130,7 @@ function SettingsPage(props) {
 
   const storeDZ = async () => {
     try {
-      const response = await fetch('http://localhost:5009/storedz', {
+      const response = await fetch(`${process.env.SVR_URL}/storedz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID, name: addJumpDZ }),
@@ -1145,7 +1145,7 @@ function SettingsPage(props) {
 
     const storeDefaultRig = async (eqpm) => {
     try {
-      const response = await fetch('http://localhost:5009/storedefaultrig', {
+      const response = await fetch(`${process.env.SVR_URL}/storedefaultrig`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID, rig: eqpm }),
@@ -1159,7 +1159,7 @@ function SettingsPage(props) {
 
   const storeDefaultDZ = async (dz) => {
     try {
-      const response = await fetch('http://localhost:5009/storedefaultdz', {
+      const response = await fetch(`${process.env.SVR_URL}/storedefaultdz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID, dz: dz }),
@@ -1173,7 +1173,7 @@ function SettingsPage(props) {
 
   const storeDefaultAircraft = async (aircraft) => {
     try {
-      const response = await fetch('http://localhost:5009/storedefaultaircraft', {
+      const response = await fetch(`${process.env.SVR_URL}/storedefaultaircraft`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID, aircraft: aircraft }),
@@ -1187,7 +1187,7 @@ function SettingsPage(props) {
 
   const getDefaults = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getdefaults', {
+      const response = await fetch(`${process.env.SVR_URL}/getdefaults`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -1209,7 +1209,7 @@ function SettingsPage(props) {
 
   const deleteJump = async (id) => {
    try {
-      const response = await fetch('http://localhost:5009/deletejump', {
+      const response = await fetch(`${process.env.SVR_URL}/deletejump`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jump_id: id}),
@@ -1229,7 +1229,7 @@ function SettingsPage(props) {
 
   const validDel = async (val, field, table) => {
      try {
-       const response = await fetch('http://localhost:5009/validatedelete', {
+       const response = await fetch(`${process.env.SVR_URL}/validatedelete`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({ value: val, field }),
@@ -1268,7 +1268,7 @@ function SettingsPage(props) {
 
   const deleteFromTable = async (value, table) => {
    try {
-      const response = await fetch('http://localhost:5009/deleteft', {
+      const response = await fetch(`${process.env.SVR_URL}/deleteft`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: value, table: table, user_id: user.ID}),

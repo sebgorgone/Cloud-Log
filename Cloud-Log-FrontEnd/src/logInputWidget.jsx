@@ -1088,7 +1088,7 @@ useEffect(() => {
 
 const getDefaults = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getdefaults', {
+      const response = await fetch(`${process.env.SVR_URL}/getdefaults`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id}),
@@ -1134,7 +1134,7 @@ const getDefaults = async () => {
 
   const getRigs = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getrigs', {
+      const response = await fetch(`${process.env.SVR_URL}/getrigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id}),
@@ -1156,7 +1156,7 @@ const getDefaults = async () => {
 
   const storeRig = async (newRigString) => {
     try {
-      const response = await fetch('http://localhost:5009/storerigs', {
+      const response = await fetch(`${process.env.SVR_URL}/storerigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id, name: `${newRigString}` }),
@@ -1170,7 +1170,7 @@ const getDefaults = async () => {
 
   const getPlanes = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getplanes', {
+      const response = await fetch(`${process.env.SVR_URL}/getplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id}),
@@ -1192,7 +1192,7 @@ const getDefaults = async () => {
 
   const storePlane = async (newPlaneString) => {
     try {
-      const response = await fetch('http://localhost:5009/storeplanes', {
+      const response = await fetch(`${process.env.SVR_URL}/storeplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id, name: `${newPlaneString}` }),
@@ -1206,7 +1206,7 @@ const getDefaults = async () => {
 
   const getDZs = async () => {
     try {
-      const response = await fetch('http://localhost:5009/getdzs', {
+      const response = await fetch(`${process.env.SVR_URL}/getdzs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id}),
@@ -1228,7 +1228,7 @@ const getDefaults = async () => {
 
   const storeDZ = async (newDzString) => {
     try {
-      const response = await fetch('http://localhost:5009/storedz', {
+      const response = await fetch(`${process.env.SVR_URL}/storedz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id, name: `${newDzString}` }),
@@ -1245,7 +1245,7 @@ const getDefaults = async () => {
 const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList) => {
   try {
     const base64Signature = await fileToBase64(newJumpSigUpload)
-    const response = await fetch('http://localhost:5009/storejump', {
+    const response = await fetch(`${process.env.SVR_URL}/storejump`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

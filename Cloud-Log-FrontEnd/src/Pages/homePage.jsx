@@ -71,7 +71,7 @@ function HomePage(props) {
       setUserJumpCount('loading...')
       // console.log('getting user jump history')
       try {
-         const response = await fetch('http://localhost:5009/userjumphistory', {
+         const response = await fetch(`${process.env.SVR_URL}/userjumphistory`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({user_id: user.ID}),
