@@ -120,14 +120,13 @@ app.disable('x-powered-by');
 
  const port = process.env.PORT;
 
+ const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${port}/${process.env.DB_NAME}`
+
 const db = mysql.createPool({
-  host            : process.env.DB_HOST,
-  user            : process.env.DB_USER,
-  password        : process.env.DB_PASSWORD,
-  database        : process.env.DB_NAME,
+  uri: urlDB,
   waitForConnections: true,
   connectionLimit : 10,
-  queueLimit      : 0   
+  queueLimit      : 0
 });
 
 db.getConnection((err, conn) => {  if (err) {
