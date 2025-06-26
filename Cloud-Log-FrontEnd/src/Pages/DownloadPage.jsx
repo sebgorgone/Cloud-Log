@@ -5,17 +5,35 @@ import '../style/loginScreen.css';
 function DownloadPage(props) {
    console.log('in the Download page');
 
+   const pallette = getPallette();
+
    const shell = {
       marginTop: "5em",
-      marginLeft: "5em"
+      marginLeft: "5em",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexFlow: "column"
+   }
+   
+   const titleStyle= {
+      fontFamily: "L1",
+      fontSize: "2em",
+      color: pallette[0],
+      margin: "0",
    }
 
    return(
       <div style={shell}>
          <br />
-
-
-         <p>Download Page</p>
+         <img style={{width: '24em', aspectRatio: '4/1', paddingTop: "1em", marginRight: ".5em"}} src="/CloudLogBannerWhite.svg" />
+         
+         <div>
+            <br />
+            <br />
+            <br />
+            <p style={titleStyle}>This page is under construction</p>
+         </div>
       </div>
    )
 

@@ -427,15 +427,14 @@ function HomePage(props) {
 
 
          <div style={mainPageArea}>
-            {router.welcome ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} />:  null}
-
+            {(router.welcome && userJumpHistory) ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} />:  checkIfTrue(router.welcome) && <LoadPage />}
             {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => getJumpHist()} add={() => setUserJumpCount(userJumpCount + 1)} jumps={userJumpHistory} jump_num={userJumpCount}/> : checkIfTrue(router.fullList) && <LoadPage />}
 
             {router.download ? <DownloadPage user={user} /> : null}
 
-            {router.stats ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount}/> : null}
+            {(router.stats && userJumpHistory) ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount}/> : checkIfTrue(router.stats) && <LoadPage />}
 
-            {router.settings ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}}/> : null}
+            {(router.settings && userJumpHistory) ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}}/> : checkIfTrue(router.settings) && <LoadPage />}
 
             {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag} jump_num={userJumpCount}/> : null}
 

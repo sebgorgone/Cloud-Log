@@ -44,6 +44,8 @@ function LoadPage () {
       p5.textSize(40)
       p5.text('CloudLog', p5.width * (3 /5), yPoint2 + 100)
       p5.push();
+
+      loadingText(p5, p5.width / 2 - 150, p5.height * (2 / 3))
     }
     if (p5.frameCount % (60 * 10) === 0) {
       xPoint1 = p5.width / 4.5;
@@ -231,6 +233,22 @@ function LoadPage () {
     p5.pop();
 
     yPoint2 -= .1
+  }
+
+  function loadingText (p5, x, y) {
+    p5.push();
+    p5.fill(255);
+    p5.textFont('L1')
+    p5.fill(255)
+    p5.textSize(40)
+    p5.text(loadingAnim(p5), x, y)
+    p5.pop();
+  }
+
+  function loadingAnim (p5) {
+    if (p5.frameCount % 30 > 20) return 'Loading...'
+    if (p5.frameCount % 30 > 10) return 'Loading..'
+    return 'Loading.'
   }
 
   return <Sketch preload={preload} setup={setup} draw={draw} />;
