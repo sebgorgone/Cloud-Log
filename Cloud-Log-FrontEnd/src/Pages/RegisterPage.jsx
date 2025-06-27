@@ -5,6 +5,8 @@ import { useAuth } from "../contexts/authContext";
 
 function RegisterPage () {
 
+   const svr = import.meta.env.VITE_SVR_URL;
+
    const { login } = useAuth();
 
    const nav = useNavigate();
@@ -132,7 +134,7 @@ function RegisterPage () {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/login`, {
+      const response = await fetch(`${svr}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier: newUserName, password: newPassword }),
@@ -165,7 +167,7 @@ function RegisterPage () {
 
    const createUser = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/register`, {
+      const response = await fetch(`${svr}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newUserName, email: newEmail, password: newPassword }),
@@ -182,7 +184,7 @@ function RegisterPage () {
    setTimeOut(timeout - 1);
    console.log('attempts left', timeout);
    try {
-      const response = await fetch(`${process.env.SVR_URL}/askdbpos`, {
+      const response = await fetch(`${svr}/askdbpos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newUserName, email: newEmail }),

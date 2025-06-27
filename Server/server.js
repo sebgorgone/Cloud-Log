@@ -311,6 +311,7 @@ app.post('/changeemail', (req, res) => {
 
 //login route
 app.post('/login', loginLimiter, (req, res) => {
+  console.log('login attempt')
   const { identifier, password } = req.body;
 
   const isEmail = identifier.includes('@');
