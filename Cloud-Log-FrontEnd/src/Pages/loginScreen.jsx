@@ -10,7 +10,7 @@ import { useAuth } from '../contexts/authContext';
 function LoginScreen () {
 
    // Vite automatically exposes variables prefixed with VITE_
-   const svr = import.meta.env.SVR_URL;
+   const svr = import.meta.env.VITE_SVR_URL;
 
    const domain = 'https://mycloudlog.netlify.app'
 
