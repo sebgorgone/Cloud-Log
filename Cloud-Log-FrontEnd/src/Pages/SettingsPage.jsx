@@ -1277,9 +1277,7 @@ function SettingsPage(props) {
       });
       if(response.ok){
         console.log(`deleted ${value}`)
-        getDZs();
-        getRigs();
-        getPlanes();
+        setFlag(!flag);
         props.rst();
 
       } else{
@@ -1304,7 +1302,7 @@ function SettingsPage(props) {
       setValidateValue('');
 
       console.log('useEffect');
-   }, [])
+   }, [flag])
 
    return (
   <div>
