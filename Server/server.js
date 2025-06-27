@@ -122,12 +122,28 @@ app.disable('x-powered-by');
 
  const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${port}/${process.env.DB_NAME}`
 
+//local db
+
 const db = mysql.createPool({
-  uri: urlDB,
+  host            : process.env.DB_HOST,
+  user            : process.env.DB_USER,
+  password        : process.env.DB_PASSWORD,
+  database        : process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit : 10,
-  queueLimit      : 0
+  queueLimit      : 0   
 });
+
+
+
+//production db
+ 
+// const db = mysql.createPool({
+//   uri: urlDB,
+//   waitForConnections: true,
+//   connectionLimit : 10,
+//   queueLimit      : 0
+// });
 
 db.getConnection((err, conn) => {  if (err) {
     console.error('MySQL pool connection failed:', err);
