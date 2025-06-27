@@ -1277,7 +1277,9 @@ function SettingsPage(props) {
       });
       if(response.ok){
         console.log(`deleted ${value}`)
-        setFlag(!flag);
+        getDZs();
+        getRigs();
+        getPlanes();
         props.rst();
 
       } else{
@@ -1297,12 +1299,12 @@ function SettingsPage(props) {
       getRigs();
       getPlanes();
 
-      if (editAJump)    setEditAJump(false)
-      if (validateField) setValidateField(false)
-      if (validateValue !== '') setValidateValue('')
+      setEditAJump(false);
+      setValidateField(false);
+      setValidateValue('');
 
-      console.log('useEffect')
-   }, [flag])
+      console.log('useEffect');
+   }, [])
 
    return (
   <div>
