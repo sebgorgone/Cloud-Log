@@ -1297,9 +1297,9 @@ function SettingsPage(props) {
       getRigs();
       getPlanes();
 
-      setEditAJump(false);
-      setValidateField(false);
-      setValidateValue('')
+      if (editAJump)    setEditAJump(false)
+      if (validateField) setValidateField(false)
+      if (validateValue !== '') setValidateValue('')
 
       console.log('useEffect')
    }, [flag])
