@@ -9,7 +9,10 @@ import { useAuth } from '../contexts/authContext';
 
 function LoginScreen () {
 
-   const host = `${process.env.SVR_URL}`;
+   // Vite automatically exposes variables prefixed with VITE_
+   const svr = import.meta.env.SVR_URL;
+
+   const domain = 'https://mycloudlog.netlify.app'
 
    const nav = useNavigate();
    const { login, user } = useAuth();
@@ -86,7 +89,7 @@ function LoginScreen () {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/login`, {
+      const response = await fetch(`${host}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier: ident, password: psky }),
@@ -158,7 +161,13 @@ function LoginScreen () {
          <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center", marginBottom: "3vh"}}>
             <button type="submit" style={loginButton}>Log In</button>
 
-            <a className="registerLink"style={signupPageButton} href={`${host}/register`}>Create New Account</a>
+            <a 
+              className="registerLink"
+              style={signupPageButton}
+              href={`${domain}/register`}
+            >
+              Create New Account
+            </a>
 
          </div>
          
