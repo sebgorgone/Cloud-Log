@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 
 
 function ResultsPage (props) {
+
+   const svr = import.meta.env.VITE_SVR_URL;
    
    //state
 
@@ -43,7 +45,7 @@ function ResultsPage (props) {
 const tagsRoute = async (array) => { 
    console.log('async func data sees: ', array);
       try {
-         const response = await fetch(`${process.env.SVR_URL}/gettags`, {
+         const response = await fetch(`${svr}/gettags`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({jumpsIdArray: array}),

@@ -4,6 +4,9 @@ import ResultsPage from './ResultsPage';
 import { getPallette } from '../logInputWidget';
 
 function SearchedList(props) {
+
+   const svr = import.meta.env.VITE_SVR_URL;
+
    //environment
    const user = props.user;
    const wildCard = props.wildCard;
@@ -25,7 +28,7 @@ function SearchedList(props) {
       const Offset = page * 30;
       setResults([])
       try {
-         const response = await fetch(`${process.env.SVR_URL}/search`, {
+         const response = await fetch(`${svr}/search`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({user_id: user.ID, wildCard: wildCard, offset: Offset}),

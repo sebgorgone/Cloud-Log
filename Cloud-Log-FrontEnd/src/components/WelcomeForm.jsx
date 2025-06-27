@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 
 function WelcomeForm (props) {
+  const svr = import.meta.env.VITE_SVR_URL;
 
    const data = props;
 
@@ -177,9 +178,9 @@ function WelcomeForm (props) {
 
 
    //api
-     const getRigs = async () => {
+  const getRigs = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getrigs`, {
+      const response = await fetch(`${svr}/getrigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: props.user.ID}),
@@ -201,7 +202,7 @@ function WelcomeForm (props) {
 
    const storeRig = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storerigs`, {
+      const response = await fetch(`${svr}/storerigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID, name: addJumpRig }),
@@ -214,7 +215,7 @@ function WelcomeForm (props) {
 
   const getPlanes = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getplanes`, {
+      const response = await fetch(`${svr}/getplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID}),
@@ -236,7 +237,7 @@ function WelcomeForm (props) {
 
   const storePlane = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storeplanes`, {
+      const response = await fetch(`${svr}/storeplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID, name: addJumpAircraft }),
@@ -249,7 +250,7 @@ function WelcomeForm (props) {
 
   const getDZs = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getdzs`, {
+      const response = await fetch(`${svr}/getdzs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID}),
@@ -271,7 +272,7 @@ function WelcomeForm (props) {
 
   const storeDZ = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storedz`, {
+      const response = await fetch(`${svr}/storedz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID, name: addJumpDZ }),
@@ -285,7 +286,7 @@ function WelcomeForm (props) {
   const giveBasket = async () => {
       console.log('giving basket to user id: ', data.user.ID)
     try {
-      const response = await fetch(`${process.env.SVR_URL}/givebasket`, {
+      const response = await fetch(`${svr}/givebasket`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID }),
@@ -303,7 +304,7 @@ function WelcomeForm (props) {
 
   const getDefaults = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getdefaults`, {
+      const response = await fetch(`${svr}/getdefaults`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: props.user.ID}),
@@ -325,7 +326,7 @@ function WelcomeForm (props) {
 
   const storeDefaultRig = async (eqpm) => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storedefaultrig`, {
+      const response = await fetch(`${svr}/storedefaultrig`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID, rig: eqpm }),
@@ -339,7 +340,7 @@ function WelcomeForm (props) {
 
   const storeDefaultDZ = async (dz) => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storedefaultdz`, {
+      const response = await fetch(`${svr}/storedefaultdz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID, dz: dz }),
@@ -353,7 +354,7 @@ function WelcomeForm (props) {
 
   const storeDefaultAircraft = async (aircraft) => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storedefaultaircraft`, {
+      const response = await fetch(`${svr}/storedefaultaircraft`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: data.user.ID, aircraft: aircraft }),

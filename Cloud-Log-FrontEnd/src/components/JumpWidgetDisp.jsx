@@ -18,11 +18,6 @@ function JumpWidgetDisp(props) {
 
    //handlers
 
-   function handleSigPreview(e) {
-      e.preventDefault();
-      setShowSig(!showSig);
-   }
-
    function handleNotesPreview(e) {
       e.preventDefault()
       setShowNotes(!showNotes);

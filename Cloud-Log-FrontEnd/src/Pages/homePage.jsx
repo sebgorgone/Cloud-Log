@@ -13,6 +13,8 @@ import LoadPage from './LoadPage.jsx'
 
 function HomePage(props) {
 
+   const svr = import.meta.env.VITE_SVR_URL;
+
    //environment variables
 
    const { logout } = useAuth();
@@ -71,7 +73,7 @@ function HomePage(props) {
       setUserJumpCount('loading...')
       // console.log('getting user jump history')
       try {
-         const response = await fetch(`${process.env.SVR_URL}/userjumphistory`, {
+         const response = await fetch(`${svr}/userjumphistory`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({user_id: user.ID}),

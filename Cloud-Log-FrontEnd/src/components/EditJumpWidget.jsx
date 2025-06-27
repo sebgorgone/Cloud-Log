@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 function EditJumpWidget(props) {
 
+   const svr = import.meta.env.VITE_SVR_URL;
+
    // console.log(props)
 
 
@@ -207,7 +209,7 @@ function EditJumpWidget(props) {
       console.log('setting new values for number: ', n, ' date: ', d, ' dz: ', dz, 'plane: ', a, ' rig: ', r, ' alt: ', a, 't: ', t, ' notes: ', note, ' userID: ', id );
       
     try {
-    const response = await fetch(`${process.env.SVR_URL}/editjump`, {
+    const response = await fetch(`${svr}/editjump`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

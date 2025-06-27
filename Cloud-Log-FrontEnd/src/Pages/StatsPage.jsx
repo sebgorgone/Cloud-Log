@@ -6,6 +6,8 @@ import '../style/loginScreen.css';
 
 function StatsPage(props) {
 
+   const svr = import.meta.env.VITE_SVR_URL;
+
    //environment
    
 
@@ -930,7 +932,7 @@ function StatsPage(props) {
 
    const getDZs = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getdzs`, {
+      const response = await fetch(`${svr}/getdzs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -953,7 +955,7 @@ function StatsPage(props) {
 
   const getPlanes = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getplanes`, {
+      const response = await fetch(`${svr}/getplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -978,7 +980,7 @@ function StatsPage(props) {
 
   const getRigs = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getrigs`, {
+      const response = await fetch(`${svr}/getrigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),
@@ -1001,7 +1003,7 @@ function StatsPage(props) {
 
   const getAllTags = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getalltags`, {
+      const response = await fetch(`${svr}/getalltags`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID}),

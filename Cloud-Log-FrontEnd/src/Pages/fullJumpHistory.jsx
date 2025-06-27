@@ -7,6 +7,8 @@ import {getPallette} from "../logInputWidget"
 
 function FullJumpLedg (props) {
 
+   const svr = import.meta.env.VITE_SVR_URL;
+
    const pallette = getPallette()
 
    const [showAddWidget, setShowAddWidget]= useState(false);
@@ -149,7 +151,7 @@ const tagsRoute = async (array) => {
    // console.log('async func data sees: ', array);
    setTags(null);
       try {
-         const response = await fetch(`${process.env.SVR_URL}/gettags`, {
+         const response = await fetch(`${svr}/gettags`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({jumpsIdArray: array}),

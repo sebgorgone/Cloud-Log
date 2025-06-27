@@ -6,6 +6,8 @@ import JumpWidget from './components/JumpWidget.jsx'
 
 function LogInputWidget(props) {
 
+  const svr = import.meta.env.VITE_SVR_URL;
+
   //get user data
   const userData = useAuth();
 
@@ -1088,7 +1090,7 @@ useEffect(() => {
 
 const getDefaults = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getdefaults`, {
+      const response = await fetch(`${svr}/getdefaults`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id}),
@@ -1134,7 +1136,7 @@ const getDefaults = async () => {
 
   const getRigs = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getrigs`, {
+      const response = await fetch(`${svr}/getrigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id}),
@@ -1156,7 +1158,7 @@ const getDefaults = async () => {
 
   const storeRig = async (newRigString) => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storerigs`, {
+      const response = await fetch(`${svr}/storerigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id, name: `${newRigString}` }),
@@ -1170,7 +1172,7 @@ const getDefaults = async () => {
 
   const getPlanes = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getplanes`, {
+      const response = await fetch(`${svr}/getplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id}),
@@ -1192,7 +1194,7 @@ const getDefaults = async () => {
 
   const storePlane = async (newPlaneString) => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storeplanes`, {
+      const response = await fetch(`${svr}/storeplanes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id, name: `${newPlaneString}` }),
@@ -1206,7 +1208,7 @@ const getDefaults = async () => {
 
   const getDZs = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/getdzs`, {
+      const response = await fetch(`${svr}/getdzs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id}),
@@ -1228,7 +1230,7 @@ const getDefaults = async () => {
 
   const storeDZ = async (newDzString) => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/storedz`, {
+      const response = await fetch(`${svr}/storedz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userData.user.id, name: `${newDzString}` }),
@@ -1245,7 +1247,7 @@ const getDefaults = async () => {
 const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList) => {
   try {
     const base64Signature = await fileToBase64(newJumpSigUpload)
-    const response = await fetch(`${process.env.SVR_URL}/storejump`, {
+    const response = await fetch(`${svr}/storejump`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

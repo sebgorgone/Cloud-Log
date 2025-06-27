@@ -19,24 +19,9 @@ function JumpWidgetDel(props) {
 
    //handlers
 
-   function handleSigPreview(e) {
-      e.preventDefault();
-      setShowSig(!showSig);
-   }
-
    function handleNotesPreview(e) {
       e.preventDefault()
       setShowNotes(!showNotes);
-   }
-
-   function handleEdit (e) {
-      e.preventDefault();
-      props.edit();
-   }
-
-   function handleDelete (e) {
-      e.preventDefault();
-      props.delete();
    }
 
    //inline

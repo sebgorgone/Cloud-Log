@@ -5,6 +5,9 @@ import WelcomeForm from '../components/WelcomeForm';
 import NavForm from '../components/NavForm';
 
 function WelcomePage(props) {
+
+   const svr = import.meta.env.VITE_SVR_URL;
+
    //env
 
    const {user} = props
@@ -30,7 +33,7 @@ function WelcomePage(props) {
 
    const checkBasket = async () => {
     try {
-      const response = await fetch(`${process.env.SVR_URL}/checkbasket`, {
+      const response = await fetch(`${svr}/checkbasket`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.ID }),
