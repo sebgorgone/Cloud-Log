@@ -41,7 +41,6 @@ function JumpWidgetDisp(props) {
    //inline
    const Shell = {
       background: pallette[4],
-      borderRadius: ".4em",
       borderTopLeftRadius: "0em",
       border: "solid .2em",
       borderColor: pallette[1],
@@ -62,7 +61,6 @@ function JumpWidgetDisp(props) {
    }
 
    const row = {
-      margin: "0",
       display: "flex",
       justifyContent: "space-evenly",
       margin: ".1em",

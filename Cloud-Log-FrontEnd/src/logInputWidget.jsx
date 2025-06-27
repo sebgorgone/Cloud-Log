@@ -1333,14 +1333,13 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
   };
 
   const inputButtonStyle = {
-      color: pallette[0],
       border: "0",
       borderColor: pallette[4],
       borderRadius: "1.5vw",
       padding: "0",
       margin: "0",
-     fontFamily: "L1",
-     color: pallette[4],
+      fontFamily: "L1",
+      color: pallette[4],
   };
 
   const formStyle = {

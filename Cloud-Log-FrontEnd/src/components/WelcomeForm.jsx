@@ -109,7 +109,6 @@ function WelcomeForm (props) {
     justifyContent: "space-around", 
     margin: "1vh", padding: "1em", 
     background: pallette[3], 
-    borderRadius:".3em",
     borderRadius: '1em'
    };
 

@@ -59,7 +59,6 @@ function JumpWidget(props) {
    }
 
    const row = {
-      margin: "0",
       display: "flex",
       justifyContent: "space-evenly",
       margin: ".1em",
