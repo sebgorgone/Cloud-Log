@@ -386,6 +386,9 @@ db.query(query, id, (err, results) => {
 app.post('/userjumphistory', (req, res) => {
   const { user_id } = req.body;
 
+
+  console.log('getting user jump history')
+
   db.query ('SELECT * FROM jumps WHERE user_id=? ORDER BY jump_num DESC',
     user_id,
     (err, results) => {
