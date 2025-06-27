@@ -9,7 +9,7 @@ import { useAuth } from '../contexts/authContext';
 
 function LoginScreen () {
 
-   const host = 'http://localhost:5173';
+   const host = `${process.env.SVR_URL}`;
 
    const nav = useNavigate();
    const { login, user } = useAuth();
