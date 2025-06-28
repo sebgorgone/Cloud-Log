@@ -118,7 +118,7 @@ function FullJumpLedg (props) {
    }
 
 
-   function unPackPdf(obj) {
+function unPackPdf(obj) {
   const base64Bytes = new Uint8Array(obj.data);
   const b64String = new TextDecoder().decode(base64Bytes);
 
@@ -132,7 +132,7 @@ function FullJumpLedg (props) {
 
   const pdfBlob = new Blob([pdfUint8], { type: 'application/pdf' });
   return pdfBlob;
-   }
+}
 
    const [tagsArray, setTags] = useState(null)
 
@@ -243,7 +243,6 @@ const tagsRoute = async (array) => {
                   exitAlt={jump.alt}
                   time={jump.t}
                   notes={jump.notes}
-                  signature={unPackPdf(jump.pdfSig)}
                   jump_id={jump.jump_id}
                   tags={getThisJumpsTags(jump.jump_id)}
                   context={"gathered"}

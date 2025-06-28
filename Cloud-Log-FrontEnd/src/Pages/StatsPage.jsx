@@ -156,12 +156,6 @@ function StatsPage(props) {
    const [MALField, setMALField] = useState(false);
    const [REQField, setREQField] = useState(false);
 
-
-
-
-
-   console.log('in the Stats page', jumps, tags);
-
    //handlers
 
    function handledzPage (e) {

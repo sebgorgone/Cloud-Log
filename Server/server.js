@@ -41,8 +41,8 @@ const permittedTables = [
 
 // General rate limiter: max 100 requests per 15 minutes per IP
 const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 1000,
+  windowMs: 10 * 60 * 1000, 
+  max: 800,
   message: { error: 'Too many requests, please try again later.' }
 });
 
@@ -405,11 +405,11 @@ app.post('/userjumphistory', (req, res) => {
 
   console.log('getting user jump history')
 
-  db.query ('SELECT * FROM jumps WHERE user_id=? ORDER BY jump_num DESC',
+  db.query ('SELECT jump_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, created_at FROM jumps WHERE user_id=? ORDER BY jump_num DESC',
     user_id,
     (err, results) => {
       if (err){
-        console.error('DB error fetching user jump history', err);
+        console.error('DB error fetching user jump history');
         return res.status(500).json({message: 'could not retrieve user jumps'})
       }
       if (results.length === 0) {
@@ -420,6 +420,29 @@ app.post('/userjumphistory', (req, res) => {
     }
   )
 });
+
+//sig from JID
+
+app.post('/signature', (req, res) => {
+  const { jump_id } = req.body;
+
+  db.query ('SELECT pdfSig FROM jumps WHERE jump_id=?',
+    jump_id,
+    (err, results) => {
+      if (err){
+        console.error('DB error fetching this pdf',);
+        return res.status(500).json({message: 'could not retrieve users pdf'})
+      }
+      if (results.length === 0) {
+        console.log('no signatre found', results);
+        return res.status(201).json({message: 'Signature not found', results, ok: true})
+      }
+      return res.status(200).json({message: 'signature retrieved', results, ok: true})
+    }
+  )
+});
+
+
 
 //get all tags
 

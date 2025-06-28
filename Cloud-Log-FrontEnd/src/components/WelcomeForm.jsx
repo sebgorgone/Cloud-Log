@@ -487,14 +487,12 @@ function WelcomeForm (props) {
 
   //useEffect
 
-
-
   useEffect(() => {
-                     getRigs();
-                     getPlanes();
-                     getDZs();
-                     getDefaults();
-                  }, []);
+    getRigs();
+    getPlanes();
+    getDZs();
+    getDefaults();
+  },[]);
 
 
    return(

@@ -14,23 +14,7 @@ function SettingsPage(props) {
 
    const user = props.user;
 
-   // const user = { ID: 1}
-
    const jumps = props.jumps;
-
-   // const jumps = [{ 
-   //    jump_num: 62, 
-   //    jump_date: "2025-06-17", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 4, 
-   //    t: 7,
-   //    notes: "hello retard" ,
-   //    jump_id: "2"
-   // }];
-
-   // console.log(props)
 
    const { updateUsername } = useAuth();
 
@@ -58,7 +42,6 @@ function SettingsPage(props) {
 
 
    const [userValidated, setUserValidated] = useState(false);
-   // const [validated, setValidated] = useState(false)
 
    const [validateValue, setValidateValue] = useState(false)
 
@@ -850,7 +833,6 @@ function SettingsPage(props) {
          if(data.ok){
 
             setUserCred(data.results);
-            console.log('set user data', data.results)
                
          }
          else {
@@ -1197,7 +1179,6 @@ function SettingsPage(props) {
       const returnedData = await response.json();
       const data = returnedData.results[0]
       if(response.ok){
-        console.log('retrieved user defaults--> ', 'data: ', data, ' rig: ', data.rig, ' dz: ', data.dz, ' aircraft: ', data.aircraft)
         setDefualtRig(data.rig);
         setDefaultAircraft(data.aircraft);
         setDefaultDZ(data.dz);
@@ -1301,7 +1282,6 @@ function SettingsPage(props) {
       setValidateField(false);
       setValidateValue('');
 
-      console.log('useEffect');
    }, [flag])
 
    return (

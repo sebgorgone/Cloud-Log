@@ -282,10 +282,11 @@ function HomePage(props) {
       justifyContent: "center"  
    }
    const filterInputStyle= {
-      maxHeight: "3em",
+      height: "2em",
       background: pallette[0],
       fontFamily: "L1",
-      minWidth: "50%"
+      minWidth: "50%",
+      textAlign: "center"
    } 
    const sidebarStyle ={
       position: "fixed",
@@ -354,7 +355,7 @@ function HomePage(props) {
                  value={wcField}
                  onChange={updateWildCardField}
                  type="text"
-                 placeholder="🔎Search"
+                 placeholder="🔎 Search your jumps"
                  style={filterInputStyle}
               />
             </form>

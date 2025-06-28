@@ -122,47 +122,7 @@ function JumpWidget(props) {
       fontSize: "1.5em",
    }
 
-   //pdf
 
-function unPackPdf(obj) {
-   console.log('data: ', obj.pdfSig.data)
-  const base64Bytes = new Uint8Array(obj.pdfSig.data);
-  const b64String = new TextDecoder().decode(base64Bytes);
-
-  const binaryString = atob(b64String);
-
-  const len = binaryString.length;
-  const pdfUint8 = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    pdfUint8[i] = binaryString.charCodeAt(i);
-  }
-
-  const pdfBlob = new Blob([pdfUint8], { type: 'application/pdf' });
-  return pdfBlob;
-}
-
-const sigRoute = async () => { 
-      let pdf;
-      try {
-         const response = await fetch(`${svr}/signature`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({jump_id: props.jump_id}),
-         });
-         const data = await response.json();
-         if(data.ok){
-            console.log(data.results[0])   
-            pdf = unPackPdf(data.results[0])
-            console.log('unpacked: ', pdf)
-            return pdf;
-         }
-         else {
-            console.error('no pdf imprted')
-         }
-      } catch (err) {
-         console.error('client failed to load user pdf signature')
-      }
-   }
 
    useEffect(() => {
       if (!showSig) return;
@@ -255,14 +215,20 @@ const sigRoute = async () => {
 
 
       <div style={showSig ? line : {display : "none"}}></div>
-      {showSig && <object
-         data={`${pdfUrl}#zoom=50`}
-         type="application/pdf"
-         width="100%"
-         height="600px"
-      >
-         Your browser does not support embedded PDFs.
-      </object>}
+      {showSig && <div style={row}>
+         {props.signature && props.signature.type === 'application/pdf' ? (
+            <object
+               data={`${URL.createObjectURL(props.signature)}#zoom=50`}
+               type="application/pdf"
+               width="100%"
+               height="600px"
+            >
+            Your browser does not support embedded PDFs.
+            </object>
+         ) : (
+            <p>No PDF to display</p>
+         )}
+      </div>}
 
       
 

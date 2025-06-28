@@ -24,7 +24,6 @@ function LoginScreen () {
    }
    //pallette v
    const pallette = getPallette();
-   console.log("LOGIN PALLETTE:" + [...pallette]);
 
    //styles vv
    const backdrop = {

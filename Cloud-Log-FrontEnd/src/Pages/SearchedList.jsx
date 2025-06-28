@@ -21,7 +21,6 @@ function SearchedList(props) {
 
    const [results, setResults] = useState('loading...');
 
-   console.log('results: ', results);
 
    const getResults = async () => { 
       console.log('getting search results');

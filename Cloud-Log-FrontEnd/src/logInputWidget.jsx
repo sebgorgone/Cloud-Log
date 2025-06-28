@@ -1,7 +1,7 @@
-import {useState, useEffect, use, } from 'react';
+import {useState, useEffect } from 'react';
 import './style/logInputWidget.css'
 import { useAuth } from './contexts/authContext';
-import JumpWidget from './components/JumpWidget.jsx'
+import JumpWidgetPrev from './components/JumpWidgetPrev.jsx'
 
 
 function LogInputWidget(props) {
@@ -328,7 +328,7 @@ function LogInputWidget(props) {
 
                       //JUMPTYPES
   const [tagBellyJTT, setTagBellyJTT] = useState(true);
-  const [tagFreeFlyJTT, setTagFreeflyJTT] = useState(true);
+  const [tagFreeFlyJTT, setTagFreeFlyJTT] = useState(true);
   const [tagWingsuitJTT, setTagWingsuitJTT] = useState(true);
   const [tagBaseJTT, setTagBaseJTT] = useState(true);
   const [tagHnPJTT, setTagHnPJTT] = useState(true);
@@ -422,7 +422,7 @@ function LogInputWidget(props) {
     },
     JTFreeFly: (e) => {
       e.preventDefault();
-      setTagFreeflyJTT(!tagFreeFlyJTT);
+      setTagFreeFlyJTT(!tagFreeFlyJTT);
     },
     JTWingsuit: (e) => {
       e.preventDefault();
@@ -1098,7 +1098,6 @@ const getDefaults = async () => {
       const returnedData = await response.json();
       const data = returnedData.results[0]
       if(response.ok){
-        console.log('retrieved user defaults--> ', 'data: ', data, ' rig: ', data.rig, ' dz: ', data.dz, ' aircraft: ', data.aircraft)
         setDefualtRig(data.rig);
         setDefaultAircraft(data.aircraft);
         setDefaultDZ(data.dz);
@@ -1109,9 +1108,6 @@ const getDefaults = async () => {
       console.error('client failed getting defaults', err);
     }
   }; 
-
-
-
 
 
   function fileToBase64(pdfFile) {
@@ -1271,6 +1267,13 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       setNewJumpCom('');
       setNewJumpSigUpload(null);
       setNewJumpTagList([]);
+      setNewJumpAlt('')
+      setNewJumpDur('')
+      setTagsToFalse();
+      setTagsPage(true);
+      setDzPage(true);
+      setAircraftPage(true);
+      setEqpmPage(true);
 
       props.add();
       // Notify parent to reload after successful storage
@@ -1380,6 +1383,75 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
   };
 
   //jump upload
+
+  function setTagsToFalse () {
+    setTagBellyJTT(true);
+    setTagFreeFlyJTT(true);
+    setTagWingsuitJTT(true);
+    setTagBaseJTT(true);
+    setTagHnPJTT(true);
+    setTagSwoopJTT(true);
+    setTagCrwJTT(true);
+    setTagVfsJTT(true);
+    setTagMfsJTT(true);
+    setTagFsJTT(true);
+    setTagAngleJTT(true);
+    setTagTrackingJTT(true);
+    setTagSoloJTT(true);
+    setTagTandemJTT(true);
+    setTagBigwayJTT(true);
+    setTagZooJTT(true);
+    setTagNightJTT(true);
+    setTagHighPullJTT(true);
+    setTagHighJTT(true);
+    setTagGoodOC(true);
+    setTagHardOC(true);
+    setTagOffHeadingOC(true);
+    setTagPCDelayOC(true);
+    setTagLineBreakOC(true);
+    setTagUnstableOC(true);
+    setTagTILSC(true);
+    setTagVideoLSC(true);
+    setTagAffiLSC(true);
+    setTagCoachLSC(true);
+    setTagOrganizerLSC(true);
+    setTagJumpMasterLSC(true);
+    setTagCheckLSC(true);
+    setTagRecurrencyLSC(true);
+    setTagStudentLSC(true);
+    setTagHighWindWTHR(true);
+    setTagLowWindWTHR(true);
+    setTagDownWindWTHR(true);
+    setTagCrossWindWTHR(true);
+    setTagLongSpotWTHR(true);
+    setTagRainWTHR(true);
+    setTagSnowWTHR(true);
+    setTagCutAwayEMR(true);
+    setTagOffLandingEMR(true);
+    setTagAircraftEMR(true);
+    setTagInjuryEMR(true);
+    setTagEvaMAL(true);
+    setTagBiPlaneMAL(true);
+    setTagDownPlaneMAL(true);
+    setTagLineOverMAL(true);
+    setTagSideBySideMAL(true);
+    setTagStuckSliderMAL(true);
+    setTagPCInTowMAL(true);
+    setTagStreamerMAL(true);
+    setTagHorshoeMAL(true);
+    setTagPrematureMAL(true);
+    setTagHardPullMAL(true);
+    setTagToggleLockMAL(true);
+    setTagToggleFireMAL(true);
+    setTagDivingLineTwistMAL(true);
+    setTagTensionKnotMAL(true);
+    setTagAcc7REQ(true);
+    setTagAcc33REQ(true);
+    setTagDemoREQ(true);
+    setTagWaterREQ(true);
+    setTagNightREQ(true);
+    setTagGroupSize('');
+  }
 
 
 
@@ -1784,7 +1856,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
         <p style={headerStyle}>Output Preview</p>
 
           <div style={{width: "100%"}}>
-      <JumpWidget 
+      <JumpWidgetPrev 
             jumpNum={newJumpNum}
             jumpDate={newJumpDate}
             dz={newJumpDZ}

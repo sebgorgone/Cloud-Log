@@ -3,7 +3,6 @@ import {getPallette} from "../logInputWidget";
 import '../style/loginScreen.css';
 
 function DownloadPage(props) {
-   console.log('in the Download page');
 
    const pallette = getPallette();
 
