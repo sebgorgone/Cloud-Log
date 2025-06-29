@@ -236,6 +236,7 @@ app.post('/changepassword', (req, res) => {
       if (err) return res.status(500).json({message: 'password change failed'});
       console.log('succesfully set new user password');
       res.status(201).json({message: 'User password changed', ok: true});
+      
     }
   );
 });
@@ -383,7 +384,6 @@ db.query(query, id, (err, results) => {
   }
 
   const user = results[0];
-  console.log("User found:", user);
 
   const { hash } = hashPassword(password, user.salt);
 
@@ -838,48 +838,6 @@ if (Array.isArray(tags) && tags.length > 0) {
       });
     });
 }
-          let completed = 0;
-          let hasError = false;
-
-          tags.forEach(tagObj => {
-            const { name, cat, value } = tagObj;
-            const insertTagSql = value !== undefined
-              ? 'INSERT INTO tags (user_id, name, cat, value, jump_ref) VALUES (?, ?, ?, ?, ?)'
-              : 'INSERT INTO tags (user_id, name, cat, jump_ref) VALUES (?, ?, ?, ?)';
-            const params = value !== undefined
-              ? [user_id, name, cat, value, newJumpId]
-              : [user_id, name, cat, newJumpId];
-
-            conn.query(insertTagSql, params, tagErr => {
-              if (tagErr && !hasError) {
-                hasError = true;
-                return conn.rollback(() => {
-                  conn.release();
-                  console.error('Error inserting tag:', tagErr);
-                  res.status(500).json({
-                    message: 'Failed to store tags – Jump not catalogued',
-                    error: tagErr.message
-                  });
-                });
-              }
-
-              completed++;
-              if (completed === tags.length && !hasError) {
-                conn.commit(commitErr => {
-                  conn.release();
-                  if (commitErr) {
-                    console.error('Commit error:', commitErr);
-                    return res.status(500).json({ message: 'Failed to commit transaction' });
-                  }
-                  res.status(200).json({
-                    message: 'Jump and tags stored successfully',
-                    jump_id: newJumpId,
-                    ok: true
-                  });
-                });
-              }
-            });
-          });
         }
       );
     });

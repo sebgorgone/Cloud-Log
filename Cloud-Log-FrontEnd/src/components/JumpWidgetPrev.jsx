@@ -58,10 +58,9 @@ function JumpWidget(props) {
    //inline
    const Shell = {
       background: pallette[4],
-      marginLeft: "20%",
       border: "solid .2em",
       borderColor: pallette[1],
-      maxWidth: "70%",
+      maxWidth: "100%",
       borderRadius: ".75em"
 
       

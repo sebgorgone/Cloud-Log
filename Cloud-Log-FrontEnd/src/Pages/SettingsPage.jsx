@@ -313,14 +313,14 @@ function SettingsPage(props) {
    setDzField(false);
   }
 
-   function handleDZInput (e) {
+   async function handleDZInput (e) {
     e.preventDefault();
     for (let d of DZs){
       if (addJumpDZ === d) return alert('Dropzone already exists')
     }
     if (addJumpDZ.trim() !== ""){
-      storeDZ(addJumpDZ)
-      getDZs();
+      await storeDZ(addJumpDZ);
+      await getDZs();
       setAddJumpDZ("")
     }
   }
@@ -341,29 +341,28 @@ function SettingsPage(props) {
    setAircraftField(false);
   }
 
-  function handleAircraftInput (e) {
+  async function handleAircraftInput (e) {
     e.preventDefault();
     for (let a of planes){
       if (addJumpAircraft === a) return alert('Aircraft already exists')
     }
     if (addJumpAircraft.trim() !== ""){
-      storePlane(addJumpAircraft);
-      getPlanes();
+      await storePlane(addJumpAircraft);
+      await getPlanes();
       setAddJumpAircraft("");
     }
   }
 
-  function handleRigInput (e) {
+  async function handleRigInput (e) {
     e.preventDefault();
     for (let r of rigs) {
       if (addJumpRig === r) return alert('rig already exists')
     }
     if (addJumpRig.trim() !== ""){
-      storeRig();
-      getRigs();
+      await storeRig();
+      await getRigs();
       setAddJumpRig("");
     }
-
   }
 
   function handleAddJumpAircraftChange (e) {
@@ -530,6 +529,13 @@ function SettingsPage(props) {
       display: "flex",
       flexFlow: "column",
       width: "30%"
+   }
+
+   const feedbackStyle = {
+      display: "flex",
+      flexFlow: "column",
+      alignItems: "center",
+      width: "70%"
    }
 
    const timeStamp = {
@@ -700,6 +706,16 @@ function SettingsPage(props) {
       marginLeft: ".6em",
       width: "4em",
       marginBottom: ".5em",
+   }
+
+   const feedbackHeaderStyle = {
+      fontFamily: "L1",
+      marginTop: ".5em",
+      marginBottom: "0",
+      color: pallette[4],
+      padding: ".5em",
+      textAlign: "center",
+      fontSize: "1.5em"
    }
 
 
@@ -911,7 +927,7 @@ function SettingsPage(props) {
 
   const changePassword = async () => {
     try {
-      const response = await fetch('${svr}/changepassword', {
+      const response = await fetch(`${svr}/changepassword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: user.ID, password: newUserPassword }),
@@ -1127,7 +1143,7 @@ function SettingsPage(props) {
     } catch (err) {console.error('client failed storing DZ', err);}
   };
 
-    const storeDefaultRig = async (eqpm) => {
+  const storeDefaultRig = async (eqpm) => {
     try {
       const response = await fetch(`${svr}/storedefaultrig`, {
         method: 'POST',
@@ -1505,6 +1521,10 @@ function SettingsPage(props) {
               </form>
             )}
 
+          </div>
+
+          <div style={feedbackStyle}>
+            <p style={feedbackHeaderStyle}>Feedback / Bug Reporting</p>
           </div>
         </>
       ) : (

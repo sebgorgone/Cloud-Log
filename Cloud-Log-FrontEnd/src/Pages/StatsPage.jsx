@@ -681,7 +681,7 @@ function StatsPage(props) {
             return (
                <div key={idx} style={listDiv}>
                   <p style={rlStyle}>{tag.name}</p>
-                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br /><span style={textStyleProps}>{tag.count}</span></p>
                </div>
             )
          })
@@ -710,7 +710,7 @@ function StatsPage(props) {
             return (
                <div key={idx} style={listDiv}>
                   <p style={rlStyle}>{tag.name}</p>
-                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br /><span style={textStyleProps}>{tag.count}</span></p>
                </div>
             )
          })
@@ -739,7 +739,7 @@ function StatsPage(props) {
             return (
                <div key={idx} style={listDiv}>
                   <p style={rlStyle}>{tag.name}</p>
-                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br /><span style={textStyleProps}>{tag.count}</span></p>
                </div>
             )
          })
@@ -768,7 +768,7 @@ function StatsPage(props) {
             return (
                <div key={idx} style={listDiv}>
                   <p style={rlStyle}>{tag.name}</p>
-                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br /><span style={textStyleProps}>{tag.count}</span></p>
                </div>
             )
          })
@@ -797,7 +797,7 @@ function StatsPage(props) {
             return (
                <div key={idx} style={listDiv}>
                   <p style={rlStyle}>{tag.name}</p>
-                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br /><span style={textStyleProps}>{tag.count}</span></p>
                </div>
             )
          })
@@ -826,7 +826,7 @@ function StatsPage(props) {
             return (
                <div key={idx} style={listDiv}>
                   <p style={rlStyle}>{tag.name}</p>
-                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br /><span style={textStyleProps}>{tag.count}</span></p>
                </div>
             )
          })
@@ -855,7 +855,7 @@ function StatsPage(props) {
             return (
                <div key={idx} style={listDiv}>
                   <p style={rlStyle}>{tag.name}</p>
-                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br /><span style={textStyleProps}>{tag.count}</span></p>
                </div>
             )
          })
@@ -884,7 +884,7 @@ function StatsPage(props) {
             return (
                <div key={idx} style={listDiv}>
                   <p style={rlStyle}>{tag.name}</p>
-                  <p style={textStyle}>number of {`'${tag.name}'s`}<br />#<span style={textStyleProps}>{tag.count}</span></p>
+                  <p style={textStyle}>number of {`'${tag.name}'s`}<br /><span style={textStyleProps}>{tag.count}</span></p>
                </div>
             )
          })

@@ -110,7 +110,7 @@ function WelcomeForm (props) {
     justifyContent: "space-around", 
     margin: "1vh", padding: "1em", 
     background: pallette[3], 
-    borderRadius: '1em'
+    borderRadius: '1em',
    };
 
    const inputSection = {
@@ -142,8 +142,16 @@ function WelcomeForm (props) {
       textAlign: "center",
    }
 
+   const subLTitle = {      
+      fontSize:"min(2.5vw, 89.3px)",
+      fontFamily: "L1",
+      color: pallette[0],
+      margin: "auto",
+      textAlign: "center",
+   }
+
    const subTitle = {      
-      fontSize:"min(5vw, 200px)",
+      fontSize:"max(3vw, 30px)",
       width: "80%",
       fontFamily: "L1",
       color: pallette[0],
@@ -424,41 +432,40 @@ function WelcomeForm (props) {
     setAddJumpRig(e.target.value);
   }
 
-  function handleDZInput (e) {
+  async function handleDZInput(e) {
     e.preventDefault();
     for (let d of DZs){
       if (addJumpDZ === d) return alert('Dropzone already exists')
     }
     if (addJumpDZ.trim() !== ""){
-      storeDZ(addJumpDZ)
-      getDZs();
-      setAddJumpDZ("")
+      await storeDZ(addJumpDZ);
+      await getDZs();
+      setAddJumpDZ("");
     }
   }
 
-  function handleAircraftInput (e) {
+  async function handleAircraftInput(e) {
     e.preventDefault();
     for (let a of planes){
       if (addJumpAircraft === a) return alert('Aircraft already exists')
     }
     if (addJumpAircraft.trim() !== ""){
-      storePlane(addJumpAircraft);
-      getPlanes();
+      await storePlane(addJumpAircraft);
+      await getPlanes();
       setAddJumpAircraft("");
     }
   }
 
-  function handleRigInput (e) {
+  async function handleRigInput(e) {
     e.preventDefault()
     for (let r of rigs) {
       if (addJumpRig === r) return alert('rig already exists')
     }
     if (addJumpRig.trim() !== ""){
-      storeRig(addJumpRig);
-      getRigs();
+      await storeRig(addJumpRig);
+      await getRigs();
       setAddJumpRig("");
     }
-
   }
 
   function handleSetFavoriteRig (chute) {
@@ -500,7 +507,13 @@ function WelcomeForm (props) {
 
 
          <div style={rowStyle}>
-            <div style={textSection}><p style={title}>Add your go-tos</p></div>
+            <div style={textSection}>
+
+              <p style={title}>Welcome {data.user.name}!</p>
+              <p style={subLTitle}>add your defualts then start adding your logs</p>
+
+            </div>
+
             <div style={inputSection}>
 
                <button style={eqpmPage ? headerButtonStyle : headerButton1Style} onClick={handleEquipmentForm}>Equipment</button>

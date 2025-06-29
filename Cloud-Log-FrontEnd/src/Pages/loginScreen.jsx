@@ -160,13 +160,13 @@ function LoginScreen () {
          <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center", marginBottom: "3vh"}}>
             <button type="submit" style={loginButton}>Log In</button>
 
-            <a 
+            {/* <a 
               className="registerLink"
               style={signupPageButton}
               href={`${domain}/register`}
             >
               Create New Account
-            </a>
+            </a> */}
 
          </div>
          

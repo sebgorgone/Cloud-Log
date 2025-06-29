@@ -19,38 +19,18 @@ function NavForm(props) {
     border: "none",
     borderRadius: "1.5em",
     padding: ".5em",
-    margin: "1em",
+    margin: "2em",
     fontFamily: "L1",
     fontSize: "1.2em",
     color: pallette[0],
    };
 
-
-   const textSection = {
-      width: "100%",
-      textAlign: "center",
-      margin: "1em"
-   }
-
-   const subTitle = {      
-      fontSize:"min(5vw, 200px)",
-      width: "80%",
-      fontFamily: "L1",
-      color: pallette[0],
-      margin: "auto",
-      textAlign: "center",
-      borderRadius: "1.5em",
-      border: "none",
-      padding: ".3em",
-      paddingBottom: ".3em"
-   }
-
    const rowStyle = {
     display: "flex", 
     flexWrap: "wrap",
     justifyContent: "space-around", 
-    margin: "1vh", padding: "1em", 
-    background: pallette[3], 
+    margin: "1em", padding: "1em", 
+ 
     border: "none",
     borderRadius: '1em'
    };
@@ -63,9 +43,6 @@ function NavForm(props) {
 
    return(
    <div style={rowStyle}>
-
-      <div style={textSection}><p style={subTitle}>View your Jumps</p></div>
-
 
       <div style={inputSection}>
 

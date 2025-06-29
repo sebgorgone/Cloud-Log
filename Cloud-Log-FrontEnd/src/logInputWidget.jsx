@@ -196,45 +196,40 @@ function LogInputWidget(props) {
     setNewJumpCom(e.target.value)
   }
 //buttons
-  function handleDZInput (e) {
+  async function handleDZInput (e) {
     e.preventDefault()
     for (let d of DZs){
       if (addJumpDZ === d) return alert('Dropzone already exists')
     }
     if (addJumpDZ.trim() !== ""){
-      storeDZ(addJumpDZ)
-      getDZs();
+      await storeDZ(addJumpDZ);
+      await getDZs();
       setAddJumpDZ("")
     }
-
-
-
   }
 
-  function handleAircraftInput (e) {
+  async function handleAircraftInput (e) {
     e.preventDefault()
     for (let p of planes){
       if (addJumpAircraft === p) return alert('Aircraft already exists')
     }
     if (addJumpAircraft.trim() !== ""){
-      storePlane(addJumpAircraft);
-      getPlanes();
+      await storePlane(addJumpAircraft);
+      await getPlanes();
       setAddJumpAircraft("");
     }
-
   }
 
-  function handleRigInput (e) {
+  async function handleRigInput (e) {
     e.preventDefault();
     for (let r of rigs){
       if (addJumpRig === r) return alert('Rig already exists')
     }
     if (addJumpRig.trim() !== ""){
-      storeRig(addJumpRig);
-      getRigs();
+      await storeRig(addJumpRig);
+      await getRigs();
       setAddJumpRig("");
     }
-
   }
 
 //file upload
@@ -980,7 +975,6 @@ function tagBundler() {
       </div>
     )
   }))
-  // console.log('tags html output: ', tagsPreview);
   return tagBundleAll.filter(item => item !== null);
 }
 
@@ -989,7 +983,6 @@ const [tagsPreview, setTagsPreview] = useState(null);
       //useEffects
   useEffect(() => {
     tagBundler();
-    setNewJumpTagList(tagBundler());
   },
   [tagsPage,
 tagBellyJTT,
@@ -1161,7 +1154,6 @@ const getDefaults = async () => {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        alert(returnedDATA.message)
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing rig', err);}
   };
@@ -1197,7 +1189,6 @@ const getDefaults = async () => {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        alert(returnedDATA.message)
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing plane', err);}
   }
@@ -1233,7 +1224,6 @@ const getDefaults = async () => {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        alert(returnedDATA.message)
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing DZ', err);}
   };
@@ -1493,8 +1483,8 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     <div style={shell}>
 
       {/* title */}
-      <div style={{ display: "flex", justifyContent: "center", margin: "", padding: ".5em", background: pallette[3], borderTopLeftRadius:".7em", borderTopRightRadius:".7em" }}>
-        <img style={{width: '5em', height: '5em', paddingTop: ".5em"}} src="/CloudLogLogo.svg" />
+      <div style={{ display: "flex", justifyContent: "center", padding: ".5em", background: pallette[3], borderTopLeftRadius:".7em", borderTopRightRadius:".7em" }}>
+        <img style={{width: '5.5em', height: '5.5em', paddingTop: ".5em"}} src="/cloudLogIconWhite.svg" />
         <h1 style={{fontFamily: "L1", padding: ".2em", color: pallette[0],fontSize: "2em"}}>Add Jump</h1>
       </div>
 

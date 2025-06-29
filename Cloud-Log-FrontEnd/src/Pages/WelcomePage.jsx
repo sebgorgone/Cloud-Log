@@ -56,14 +56,6 @@ function WelcomePage(props) {
       display: "flex",
       justifyContent: "center",
    }
-
-   const welcome = {
-      margin: "auto",
-      fontSize:"min(7vw, 250px)",
-      fontFamily: "L1",
-      color: pallette[4],
-
-   }
    //useEffct
 
    useEffect(() => {checkBasket()}, [])
@@ -73,10 +65,9 @@ function WelcomePage(props) {
          <br /> 
 
          <div style={logo}>
-            <img style={{width: "max(40%, 250px)"}} src="CloudLogBannerBlack.svg"/>
+            <img style={{width: "max(40%, 300px)"}} src="CloudLogBannerBlack.svg"/>
          </div>
 
-         <h3 style={welcome}>Welcome {props.user.name}</h3>
 
          {props.jumps === 'loading' ? <p>loading user data</p> : props.jumps.length === 0 && !basket ?<WelcomeForm user={user} skip={handleBasket}/> : <NavForm logs={logbook} stats={statspage} />}
 
