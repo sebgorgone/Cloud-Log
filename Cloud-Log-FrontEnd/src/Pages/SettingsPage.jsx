@@ -75,6 +75,8 @@ function SettingsPage(props) {
 
    const [page, setPage] = useState(0);
 
+   const [feedback, setFeedback] = useState()
+
    //handlers
 
    function handleCUCLick (e) {
@@ -462,6 +464,10 @@ function SettingsPage(props) {
 
   }
 
+  function handleFeedbackSubmit (e) {
+    e.preventDefault();
+  }
+
 
   
 
@@ -548,7 +554,17 @@ function SettingsPage(props) {
    const changePasswordButton = {
       border: "none",
       fontFamily: "L1",
-      width: "106%",
+      width: "100%",
+      borderRadius: "1em",
+      paddingBottom: ".2em",
+      background: pallette[1],
+      color: pallette[4],
+   }
+
+   const submitButton = {
+      border: "none",
+      fontFamily: "L1",
+      width: "7em",
       borderRadius: "1em",
       paddingBottom: ".2em",
       background: pallette[1],
@@ -567,7 +583,7 @@ function SettingsPage(props) {
    }
 
    const inputStyle = {
-      width: "1000%",
+      width: "100%",
       fontFamily: "L1",
       fontSize: "1em",
       padding: ".2em",
@@ -1525,6 +1541,14 @@ function SettingsPage(props) {
 
           <div style={feedbackStyle}>
             <p style={feedbackHeaderStyle}>Feedback / Bug Reporting</p>
+            <textarea 
+              style={inputStyle}
+              placeholder={`your feedback, \n suggestion, \n or bug here`}
+              rows={3}
+              maxLength={255}
+              onChange={() => {}}
+            />
+            <button style={submitButton}>submit</button>
           </div>
         </>
       ) : (
