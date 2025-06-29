@@ -464,8 +464,10 @@ function SettingsPage(props) {
 
   }
 
-  function handleFeedbackSubmit (e) {
-    e.preventDefault();
+  function handleFeedbackSubmit () {
+    if (feedback === '' || !feedback) return alert('retard')
+    console.log('sending feedback data -- message: ', feedback);
+    sendFeedback();
   }
 
 
@@ -1301,6 +1303,21 @@ function SettingsPage(props) {
     }
   }
 
+  const sendFeedback = async () => {
+    try {
+      const response = await fetch(`${svr}/feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID, message: feedback }),
+      });
+      const returnedDATA = await response.json();
+      if (response.ok) {
+         alert('Thank you for your feedback!');
+         setFeedback('');
+      } else {alert(returnedDATA.message)}
+    } catch (err) {console.error('client failed storing rig', err);}
+  };
+
    //useEffect
 
    useEffect(() => {
@@ -1546,9 +1563,10 @@ function SettingsPage(props) {
               placeholder={`your feedback, \n suggestion, \n or bug here`}
               rows={3}
               maxLength={255}
-              onChange={() => {}}
+              onChange={(e) => {setFeedback(e.target.value)}}
+              value={feedback}
             />
-            <button style={submitButton}>submit</button>
+            <button type='button' style={submitButton} onClick={() => {handleFeedbackSubmit()}}>submit</button>
           </div>
         </>
       ) : (

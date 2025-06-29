@@ -532,6 +532,23 @@ app.post('/getdefaults', (req, res) => {
   )
 });
 
+//upload feedback
+
+app.post('/feedback', (req, res) => {
+  const { user_id, message } = req.body;
+
+  db.query('INSERT INTO feedback (message, user_id) VALUES (?, ?)',
+    [message, user_id],
+    (err, results) => {
+      if (err) {
+        console.error('DB error uploading feedback', err);
+        return res.status(500).json({message: 'could not send feedback'});
+      }
+      return res.status(200).json({message: 'feedback sent!', results})
+    }
+  )
+});
+
 //store default rig
 
 app.post('/storedefaultrig', (req, res) => {

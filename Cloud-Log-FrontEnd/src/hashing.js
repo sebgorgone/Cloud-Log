@@ -17,4 +17,8 @@ console.log('');
 console.log(`Hash: ${hash}`);
 console.log('');
 console.log(`Salt: ${salt}`);
-console.log('')
+console.log('');
+
+//bash in src folder
+
+// node hashing.js password
