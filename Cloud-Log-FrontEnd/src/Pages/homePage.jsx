@@ -332,7 +332,7 @@ function HomePage(props) {
 
 
    useEffect(() => {
-      (!router.searchedList && !router.settings) && getJumpHist();
+      (!router.searchedList) && getJumpHist();
    }, [router, flag]);
 
 
