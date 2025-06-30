@@ -92,7 +92,7 @@ function WelcomePage(props) {
          {readMeField && <div style={{display: "flex", justifyContent: "center", flexFlow: "column", alignItems: "center", marginLeft: "5em"}}>
 
             <p style={textSection}>
-               I built this app with the intention of learning more about fullstack development. Any suggestions, feeback, or bugs you may find are extremely helpful to me, as well as to this app. Cloudlog is still in development, I intend to leave this hosted for as long as people are using it as a free way to log your jumps online, and eventually roll out a paid version with support for media, and flighstight / logbook data. Provided it stays economically feasbale to keep hosting this website- all of the functionality in this distribution of cloudlog will remain free and accessable by your account
+               I built this app with the intention of learning more about fullstack development. Any suggestions, feeback, or bugs you may find are extremely helpful to me, as well as to this app. Cloud log is still in development, I intend to leave this hosted for as long as people are using it as a free way to log your jumps online, and eventually roll out a paid version with support for media, and flighstight / logbook data. Provided it stays economically feasbale to keep hosting this website- all of the functionality in this distribution of cloudlog will remain free and accessable by your account
             </p>
 
             <p style={textSection}>
@@ -115,7 +115,7 @@ function WelcomePage(props) {
             </p>
 
             <p style={textSection}>
-               Thank you for trying Cloudlog!
+               Thank you for trying Cloud log!
             </p>
 
             <button type='button' style={{border: "none", borderRadius: "1.5em", fontFamily: "L1",padding: ".3em", color: pallette[0], margin: ".3em", background: pallette[4], width: "8em"}} onClick={() => setReadMeField(false)}>close me</button>
