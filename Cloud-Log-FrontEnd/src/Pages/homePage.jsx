@@ -28,7 +28,7 @@ function HomePage(props) {
    //states
 
     const [router, setRouter] = useState({
-      welcome: true,
+      welcome: false,
       fullList: false,
       searchedList: false,
       download: false,
@@ -71,7 +71,7 @@ function HomePage(props) {
    const getJumpHist = async () => { 
       setUserJumpHistory(null);
       setUserJumpCount('loading...')
-      // console.log('getting user jump history')
+      console.log('getting user jump history')
       try {
          const response = await fetch(`${svr}/userjumphistory`, {
             method: 'POST',
@@ -102,6 +102,7 @@ function HomePage(props) {
 
    function handleNavToLedg (e) {
       e.preventDefault();
+      getJumpHist();
       setRouter({
       welcome: false,
       fullList: true,
@@ -113,6 +114,7 @@ function HomePage(props) {
     })
    }
    function callLedg () {
+      getJumpHist();
       setRouter({
       welcome: false,
       fullList: true,
@@ -124,6 +126,7 @@ function HomePage(props) {
     })
    }
    function handleNavToStats (e) {
+      getJumpHist();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -136,6 +139,7 @@ function HomePage(props) {
     })
    }
    function callStats () {
+      getJumpHist();
       setRouter({
       welcome: false,
       fullList: false,
@@ -147,6 +151,7 @@ function HomePage(props) {
     })
    }
    function handleNavToDownload (e) {
+      getJumpHist();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -159,6 +164,7 @@ function HomePage(props) {
     })
    }
    function handleNavToSettings (e) {
+      getJumpHist();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -196,6 +202,7 @@ function HomePage(props) {
       setWcField(e.target.value)
     }
     function handleNavToAdd(e) {
+      getJumpHist();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -333,7 +340,16 @@ function HomePage(props) {
 
    useEffect(() => {
       (!router.searchedList) && getJumpHist();
-   }, [router, flag]);
+      setRouter({
+      welcome: true,
+      fullList: false,
+      searchedList: false,
+      download: false,
+      stats: false,
+      settings: false,
+      add: false
+    });
+   }, [flag]);
 
 
 

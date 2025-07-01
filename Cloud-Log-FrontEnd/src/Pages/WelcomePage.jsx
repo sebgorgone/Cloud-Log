@@ -81,9 +81,7 @@ function WelcomePage(props) {
             </div>
 
 
-            {props.jumps === 'loading' ? <LoadPage /> : 
-               props.jumps.length === 0 ? 
-               !basket ? <WelcomeForm user={user} skip={handleBasket}/> : <NavForm logs={logbook} stats={statspage} /> : <LoadPage />}
+            {props.jumps === 'loading' ? <LoadPage /> : props.jumps.length === 0 && !basket ?<WelcomeForm user={user} skip={handleBasket}/> : <NavForm logs={logbook} stats={statspage} />}
 
 
          </div>

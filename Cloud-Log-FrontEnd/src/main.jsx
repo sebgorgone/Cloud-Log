@@ -12,7 +12,6 @@ import LoadPage from './Pages/LoadPage.jsx';
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
       <BrowserRouter> 
         <AuthProvider>     
           <Routes>
@@ -48,5 +47,4 @@ createRoot(document.getElementById('root')).render(
           </Routes>
         </AuthProvider>
       </BrowserRouter>    
-  </StrictMode>,
 )

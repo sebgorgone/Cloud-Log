@@ -1100,7 +1100,6 @@ function SettingsPage(props) {
       } else{
         console.error('no Planes imported', response);
         setPlanes('No saved planes yet')
-        props.rst();
       }
     } catch (err) {
       console.error('client failed plane rigs', err);
@@ -1333,7 +1332,7 @@ function SettingsPage(props) {
 
    }, [flag])
 
-   return (
+  return (
   <div>
     <div style={shell}>
       <br />
