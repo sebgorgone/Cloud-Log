@@ -320,7 +320,6 @@ function WelcomeForm (props) {
       const returnedData = await response.json();
       const data = returnedData.results[0]
       if(response.ok){
-        console.log('retrieved user defaults--> ', 'data: ', data, ' rig: ', data.rig, ' dz: ', data.dz, ' aircraft: ', data.aircraft)
         setDefualtRig(data.rig);
         setDefaultAircraft(data.aircraft);
         setDefaultDZ(data.dz);
@@ -495,11 +494,15 @@ function WelcomeForm (props) {
   //useEffect
 
   useEffect(() => {
-    getRigs();
-    getPlanes();
-    getDZs();
-    getDefaults();
+    setRigs(props.rigs.map(rig => rig.name));  
+    setDZs(props.dzs.map(dz => dz.name));  
+    setPlanes(props.planes.map(plane => plane.name));  
+    setDefaultAircraft(props.defaults.plane);
+    setDefualtRig(props.defaults.rig);
+    setDefaultDZ(props.defaults.dz)
   },[]);
+
+
 
 
    return(

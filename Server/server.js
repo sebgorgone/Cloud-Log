@@ -532,6 +532,58 @@ app.post('/getdefaults', (req, res) => {
   )
 });
 
+//get complete user info
+
+app.post('/getuserinfo', (req, res) => {
+  const { user_id } = req.body;
+
+  const sql = `
+    SELECT
+      p.rig,
+      p.dz,
+      p.aircraft,
+
+      (
+        SELECT JSON_ARRAYAGG(JSON_OBJECT('id', r.id, 'name', r.name))
+        FROM rigs r
+        WHERE r.user_id = p.user_id
+      ) AS rigs,
+
+      (
+        SELECT JSON_ARRAYAGG(JSON_OBJECT('id', pl.id, 'name', pl.name))
+        FROM planes pl
+        WHERE pl.user_id = p.user_id
+      ) AS planes,
+
+      (
+        SELECT JSON_ARRAYAGG(JSON_OBJECT('id', dz.id, 'name', dz.name))
+        FROM dropzones dz
+        WHERE dz.user_id = p.user_id
+      ) AS dropzones
+
+    FROM presets p
+    WHERE p.user_id = ?
+    LIMIT 1;
+  `;
+
+  db.query(sql, [user_id], (err, results) => {
+    if (err) {
+      console.error('DB error fetching full user info:', err);
+      return res.status(500).json({ message: 'could not retrieve user info' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'no user presets found' });
+    }
+
+    // you're good — respond with the unified object
+    return res.status(200).json({
+      message: 'full user info retrieved',
+      ...results[0]
+    });
+  });
+});
+
 //upload feedback
 
 app.post('/feedback', (req, res) => {

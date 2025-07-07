@@ -924,77 +924,6 @@ function StatsPage(props) {
 
    //api
 
-   const getDZs = async () => {
-    try {
-      const response = await fetch(`${svr}/getdzs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundDZs = [];
-        for (let dz of returnedData.results) {
-          foundDZs.push(dz.name);
-        }
-        setDZs([...foundDZs]);
-      } else{
-        console.error('no DZs imported', response);
-        setDZs('No saved dropzones yet')
-      }
-    } catch (err) {
-      console.error('client failed getting DZs', err);
-    }
-  };
-
-  const getPlanes = async () => {
-    try {
-      const response = await fetch(`${svr}/getplanes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundPlanes = [];
-        for (let plane of returnedData.results) {
-          foundPlanes.push(plane.name);
-        }
-        setPlanes([...foundPlanes]);
-      } else{
-        console.error('no Planes imported', response);
-        setPlanes('No saved planes yet')
-        props.rst();
-      }
-    } catch (err) {
-      console.error('client failed getting planes', err);
-      
-    }
-  };
-
-  const getRigs = async () => {
-    try {
-      const response = await fetch(`${svr}/getrigs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundRigs = [];
-        for (let rig of returnedData.results) {
-          foundRigs.push(rig.name);
-        }
-        setRigs([...foundRigs]);
-      } else{
-        console.error('no rigs imported', response);
-        setRigs('No saved rigs yet')
-      }
-    } catch (err) {
-      console.error('client failed getting rigs', err);
-    }
-  };
-
   const getAllTags = async () => {
     try {
       const response = await fetch(`${svr}/getalltags`, {
@@ -1021,9 +950,9 @@ function StatsPage(props) {
   //useEffect
 
   useEffect(() => {
-   getDZs();
-   getPlanes();
-   getRigs();
+   setRigs(props.rigs.map(rig => rig.name));  
+   setDZs(props.dzs.map(dz => dz.name));  
+   setPlanes(props.planes.map(plane => plane.name));  
    getAllTags();
   }, [])
 

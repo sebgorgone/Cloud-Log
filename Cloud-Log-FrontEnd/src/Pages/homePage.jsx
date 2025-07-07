@@ -21,9 +21,21 @@ function HomePage(props) {
 
    const pallette = getPallette()
 
-   const user = getUser()
+   const user = getUser();
 
+   //user info
 
+   const [defaultRig, setDefaultRig] = useState();
+
+   const [defaultAircraft, setDefaultAircraft] = useState();
+
+   const [defaultDZ, setDefaultDZ] = useState();
+
+   const [planes, setPlanes] = useState([]);
+
+   const [rigs, setRigs] = useState([]);
+
+   const [DZs, setDZs] = useState([]);
 
    //states
 
@@ -101,6 +113,31 @@ function HomePage(props) {
             console.error('client failed to load user jumps')
          }}
    }
+
+   const getUserData = async () => {
+    console.log('getting userdata')
+    try {
+      const response = await fetch(`${svr}/getuserinfo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user.ID}),
+      });
+      const data = await response.json();
+      console.log('defaults results: ', data)
+      if(response.ok){
+        setDefaultRig(data.rig);
+        setDefaultAircraft(data.aircraft);
+        setDefaultDZ(data.dz);
+        setRigs([...data.rigs]);
+        setPlanes([...data.planes])
+        setDZs([...data.dropzones])
+      } else{
+        console.error('no defaults retrieved', response);
+      }
+    } catch (err) {
+      console.error('client failed getting defaults', err);
+    }
+  }; 
    
 
    //handlers
@@ -108,6 +145,7 @@ function HomePage(props) {
    function handleNavToLedg (e) {
       e.preventDefault();
       getJumpHist();
+      getUserData();
       setRouter({
       welcome: false,
       fullList: true,
@@ -120,6 +158,7 @@ function HomePage(props) {
    }
    function callLedg () {
       getJumpHist();
+      getUserData();
       setRouter({
       welcome: false,
       fullList: true,
@@ -132,6 +171,7 @@ function HomePage(props) {
    }
    function handleNavToStats (e) {
       getJumpHist();
+      getUserData();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -145,6 +185,7 @@ function HomePage(props) {
    }
    function callStats () {
       getJumpHist();
+      getUserData();
       setRouter({
       welcome: false,
       fullList: false,
@@ -157,6 +198,7 @@ function HomePage(props) {
    }
    function handleNavToDownload (e) {
       getJumpHist();
+      getUserData();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -170,6 +212,7 @@ function HomePage(props) {
    }
    function handleNavToSettings (e) {
       getJumpHist();
+      getUserData();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -208,6 +251,7 @@ function HomePage(props) {
     }
     function handleNavToAdd(e) {
       getJumpHist();
+      getUserData();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -356,6 +400,10 @@ function HomePage(props) {
     });
    }, [flag]);
 
+   useEffect(() => {
+      getUserData();
+   }, [])
+
 
 
    return(
@@ -455,12 +503,12 @@ function HomePage(props) {
 
 
          <div style={mainPageArea}>
-            {(router.welcome && userJumpHistory) ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} />:  checkIfTrue(router.welcome) && <LoadPage />}
+            {(router.welcome && userJumpHistory) ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} rigs={[...rigs]} planes={planes} dzs={DZs} defaults={(defaultAircraft || defaultAircraft === null ) ? {plane: defaultAircraft, rig: defaultRig, dz: defaultDZ} : 'loading...'}/>:  checkIfTrue(router.welcome) && <LoadPage />}
             {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => {getJumpHist()}} add={() => {setUserJumpCount(userJumpCount + 1)}} jumps={userJumpHistory} jump_num={userJumpCount} set_false={() => setGotHistory(false)} /> : checkIfTrue(router.fullList) && <LoadPage />}
 
             {router.download ? <DownloadPage user={user} /> : null}
 
-            {(router.stats && userJumpHistory) ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount}/> : checkIfTrue(router.stats) && <LoadPage />}
+            {(router.stats && userJumpHistory) ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount} rigs={[...rigs]} planes={planes} dzs={DZs} /> : checkIfTrue(router.stats) && <LoadPage />}
 
             {(router.settings && userJumpHistory) ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}} set_false={() => setGotHistory(false)} /> : checkIfTrue(router.settings) && <LoadPage />}
 

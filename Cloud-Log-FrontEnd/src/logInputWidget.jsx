@@ -14,11 +14,11 @@ function LogInputWidget(props) {
   //state hooks vv
 
 //list states
-  const [planes, setPlanes] = useState([])
+  const [planes, setPlanes] = useState([]);
 
   const [rigs, setRigs] = useState([]);
 
-  const [DZs, setDZs] = useState([])
+  const [DZs, setDZs] = useState([]);
 
 //add States
   const [addJumpDZ, setAddJumpDZ] = useState(null);
@@ -1070,7 +1070,6 @@ useEffect (() => {
 
 useEffect(() => {
   if (newJumpNum - props.jump_num > 1) props.rst();
-  getDefaults();
 }, [newJumpNum])
 
 useEffect(() => {
@@ -1253,7 +1252,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     });
     const responseData = await response.json();
     if(responseData.ok){
-      props.set_false()
+      props.set_false();
       alert(responseData.message);
       setNextJump(newJumpNum + 1);
       setNewJumpCom('');
