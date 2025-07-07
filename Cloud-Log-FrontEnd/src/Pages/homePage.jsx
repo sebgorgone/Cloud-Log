@@ -27,6 +27,9 @@ function HomePage(props) {
 
    //states
 
+   const [gotHistory, setGotHistory] = useState(false);
+
+
     const [router, setRouter] = useState({
       welcome: false,
       fullList: false,
@@ -69,32 +72,34 @@ function HomePage(props) {
    
 
    const getJumpHist = async () => { 
-      setUserJumpHistory(null);
-      setUserJumpCount('loading...')
-      console.log('getting user jump history')
-      try {
-         const response = await fetch(`${svr}/userjumphistory`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({user_id: user.ID}),
-         });
-         const data = await response.json();
-         if(data.ok){
-            let jumpHist = [];
-            for (let jump of data.results) {
-               jumpHist.push(jump);
+      if (!gotHistory)
+         {setUserJumpHistory(null);
+         setUserJumpCount('loading...')
+         console.log('getting user jump history')
+         try {
+            const response = await fetch(`${svr}/userjumphistory`, {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json'},
+               body: JSON.stringify({user_id: user.ID}),
+            });
+            const data = await response.json();
+            if(data.ok){
+               let jumpHist = [];
+               for (let jump of data.results) {
+                  jumpHist.push(jump);
+               }
+               setUserJumpHistory(jumpHist);
+               setUserJumpCount(jumpHist.length);
+               setGotHistory(true);
+               // console.log('set user jump history')
+
             }
-            setUserJumpHistory(jumpHist);
-            setUserJumpCount(jumpHist.length)
-            // console.log('set user jump history')
-               
-         }
-         else {
-            console.error('jumps not found', data)
-         }
-      } catch (err) {
-         console.error('client failed to load user jumps')
-      }
+            else {
+               console.error('jumps not found', data)
+            }
+         } catch (err) {
+            console.error('client failed to load user jumps')
+         }}
    }
    
 
@@ -451,7 +456,7 @@ function HomePage(props) {
 
          <div style={mainPageArea}>
             {(router.welcome && userJumpHistory) ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} />:  checkIfTrue(router.welcome) && <LoadPage />}
-            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => getJumpHist()} add={() => setUserJumpCount(userJumpCount + 1)} jumps={userJumpHistory} jump_num={userJumpCount}/> : checkIfTrue(router.fullList) && <LoadPage />}
+            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => {getJumpHist()}} add={() => {setUserJumpCount(userJumpCount + 1)}} jumps={userJumpHistory} jump_num={userJumpCount} set_false={setGotHistory(false)}/> : checkIfTrue(router.fullList) && <LoadPage />}
 
             {router.download ? <DownloadPage user={user} /> : null}
 

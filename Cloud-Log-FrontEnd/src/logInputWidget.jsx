@@ -1082,6 +1082,7 @@ useEffect(() => {
 //api calls
 
 const getDefaults = async () => {
+    console.log('getting defaults')
     try {
       const response = await fetch(`${svr}/getdefaults`, {
         method: 'POST',
