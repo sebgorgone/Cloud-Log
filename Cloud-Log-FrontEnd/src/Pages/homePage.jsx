@@ -456,7 +456,7 @@ function HomePage(props) {
 
          <div style={mainPageArea}>
             {(router.welcome && userJumpHistory) ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} />:  checkIfTrue(router.welcome) && <LoadPage />}
-            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => {getJumpHist()}} add={() => {setUserJumpCount(userJumpCount + 1)}} jumps={userJumpHistory} jump_num={userJumpCount} set_false={setGotHistory(false)}/> : checkIfTrue(router.fullList) && <LoadPage />}
+            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => {getJumpHist()}} add={() => {setUserJumpCount(userJumpCount + 1)}} jumps={userJumpHistory} jump_num={userJumpCount} set_false={() => setGotHistory(false)} /> : checkIfTrue(router.fullList) && <LoadPage />}
 
             {router.download ? <DownloadPage user={user} /> : null}
 
@@ -468,7 +468,7 @@ function HomePage(props) {
 
             {router.add ? <div style={{display: "flex",justifyContent: "space-around", paddingLeft: "4em", marginTop: "3.25em", width: "100%"}}>
                <div style={{width: '75%'}}>
-                  <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null}/>
+                  <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null} set_false={() => setGotHistory(false)}/>
                </div>
             </div> : null}
                   

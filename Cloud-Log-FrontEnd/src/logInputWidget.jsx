@@ -1253,6 +1253,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     });
     const responseData = await response.json();
     if(responseData.ok){
+      props.set_false()
       alert(responseData.message);
       setNextJump(newJumpNum + 1);
       setNewJumpCom('');

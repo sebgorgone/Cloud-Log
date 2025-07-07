@@ -209,6 +209,7 @@ const tagsRoute = async (array) => {
                   numOfJumps={Array.isArray(props.jumps) ? props.jumps.length : null}
                   rst={() => props.rst()}
                   add={() => props.add()}
+                  set_false={() => props.set_false()}
                />
             </div>
             <br />
