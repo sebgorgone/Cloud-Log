@@ -462,7 +462,7 @@ function HomePage(props) {
 
             {(router.stats && userJumpHistory) ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount}/> : checkIfTrue(router.stats) && <LoadPage />}
 
-            {(router.settings && userJumpHistory) ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}}/> : checkIfTrue(router.settings) && <LoadPage />}
+            {(router.settings && userJumpHistory) ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}} set_false={() => setGotHistory(false)} /> : checkIfTrue(router.settings) && <LoadPage />}
 
             {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag} jump_num={userJumpCount}/> : null}
 

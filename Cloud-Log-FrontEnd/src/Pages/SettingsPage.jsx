@@ -845,7 +845,7 @@ function SettingsPage(props) {
              jump_id={jump.jump_id}
              context="gathered"
              edit={() => handleEditJumpButton(jump)}
-             delete={() => handleDeleteJumpButton(jump)}
+             delete={() => {props.set_false(); handleDeleteJumpButton(jump)}}
            />
            {/* <button type="button" style={editOk} onClick={() => handleEditJumpButton(jump)}>edit</button> */}
          </div>
@@ -1660,6 +1660,7 @@ function SettingsPage(props) {
                planeList={Array.isArray(planes) && planes}
                jump_id={editedJump.jump_id}
                rst={() => {props.rst(); setPage(0); setEditAJump(false);}}
+               set_false={() => props.set_false()}
             />
          </div>
       )}

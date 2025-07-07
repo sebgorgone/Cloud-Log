@@ -207,6 +207,8 @@ function EditJumpWidget(props) {
 
    const writeChanges = async (n, d, dz, p, r, a,t, note, id)  => {
       console.log('setting new values for number: ', n, ' date: ', d, ' dz: ', dz, 'plane: ', a, ' rig: ', r, ' alt: ', a, 't: ', t, ' notes: ', note, ' userID: ', id );
+
+      props.set_false();
       
     try {
     const response = await fetch(`${svr}/editjump`, {
