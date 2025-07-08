@@ -317,6 +317,7 @@ function SettingsPage(props) {
 
    async function handleDZInput (e) {
     e.preventDefault();
+    console.log('...')
     for (let d of DZs){
       if (addJumpDZ === d) return alert('Dropzone already exists')
     }
@@ -1321,10 +1322,23 @@ function SettingsPage(props) {
 
    useEffect(() => {
       getUser();
-      getDefaults();
-      getDZs();
-      getRigs();
-      getPlanes();
+        if (props.defaults) {
+          setDefaultAircraft(props.defaults.plane);
+          setDefualtRig(props.defaults.rig);
+          setDefaultDZ(props.defaults.dz);
+        }
+      
+        if (props.rigs) {
+          setRigs(props.rigs.map(rig => rig.name));
+        }
+      
+        if (props.dzs) {
+          setDZs(props.dzs.map(dz => dz.name));
+        }
+      
+        if (props.planes) {
+          setPlanes(props.planes.map(plane => plane.name));
+        }
 
       setEditAJump(false);
       setValidateField(false);
