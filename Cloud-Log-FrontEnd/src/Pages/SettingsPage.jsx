@@ -322,7 +322,7 @@ function SettingsPage(props) {
     }
     if (addJumpDZ.trim() !== ""){
       await storeDZ(addJumpDZ);
-      await getDZs();
+      setDZs([...DZs, addJumpDZ]);
       setAddJumpDZ("")
     }
   }
@@ -350,7 +350,7 @@ function SettingsPage(props) {
     }
     if (addJumpAircraft.trim() !== ""){
       await storePlane(addJumpAircraft);
-      await getPlanes();
+      setPlanes([...planes, addJumpAircraft]);
       setAddJumpAircraft("");
     }
   }
@@ -362,7 +362,7 @@ function SettingsPage(props) {
     }
     if (addJumpRig.trim() !== ""){
       await storeRig();
-      await getRigs();
+      setRigs([...rigs, addJumpRig]);
       setAddJumpRig("");
     }
   }
@@ -921,7 +921,6 @@ function SettingsPage(props) {
         
         console.log('✅ validation success', response.ok);
         deleteJump(jump.jump_id);
-        setValidateField(false);
         setValidateValue('')
 
       } else {
@@ -1036,30 +1035,6 @@ function SettingsPage(props) {
     }
   };
 
-  const getRigs = async () => {
-    try {
-      const response = await fetch(`${svr}/getrigs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundRigs = [];
-        for (let rig of returnedData.results) {
-          foundRigs.push(rig.name);
-        }
-        console.log(foundRigs)
-        setRigs([...foundRigs]);
-      } else{
-        console.error('no rigs imported', response);
-        setRigs('No saved rigs yet')
-      }
-    } catch (err) {
-      console.error('client failed getting rigs', err);
-    }
-  };
-
    const storeRig = async () => {
     try {
       const response = await fetch(`${svr}/storerigs`, {
@@ -1069,33 +1044,8 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-         getRigs();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing rig', err);}
-  };
-
-  const getPlanes = async () => {
-    try {
-      const response = await fetch(`${svr}/getplanes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundPlanes = [];
-        for (let plane of returnedData.results) {
-          foundPlanes.push(plane.name);
-        }
-        setPlanes([...foundPlanes]);
-      } else{
-        console.error('no Planes imported', response);
-        setPlanes('No saved planes yet')
-      }
-    } catch (err) {
-      console.error('client failed plane rigs', err);
-      
-    }
   };
 
   const storePlane = async () => {
@@ -1107,33 +1057,9 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-         getPlanes();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing plane', err);}
   }
-
-  const getDZs = async () => {
-    try {
-      const response = await fetch(`${svr}/getdzs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundDZs = [];
-        for (let dz of returnedData.results) {
-          foundDZs.push(dz.name);
-        }
-        setDZs([...foundDZs]);
-      } else{
-        console.error('no DZs imported', response);
-        setDZs('No saved dropzones yet')
-      }
-    } catch (err) {
-      console.error('client failed getting DZs', err);
-    }
-  };
 
   const storeDZ = async () => {
     try {
@@ -1144,7 +1070,6 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-         getDZs();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing DZ', err);}
   };
@@ -1158,7 +1083,7 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        getDefaults();
+        setDefualtRig(eqpm);
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing Defualt', err);}
   };
@@ -1172,7 +1097,7 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        getDefaults();
+        setDefaultDZ(dz);
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing Default', err);}
   };
@@ -1186,31 +1111,10 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-        getDefaults();
+        setDefaultAircraft(aircraft)
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing Default', err);}
   };
-
-  const getDefaults = async () => {
-    try {
-      const response = await fetch(`${svr}/getdefaults`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.ID}),
-      });
-      const returnedData = await response.json();
-      const data = returnedData.results[0]
-      if(response.ok){
-        setDefualtRig(data.rig);
-        setDefaultAircraft(data.aircraft);
-        setDefaultDZ(data.dz);
-      } else{
-        console.error('no defaults retrieved', response);
-      }
-    } catch (err) {
-      console.error('client failed getting defaults', err);
-    }
-  }; 
 
   const deleteJump = async (id) => {
    try {
@@ -1283,9 +1187,9 @@ function SettingsPage(props) {
         // setFlag(!flag);
         // props.rst();
 
-        table === 'planes' && getPlanes();
-        table === 'rigs' && getRigs();
-        table === 'dropzones' && getDZs();
+        table === 'planes' && setPlanes(planes.filter(n => n !== value))
+        table === 'rigs' && setRigs(rigs.filter(n => n !== value));
+        table === 'dropzones' && setDZs(DZs.filter(n => n !== value));
 
 
       } else{

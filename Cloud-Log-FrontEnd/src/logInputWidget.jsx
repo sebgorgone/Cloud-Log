@@ -203,7 +203,7 @@ function LogInputWidget(props) {
     }
     if (addJumpDZ.trim() !== ""){
       await storeDZ(addJumpDZ);
-      await getDZs();
+      setDZs([...DZs, addJumpDZ])
       setAddJumpDZ("")
     }
   }
@@ -215,7 +215,7 @@ function LogInputWidget(props) {
     }
     if (addJumpAircraft.trim() !== ""){
       await storePlane(addJumpAircraft);
-      await getPlanes();
+      setPlanes([...planes, addJumpAircraft]);
       setAddJumpAircraft("");
     }
   }
@@ -227,7 +227,7 @@ function LogInputWidget(props) {
     }
     if (addJumpRig.trim() !== ""){
       await storeRig(addJumpRig);
-      await getRigs();
+      setRigs([...rigs, addJumpRig]);
       setAddJumpRig("");
     }
   }
@@ -1098,29 +1098,6 @@ useEffect(() => {
 
 //api calls
 
-const getDefaults = async () => {
-    console.log('getting defaults')
-    try {
-      const response = await fetch(`${svr}/getdefaults`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userData.user.id}),
-      });
-      const returnedData = await response.json();
-      const data = returnedData.results[0]
-      if(response.ok){
-        setDefualtRig(data.rig);
-        setDefaultAircraft(data.aircraft);
-        setDefaultDZ(data.dz);
-      } else{
-        console.error('no defaults retrieved', response);
-      }
-    } catch (err) {
-      console.error('client failed getting defaults', err);
-    }
-  }; 
-
-
   function fileToBase64(pdfFile) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -1141,28 +1118,6 @@ const getDefaults = async () => {
 
 //input info
 
-  const getRigs = async () => {
-    try {
-      const response = await fetch(`${svr}/getrigs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userData.user.id}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundRigs = [];
-        for (let rig of returnedData.results) {
-          foundRigs.push(rig.name);
-        }
-        setRigs([...foundRigs]);
-      } else{
-        console.error('no rigs imported', response);
-      }
-    } catch (err) {
-      console.error('client failed getting rigs', err);
-    }
-  };
-
   const storeRig = async (newRigString) => {
     try {
       const response = await fetch(`${svr}/storerigs`, {
@@ -1174,28 +1129,6 @@ const getDefaults = async () => {
       if (response.ok) {
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing rig', err);}
-  };
-
-  const getPlanes = async () => {
-    try {
-      const response = await fetch(`${svr}/getplanes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userData.user.id}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundPlanes = [];
-        for (let plane of returnedData.results) {
-          foundPlanes.push(plane.name);
-        }
-        setPlanes([...foundPlanes]);
-      } else{
-        console.error('no Planes imported', response);
-      }
-    } catch (err) {
-      console.error('client failed plane rigs', err)
-    }
   };
 
   const storePlane = async (newPlaneString) => {
@@ -1210,28 +1143,6 @@ const getDefaults = async () => {
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing plane', err);}
   }
-
-  const getDZs = async () => {
-    try {
-      const response = await fetch(`${svr}/getdzs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userData.user.id}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundDZs = [];
-        for (let dz of returnedData.results) {
-          foundDZs.push(dz.name);
-        }
-        setDZs([...foundDZs]);
-      } else{
-        console.error('no DZs imported', response);
-      }
-    } catch (err) {
-      console.error('client failed getting DZs', err);
-    }
-  };
 
   const storeDZ = async (newDzString) => {
     try {
@@ -1274,10 +1185,10 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       alert(responseData.message);
       setNextJump(newJumpNum + 1);
       setNewJumpCom('');
-      setNewJumpSigUpload(null);
+      // setNewJumpSigUpload(null);
       setNewJumpTagList([]);
-      setNewJumpAlt('')
-      setNewJumpDur('')
+      // setNewJumpAlt('')
+      // setNewJumpDur('')
       setTagsToFalse();
       setTagsPage(true);
       setDzPage(true);

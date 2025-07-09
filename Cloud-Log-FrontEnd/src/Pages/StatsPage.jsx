@@ -112,8 +112,6 @@ function StatsPage(props) {
 
    const jump_num = props.jump_num
 
-   // const jump_num = 9; 
-
    //state
 
    const [rigs, setRigs] = useState('No saved rigs yet');
@@ -315,6 +313,16 @@ function StatsPage(props) {
       background: pallette[3],
    }
 
+   const sectionBarPB = { 
+      width: "100%",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-evenly",
+      paddingBottom: "7px",
+      background: pallette[3],
+      alignItems: "center",
+   }
+
    const sectionBack = { 
       width: "100%",
       display: "flex",
@@ -353,6 +361,31 @@ function StatsPage(props) {
       color: pallette[1],
       width: "27%",
       padding: ".7em",
+      textAlign: "left",
+   }
+
+   const textStyle2 = {
+      fontFamily: "L1",
+      fontSize: "1.2em",
+      margin: "0",
+      background: pallette[4],
+      borderRadius: "1em",
+      color: pallette[1],
+      minWidth: "auto",
+      padding: ".7em",
+      textAlign: "left",
+   }
+
+   const textStyle1 = {
+      fontFamily: "L1",
+      fontSize: "1em",
+      margin: "0",
+      background: pallette[4],
+      borderRadius: "1em",
+      color: pallette[1],
+      minWidth: "fit-content",
+      padding: ".2em",
+      paddingRight: ".35em",
       textAlign: "left",
    }
 
@@ -416,6 +449,18 @@ function StatsPage(props) {
       color: pallette[4],
    }
 
+   const ttButton1 = {
+      border: "none",
+      margin: "1em",
+      fontFamily: "L1",
+      fontSize: ".8em",
+      width: "17em",
+      borderRadius: ".9em",
+      paddingBottom: ".2em",
+      background: pallette[0],
+      color: pallette[4],
+   }
+
    const listDiv = {
     display: "flex", 
     alignItems: "center", 
@@ -446,6 +491,44 @@ function StatsPage(props) {
       marginLeft: ".6em",
       marginBottom: "1.6em",
       width: "6em"
+   }
+
+   const pgsBarBG = {
+      background: pallette[4],
+      borderRadius: "1.5em",
+      height: "1.75em",
+      width: "50%",
+      display: "flex",
+      justifyContent: "left",
+      alignItems: "center",
+      paddingTop: '.3em',
+      paddingBottom: '.35em',
+   }
+
+   function getLSCpercent(lsc) {
+      if (lsc === 'a') {
+         if (jump_num >= 25) return '100%' ; 
+         else return `${(jump_num / 25) * 100}%`
+         
+      }
+   }
+
+   function getLSCptg (lsc) {
+      if (lsc === 'a') {
+         if (jump_num >= 25) return 'complete';
+         else return `${(jump_num / 25) * 100}%`
+      }
+   }
+
+   const progressALSC = {
+      background: pallette[1],
+      borderRadius: "1em",
+      height: "1.75em",
+      width: getLSCpercent('a'),
+      margin: '.3em',
+      display: "flex",
+      alignItems: "center"
+      
    }
 
 
@@ -1019,6 +1102,26 @@ function StatsPage(props) {
             
          </div>}
 
+         <div style={contentSection}>
+
+            <div style={sectionBar}>
+               <p style={headerSubStyle}>Liscense and Ratings Progress</p>
+            </div>
+
+
+
+            <div style={sectionBarPB}>
+
+               <p style={textStyle2}>A Liscence Progess</p>
+
+               <div style={pgsBarBG}>
+                  <div style={progressALSC}><p style={textStyle1}>{getLSCptg('a')}</p></div>
+               </div>
+            
+            </div>
+            
+         </div>
+
          {!tagsPage &&
          <div>
             <p style={headerSubStyle}>stats by year</p>
@@ -1030,7 +1133,7 @@ function StatsPage(props) {
 
 
 
-         {tagsPage &&<div style={contentSection}>
+         {tagsPage && <div style={contentSection}>
             <div style={sectionBack}>
                <button style={nestedButton} onClick={handleTagsPage}>Back</button>
             </div>
@@ -1038,14 +1141,14 @@ function StatsPage(props) {
                <p style={rlStyle}>Select Tag Type</p>
             </div>
             <div style={sectionBar}>
-               <button style={ttButton} onClick={handleJTTPage}>Jump Types</button>
-               <button style={ttButton} onClick={handleOCPage}>Openings</button>
-               <button style={ttButton} onClick={handleLSCPage}>Liscense and Rating</button>
-               <button style={ttButton} onClick={handleGROUPPage}>group-size</button>
-               <button style={ttButton} onClick={handleWTHRPage}>Canopy</button>
-               <button style={ttButton} onClick={handleEMRPage}>Emergency</button>
-               <button style={ttButton} onClick={handleMALPage}>Malfunction</button>
-               <button style={ttButton} onClick={handleREQPage}>Pre-Requisite</button>
+               <button style={!JTTField ? ttButton : ttButton1} onClick={handleJTTPage}>Jump Types</button>
+               <button style={!OCField ? ttButton : ttButton1} onClick={handleOCPage}>Openings</button>
+               <button style={!LSCField ? ttButton : ttButton1} onClick={handleLSCPage}>Liscense and Rating</button>
+               <button style={!GROUPField ? ttButton : ttButton1} onClick={handleGROUPPage}>group-size</button>
+               <button style={!WTHRField ? ttButton : ttButton1} onClick={handleWTHRPage}>Canopy</button>
+               <button style={!EMRField ? ttButton : ttButton1} onClick={handleEMRPage}>Emergency</button>
+               <button style={!MALField ? ttButton : ttButton1} onClick={handleMALPage}>Malfunction</button>
+               <button style={!REQField ? ttButton : ttButton1} onClick={handleREQPage}>Pre-Requisite</button>
             </div>
 
             <div style={sectionBar}>

@@ -438,7 +438,7 @@ function WelcomeForm (props) {
     }
     if (addJumpDZ.trim() !== ""){
       await storeDZ(addJumpDZ);
-      await getDZs();
+      setDZs([...DZs, addJumpDZ]);
       setAddJumpDZ("");
     }
   }
@@ -450,7 +450,7 @@ function WelcomeForm (props) {
     }
     if (addJumpAircraft.trim() !== ""){
       await storePlane(addJumpAircraft);
-      await getPlanes();
+      setPlanes([...planes, addJumpAircraft]);
       setAddJumpAircraft("");
     }
   }
@@ -462,7 +462,7 @@ function WelcomeForm (props) {
     }
     if (addJumpRig.trim() !== ""){
       await storeRig(addJumpRig);
-      await getRigs();
+      setRigs([...rigs, addJumpRig]);
       setAddJumpRig("");
     }
   }
