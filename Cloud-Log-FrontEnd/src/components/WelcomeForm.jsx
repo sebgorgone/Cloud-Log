@@ -494,12 +494,10 @@ function WelcomeForm (props) {
   //useEffect
 
   useEffect(() => {
-    setRigs(props.rigs.map(rig => rig.name));  
-    setDZs(props.dzs.map(dz => dz.name));  
-    setPlanes(props.planes.map(plane => plane.name));  
-    setDefaultAircraft(props.defaults.plane);
-    setDefualtRig(props.defaults.rig);
-    setDefaultDZ(props.defaults.dz)
+    getRigs();
+    getPlanes();
+    getDZs();
+    getDefaults();
   },[]);
 
 

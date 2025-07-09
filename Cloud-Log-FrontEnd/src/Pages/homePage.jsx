@@ -510,7 +510,7 @@ function HomePage(props) {
 
             {(router.stats && userJumpHistory) ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount} rigs={[...rigs]} planes={planes} dzs={DZs} /> : checkIfTrue(router.stats) && <LoadPage />}
 
-            {(router.settings && userJumpHistory) ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}} set_false={() => setGotHistory(false)} /> : checkIfTrue(router.settings) && <LoadPage />}
+            {(router.settings && userJumpHistory) ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}} set_false={() => setGotHistory(false)} setRigs={setRigs} rigs={rigs.map(rig => rig.name)} setPlanes={setPlanes} planes={planes.map(plane => plane.name)} setDZs={setDZs} DZs={DZs.map(dz => dz.name)} defaults={(defaultAircraft || defaultAircraft === null ) ? {plane: defaultAircraft, rig: defaultRig, dz: defaultDZ} : 'loading...'} /> : checkIfTrue(router.settings) && <LoadPage />}
 
             {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag} jump_num={userJumpCount}/> : null}
 
