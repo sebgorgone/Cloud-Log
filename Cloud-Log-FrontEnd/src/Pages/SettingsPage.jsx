@@ -510,8 +510,6 @@ function SettingsPage(props) {
       return true;
    }
   
-   // console.log('in the Settings page', user);
-
    //style
 
    const shell = {
@@ -735,13 +733,6 @@ function SettingsPage(props) {
       textAlign: "center",
       fontSize: "1.5em"
    }
-
-
-
-   
-
-   
-
 //rendered lists
 
    const planeList = Array.isArray(planes) ? planes.map((plane, index) => 
@@ -1323,29 +1314,29 @@ function SettingsPage(props) {
    //useEffect
 
    useEffect(() => {
-      getUser();
-        if (props.defaults) {
-          setDefaultAircraft(props.defaults.plane);
-          setDefualtRig(props.defaults.rig);
-          setDefaultDZ(props.defaults.dz);
-        }
-        if (props.defaults) {
-          setDefaultAircraft(props.defaults.plane);
-          setDefualtRig(props.defaults.rig);
-          setDefaultDZ(props.defaults.dz);
-        }
-      
-        if (props.rigs) {
-          setRigs(props.rigs);
-        }
-      
-        if (props.DZs) {
-          setDZs(props.DZs);
-        }
-      
-        if (props.planes) {
-          setPlanes(props.planes);
-        }
+    getUser();
+    if (props.defaults) {
+      setDefaultAircraft(props.defaults.plane);
+      setDefualtRig(props.defaults.rig);
+      setDefaultDZ(props.defaults.dz);
+    }
+    if (props.defaults) {
+      setDefaultAircraft(props.defaults.plane);
+      setDefualtRig(props.defaults.rig);
+      setDefaultDZ(props.defaults.dz);
+    }
+  
+    if (props.rigs) {
+      setRigs(props.rigs);
+    }
+  
+    if (props.DZs) {
+      setDZs(props.DZs);
+    }
+  
+    if (props.planes) {
+      setPlanes(props.planes);
+    }
 
       setEditAJump(false);
       setValidateField(false);

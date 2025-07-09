@@ -1054,10 +1054,28 @@ tagGroupSize,]);
 
 
 useEffect(() => {
-  getRigs()
-  getPlanes();
-  getDZs();
-  getDefaults();
+  if (props.defaults) {
+    setDefaultAircraft(props.defaults.plane);
+    setDefualtRig(props.defaults.rig);
+    setDefaultDZ(props.defaults.dz);
+  }
+  if (props.defaults) {
+    setDefaultAircraft(props.defaults.plane);
+    setDefualtRig(props.defaults.rig);
+    setDefaultDZ(props.defaults.dz);
+  }
+
+  if (props.rigs) {
+    setRigs(props.rigs);
+  }
+
+  if (props.DZs) {
+    setDZs(props.DZs);
+  }
+
+  if (props.planes) {
+    setPlanes(props.planes);
+  }
 }, [])
 
 useEffect(() => {

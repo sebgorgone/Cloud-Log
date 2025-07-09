@@ -142,10 +142,10 @@ function HomePage(props) {
 
    //handlers
 
-   function handleNavToLedg (e) {
+   async function handleNavToLedg (e) {
       e.preventDefault();
       getJumpHist();
-      getUserData();
+      await getUserData();
       setRouter({
       welcome: false,
       fullList: true,
@@ -156,9 +156,9 @@ function HomePage(props) {
       add: false
     })
    }
-   function callLedg () {
+   async function callLedg () {
       getJumpHist();
-      getUserData();
+      await getUserData();
       setRouter({
       welcome: false,
       fullList: true,
@@ -169,9 +169,9 @@ function HomePage(props) {
       add: false
     })
    }
-   function handleNavToStats (e) {
+   async function handleNavToStats (e) {
       getJumpHist();
-      getUserData();
+      await getUserData();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -183,9 +183,9 @@ function HomePage(props) {
       add: false
     })
    }
-   function callStats () {
+   async function callStats () {
       getJumpHist();
-      getUserData();
+      await getUserData();
       setRouter({
       welcome: false,
       fullList: false,
@@ -196,9 +196,9 @@ function HomePage(props) {
       add: false
     })
    }
-   function handleNavToDownload (e) {
+   async function handleNavToDownload (e) {
       getJumpHist();
-      getUserData();
+      await getUserData();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -210,9 +210,9 @@ function HomePage(props) {
       add: false
     })
    }
-   function handleNavToSettings (e) {
+   async function handleNavToSettings (e) {
       getJumpHist();
-      getUserData();
+      await getUserData();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -249,9 +249,9 @@ function HomePage(props) {
     function updateWildCardField (e) {
       setWcField(e.target.value)
     }
-    function handleNavToAdd(e) {
+    async function handleNavToAdd(e) {
       getJumpHist();
-      getUserData();
+      await getUserData();
       e.preventDefault();
       setRouter({
       welcome: false,
@@ -504,11 +504,11 @@ function HomePage(props) {
 
          <div style={mainPageArea}>
             {(router.welcome && userJumpHistory) ? <WelcomePage user={user} jumps={userJumpHistory ? userJumpHistory :'loading...'} skip={callLedg} stats={callStats} rigs={[...rigs]} planes={planes} dzs={DZs} defaults={(defaultAircraft || defaultAircraft === null ) ? {plane: defaultAircraft, rig: defaultRig, dz: defaultDZ} : 'loading...'}/>:  checkIfTrue(router.welcome) && <LoadPage />}
-            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => {getJumpHist()}} add={() => {setUserJumpCount(userJumpCount + 1)}} jumps={userJumpHistory} jump_num={userJumpCount} set_false={() => setGotHistory(false)} /> : checkIfTrue(router.fullList) && <LoadPage />}
+            {(router.fullList && userJumpHistory) ? <FullJumpLedge rst={() => {getJumpHist()}} add={() => {setUserJumpCount(userJumpCount + 1)}} jumps={userJumpHistory} jump_num={userJumpCount} set_false={() => setGotHistory(false)} rigs={rigs.map(n => n.name)} planes={planes.map(n => n.name)} DZs={DZs.map(n => n.name)} defaults={(defaultAircraft || defaultAircraft === null ) ? {plane: defaultAircraft, rig: defaultRig, dz: defaultDZ} : 'loading...'} /> : checkIfTrue(router.fullList) && <LoadPage />}
 
             {router.download ? <DownloadPage user={user} /> : null}
 
-            {(router.stats && userJumpHistory) ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount} rigs={[...rigs]} planes={planes} dzs={DZs} /> : checkIfTrue(router.stats) && <LoadPage />}
+            {(router.stats && userJumpHistory) ? <StatsPage jumps={userJumpHistory} user={user} jump_num={userJumpCount} rigs={rigs} planes={planes} dzs={DZs} /> : checkIfTrue(router.stats) && <LoadPage />}
 
             {(router.settings && userJumpHistory) ? <SettingsPage user={user} jump_num={userJumpCount} jumps={userJumpHistory ? userJumpHistory : 'loading'} rst={() => {setFlag(!flag)}} set_false={() => setGotHistory(false)} rigs={rigs.map(rig => rig.name)} planes={planes.map(pl => pl.name)} DZs={DZs.map(dz => dz.name)} defaults={(defaultAircraft || defaultAircraft === null ) ? {plane: defaultAircraft, rig: defaultRig, dz: defaultDZ} : 'loading...'} /> : checkIfTrue(router.settings) && <LoadPage />}
 
@@ -516,7 +516,7 @@ function HomePage(props) {
 
             {router.add ? <div style={{display: "flex",justifyContent: "space-around", paddingLeft: "4em", marginTop: "3.25em", width: "100%"}}>
                <div style={{width: '75%'}}>
-                  <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null} set_false={() => setGotHistory(false)}/>
+                  <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null} set_false={() => setGotHistory(false)} rigs={rigs.map(n => n.name)} planes={planes.map(n => n.name)} DZs={DZs.map(n => n.name)} defaults={(defaultAircraft || defaultAircraft === null ) ? {plane: defaultAircraft, rig: defaultRig, dz: defaultDZ} : 'loading...'} />
                </div>
             </div> : null}
                   

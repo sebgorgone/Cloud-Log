@@ -210,6 +210,7 @@ const tagsRoute = async (array) => {
                   rst={() => props.rst()}
                   add={() => props.add()}
                   set_false={() => props.set_false()}
+                  rigs={props.rigs} planes={props.planes} DZs={props.DZs} defaults={props.defaults ? {plane: props.defaults.plane,rig: props.defaults.rig, dz: props.defaults.dz} : 'loading...'}
                />
             </div>
             <br />
