@@ -1326,6 +1326,24 @@ function SettingsPage(props) {
           setDefualtRig(props.defaults.rig);
           setDefaultDZ(props.defaults.dz);
         }
+        if (props.defaults) {
+          setDefaultAircraft(props.defaults.plane);
+          setDefualtRig(props.defaults.rig);
+          setDefaultDZ(props.defaults.dz);
+        }
+      
+        if (props.rigs) {
+          setRigs(props.rigs.map(rig => rig.name));
+        }
+      
+        if (props.dzs) {
+          setDZs(props.dzs.map(dz => dz.name));
+        }
+      
+        if (props.planes) {
+          setPlanes(props.planes.map(plane => plane.name));
+        }
+
       setEditAJump(false);
       setValidateField(false);
       setValidateValue('');

@@ -499,7 +499,7 @@ function WelcomeForm (props) {
     setPlanes(props.planes.map(plane => plane.name));  
     setDefaultAircraft(props.defaults.plane);
     setDefualtRig(props.defaults.rig);
-    setDefaultDZ(props.defaults.dz)
+    setDefaultDZ(props.defaults.dz);
   },[]);
 
 
