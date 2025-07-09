@@ -61,9 +61,9 @@ function SettingsPage(props) {
    const [rigField, setRigField] = useState(false);
    const [aircraftField, setAircraftField] = useState(false);
 
-  //  const [rigs, setRigs] = useState(['No saved rigs yet']);
-  //  const [planes, setPlanes] = useState(['No saved planes yet']);
-  //  const [DZs, setDZs] = useState(['No saved dropzones yet']);
+   const [rigs, setRigs] = useState(['No saved rigs yet']);
+   const [planes, setPlanes] = useState(['No saved planes yet']);
+   const [DZs, setDZs] = useState(['No saved dropzones yet']);
 
    const [defaultRig, setDefualtRig] = useState(null);
    const [defaultAircraft, setDefaultAircraft] = useState(null);
@@ -317,7 +317,7 @@ function SettingsPage(props) {
 
    async function handleDZInput (e) {
     e.preventDefault();
-    for (let d of props.DZs){
+    for (let d of DZs){
       if (addJumpDZ === d) return alert('Dropzone already exists')
     }
     if (addJumpDZ.trim() !== ""){
@@ -345,7 +345,7 @@ function SettingsPage(props) {
 
   async function handleAircraftInput (e) {
     e.preventDefault();
-    for (let a of props.planes){
+    for (let a of planes){
       if (addJumpAircraft === a) return alert('Aircraft already exists')
     }
     if (addJumpAircraft.trim() !== ""){
@@ -357,7 +357,7 @@ function SettingsPage(props) {
 
   async function handleRigInput (e) {
     e.preventDefault();
-    for (let r of props.rigs) {
+    for (let r of rigs) {
       if (addJumpRig === r) return alert('rig already exists')
     }
     if (addJumpRig.trim() !== ""){
@@ -744,7 +744,7 @@ function SettingsPage(props) {
 
 //rendered lists
 
-   const planeList = Array.isArray(props.planes) ? props.planes.map((plane, index) => 
+   const planeList = Array.isArray(planes) ? planes.map((plane, index) => 
       <div key={index} style={listDiv}>
          <p style={rlStyle}>{plane}</p>
          {plane !== 'No saved planes yet' && <button style={delButton} type="button" onClick={() => validDel(plane, 'aircraft', 'planes')}>delete</button>}
@@ -772,7 +772,7 @@ function SettingsPage(props) {
             <p style={rlStyle}>No saved planes yet</p>
          </div>;
 
-   const rigList = Array.isArray(props.rigs) ? props.rigs.map((rig, index) => 
+   const rigList = Array.isArray(rigs) ? rigs.map((rig, index) => 
           <div key={index} style={listDiv}>
             <p style={rlStyle}>{rig}</p>
             {rig !== 'No saved rigs yet' && <button style={delButton} type="button" onClick={() => validDel(rig, 'equipment', 'rigs')}>delete</button>}
@@ -801,7 +801,7 @@ function SettingsPage(props) {
             <p style={rlStyle}>No saved rigs yet</p>
          </div>;
 
-   const DZList = Array.isArray(props.DZs) ? props.DZs.map((dz, index) => 
+   const DZList = Array.isArray(DZs) ? DZs.map((dz, index) => 
       <div key={index} style={listDiv}>
         <p style={rlStyle}>{dz}</p>
         {dz !== 'No saved dropzones yet' && <button style={delButton} type="button" onClick={() => validDel(dz, 'dz', 'dropzones')}>delete</button>}
@@ -1058,10 +1058,11 @@ function SettingsPage(props) {
         for (let rig of returnedData.results) {
           foundRigs.push(rig.name);
         }
-        props.setRigs([...foundRigs]);
+        console.log(foundRigs)
+        setRigs([...foundRigs]);
       } else{
         console.error('no rigs imported', response);
-        props.setRigs('No saved rigs yet')
+        setRigs('No saved rigs yet')
       }
     } catch (err) {
       console.error('client failed getting rigs', err);
@@ -1078,7 +1079,6 @@ function SettingsPage(props) {
       const returnedDATA = await response.json();
       if (response.ok) {
          getRigs();
-         props.rst();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing rig', err);}
   };
@@ -1096,10 +1096,10 @@ function SettingsPage(props) {
         for (let plane of returnedData.results) {
           foundPlanes.push(plane.name);
         }
-        props.setPlanes([...foundPlanes]);
+        setPlanes([...foundPlanes]);
       } else{
         console.error('no Planes imported', response);
-        props.setPlanes('No saved planes yet')
+        setPlanes('No saved planes yet')
       }
     } catch (err) {
       console.error('client failed plane rigs', err);
@@ -1116,7 +1116,6 @@ function SettingsPage(props) {
       });
       const returnedDATA = await response.json();
       if (response.ok) {
-         props.rst();
          getPlanes();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing plane', err);}
@@ -1135,10 +1134,10 @@ function SettingsPage(props) {
         for (let dz of returnedData.results) {
           foundDZs.push(dz.name);
         }
-        props.setDZs([...foundDZs]);
+        setDZs([...foundDZs]);
       } else{
         console.error('no DZs imported', response);
-        props.setDZs('No saved dropzones yet')
+        setDZs('No saved dropzones yet')
       }
     } catch (err) {
       console.error('client failed getting DZs', err);
@@ -1155,7 +1154,6 @@ function SettingsPage(props) {
       const returnedDATA = await response.json();
       if (response.ok) {
          getDZs();
-         props.rst();
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing DZ', err);}
   };
@@ -1291,8 +1289,13 @@ function SettingsPage(props) {
       });
       if(response.ok){
         console.log(`deleted ${value}`)
-        setFlag(!flag);
-        props.rst();
+        // setFlag(!flag);
+        // props.rst();
+
+        table === 'planes' && getPlanes();
+        table === 'rigs' && getRigs();
+        table === 'dropzones' && getDZs();
+
 
       } else{
         console.error(`err while deleting ${value}`, response);
@@ -1333,15 +1336,15 @@ function SettingsPage(props) {
         }
       
         if (props.rigs) {
-          setRigs(props.rigs.map(rig => rig.name));
+          setRigs(props.rigs);
         }
       
-        if (props.dzs) {
-          setDZs(props.dzs.map(dz => dz.name));
+        if (props.DZs) {
+          setDZs(props.DZs);
         }
       
         if (props.planes) {
-          setPlanes(props.planes.map(plane => plane.name));
+          setPlanes(props.planes);
         }
 
       setEditAJump(false);
