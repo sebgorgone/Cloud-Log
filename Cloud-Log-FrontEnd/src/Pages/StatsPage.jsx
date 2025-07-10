@@ -384,8 +384,8 @@ function StatsPage(props) {
       borderRadius: "1em",
       color: pallette[1],
       minWidth: "fit-content",
-      padding: ".2em",
-      paddingRight: ".35em",
+      padding: ".35em",
+      paddingRight: ".45em",
       textAlign: "left",
    }
 
@@ -508,15 +508,38 @@ function StatsPage(props) {
    function getLSCpercent(lsc) {
       if (lsc === 'a') {
          if (jump_num >= 25) return '100%' ; 
-         else return `${(jump_num / 25) * 100}%`
-         
+         else return `${(jump_num / 25) * 100}%`;
+      }
+      if (lsc === 'b') {
+         if (jump_num >= 50) return '100%';
+         else return `${(jump_num / 50) * 100}%`;
+      }
+      if (lsc === 'c') {
+         if (jump_num >= 200) return 'complete';
+         else return `${(jump_num / 200) * 100}%`
+      }
+      if (lsc === 'd') {
+         if (jump_num >= 500) return 'complete';
+         else return `${(jump_num / 500) * 100}%`
       }
    }
 
    function getLSCptg (lsc) {
       if (lsc === 'a') {
          if (jump_num >= 25) return 'complete';
-         else return `${(jump_num / 25) * 100}%`
+         else return `${Math.floor((jump_num / 25) * 100)}%`
+      }
+      if (lsc === 'b') {
+         if (jump_num >= 50) return 'complete';
+         else return `${Math.floor((jump_num / 50) * 100)}%`
+      }
+      if (lsc === 'c') {
+         if (jump_num >= 200) return 'complete';
+         else return `${(Math.floor(jump_num / 200) * 100)}%`
+      }
+      if (lsc === 'd') {
+         if (jump_num >= 500) return 'complete';
+         else return `${Math.floor((jump_num / 500) * 100)}%`
       }
    }
 
@@ -525,6 +548,36 @@ function StatsPage(props) {
       borderRadius: "1em",
       height: "1.75em",
       width: getLSCpercent('a'),
+      margin: '.3em',
+      display: "flex",
+      alignItems: "center"
+      
+   }
+   const progressBLSC = {
+      background: pallette[1],
+      borderRadius: "1em",
+      height: "1.75em",
+      width: getLSCpercent('b'),
+      margin: '.3em',
+      display: "flex",
+      alignItems: "center"
+      
+   }
+   const progressCLSC = {
+      background: pallette[1],
+      borderRadius: "1em",
+      height: "1.75em",
+      width: getLSCpercent('c'),
+      margin: '.3em',
+      display: "flex",
+      alignItems: "center"
+      
+   }
+   const progressDLSC = {
+      background: pallette[1],
+      borderRadius: "1em",
+      height: "1.75em",
+      width: getLSCpercent('d'),
       margin: '.3em',
       display: "flex",
       alignItems: "center"
@@ -1101,14 +1154,10 @@ function StatsPage(props) {
             
             
          </div>}
+         
+         <p style={headerSubStyle}>Liscense Progress</p>
 
          <div style={contentSection}>
-
-            <div style={sectionBar}>
-               <p style={headerSubStyle}>Liscense and Ratings Progress</p>
-            </div>
-
-
 
             <div style={sectionBarPB}>
 
@@ -1116,6 +1165,36 @@ function StatsPage(props) {
 
                <div style={pgsBarBG}>
                   <div style={progressALSC}><p style={textStyle1}>{getLSCptg('a')}</p></div>
+               </div>
+            
+            </div>
+
+            <div style={sectionBarPB}>
+
+               <p style={textStyle2}>B Liscence Progess</p>
+
+               <div style={pgsBarBG}>
+                  <div style={progressBLSC}><p style={textStyle1}>{getLSCptg('b')}</p></div>
+               </div>
+            
+            </div>
+
+            <div style={sectionBarPB}>
+
+               <p style={textStyle2}>C Liscence Progess</p>
+
+               <div style={pgsBarBG}>
+                  <div style={progressCLSC}><p style={textStyle1}>{getLSCptg('c')}</p></div>
+               </div>
+            
+            </div>
+
+            <div style={sectionBarPB}>
+
+               <p style={textStyle2}>D Liscence Progess</p>
+
+               <div style={pgsBarBG}>
+                  <div style={progressDLSC}><p style={textStyle1}>{getLSCptg('d')}</p></div>
                </div>
             
             </div>
