@@ -26,28 +26,28 @@ export function AuthProvider({ children }) {
   
 
   useEffect(() => {
+  const t = localStorage.getItem('token');
   const stored = localStorage.getItem('user');
-  if (stored) {
-    // We’ve got an updated user in storage
-    setUser(JSON.parse(stored));
-    setToken(localStorage.getItem('token')); 
+
+  if (!t || !stored) {
     setLoading(false);
     return;
   }
 
-  // No stored user, fall back to token
-  const t = localStorage.getItem('token');
-  if (!t) {
-    setLoading(false);
-    return;
-  }
   const decoded = parseJwt(t);
   if (decoded && decoded.exp * 1000 > Date.now()) {
-    setUser({ id: decoded.id, name: decoded.name, email: decoded.email });
-    setToken(t);
+  const timeLeft = decoded.exp * 1000 - Date.now();
+  setUser(JSON.parse(stored));
+  setToken(t);
+
+  setTimeout(() => {
+    logout();
+  }, timeLeft);
   } else {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    setUser(null);
+    setToken(null);
   }
   setLoading(false);
 }, []);

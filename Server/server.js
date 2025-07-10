@@ -356,7 +356,7 @@ db.query(query, [identifier], (err, results) => {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
   const payload = { id: user.id, name: user.name, email: user.email };
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' });
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30m' });
 
   res.status(200).json({ message: 'Login successful', token , user: payload});
 });

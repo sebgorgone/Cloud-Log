@@ -527,19 +527,19 @@ function StatsPage(props) {
    function getLSCptg (lsc) {
       if (lsc === 'a') {
          if (jump_num >= 25) return 'complete';
-         else return `${Math.floor((jump_num / 25) * 100)}%`
+         else return `${Math.floor((jump_num / 25 * 100))}%`
       }
       if (lsc === 'b') {
          if (jump_num >= 50) return 'complete';
-         else return `${Math.floor((jump_num / 50) * 100)}%`
+         else return `${Math.floor((jump_num / 50 * 100))}%`
       }
       if (lsc === 'c') {
          if (jump_num >= 200) return 'complete';
-         else return `${(Math.floor(jump_num / 200) * 100)}%`
+         else return `${(Math.floor(jump_num / 200 * 100))}%`
       }
       if (lsc === 'd') {
          if (jump_num >= 500) return 'complete';
-         else return `${Math.floor((jump_num / 500) * 100)}%`
+         else return `${Math.floor((jump_num / 500 * 100))}%`
       }
    }
 
