@@ -27,8 +27,7 @@ function LoginScreen () {
 
    //styles vv
    const backdrop = {
-      backgroundColor: pallette[3],
-      position: "fixed",
+      display: "felx",
       minWidth: "100%",
       minHeight: "100%",
    }
@@ -40,7 +39,10 @@ function LoginScreen () {
       maxWidth: "28em",
       margin: "auto",
       marginTop: "5vh",
-      minHeight: "20em"
+      minHeight: "20em",
+      borderRadius: "1em",
+      border: "solid .4em",
+      borderColor: pallette[0],
    }
 
    const headerStyle = {
