@@ -1,4 +1,12 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const requiredEnvVars = [
   'DB_HOST',
   'DB_USER',
@@ -15,14 +23,46 @@ if (missingEnv.length > 0) {
   process.exit(1);
 }
 
-const express = require('express');
-const mysql = require('mysql2');
-const cors = require('cors');
-const path = require('path');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
-const helmet = require('helmet')
-const rateLimit = require('express-rate-limit');
+import express from 'express';
+import mysql from 'mysql2';
+import cors from 'cors';
+import path from 'path';
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import serverless from 'serverless-http';
+
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from "@aws-sdk/client-secrets-manager";
+
+const secret_name = "CLDB";
+
+const client = new SecretsManagerClient({
+  region: "us-east-1",
+});
+
+let response;
+
+try {
+  response = await client.send(
+    new GetSecretValueCommand({
+      SecretId: secret_name,
+      VersionStage: "AWSCURRENT", 
+    })
+  );
+} catch (error) {
+  // For a list of exceptions thrown, see
+  // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+  throw error;
+}
+
+const secret = response.SecretString;
+
+const creds = JSON.parse(secret);
+
 
 const permittedTables = [
   'rigs',
@@ -1167,7 +1207,5 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
- app.listen(port, ()=> {
-   console.log('listening')
- }); 
 
+export const handler = serverless(app);

@@ -1,0 +1,25 @@
+service: cloud-log-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    DB_HOST: 52.91.5.74
+    DB_USER: cloudlog
+    DB_PASS: yourpassword
+    DB_NAME: cloudlog
+  vpc:
+    securityGroupIds:
+      - sg-xxxxxxxx # must allow outbound to DB on port 3306
+    subnetIds:
+      - subnet-xxxxxxxx
+      - subnet-yyyyyyyy
+
+functions:
+  api:
+    handler: app.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: any
