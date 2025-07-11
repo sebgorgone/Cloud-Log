@@ -33,8 +33,6 @@ function LoginScreen () {
    }
    const loginContainer = {
       background: pallette[4],
-      border: "solid 0.3em",
-      borderColor: pallette[2],
       padding: "1vw",
       maxWidth: "28em",
       margin: "auto",
