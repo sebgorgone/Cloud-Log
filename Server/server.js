@@ -73,6 +73,17 @@ const permittedTables = [
  const app = express();
  app.use(express.json({ limit: 
   '10mb' }));
+
+  app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // or specific domains
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
  app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(helmet());
@@ -102,13 +113,6 @@ app.use(
 app.use(helmet.frameguard({ action: 'deny' }));
 
 app.use(helmet.noSniff());
-
-app.options('*', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.status(200).send();
-});
 
 app.use(
   helmet.hsts({
