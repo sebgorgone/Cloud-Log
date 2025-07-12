@@ -1,3 +1,4 @@
+service: cloud-log-api
 provider:
   name: aws
   runtime: nodejs18.x
@@ -27,4 +28,4 @@ functions:
           method: any
           cors:
             origin: 'https://main.d28k95mqep4uke.amplifyapp.com'
-            credentials: true
+            allowCredentials: true
