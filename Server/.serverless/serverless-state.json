@@ -8,9 +8,10 @@
       "name": "aws",
       "runtime": "nodejs18.x",
       "region": "us-east-1",
+      "timeout": 20,
       "vpc": {
         "securityGroupIds": [
-          "sg-01ad9de92d33418af"
+          "sg-0b18501d058f04fb3"
         ],
         "subnetIds": [
           "subnet-057acc8c585ba8059"
@@ -197,13 +198,13 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/cloud-log-api/dev/1752318929048-2025-07-12T11:15:29.048Z/cloud-log-api.zip"
+                "S3Key": "serverless/cloud-log-api/dev/1752321054619-2025-07-12T11:50:54.619Z/cloud-log-api.zip"
               },
               "Handler": "server.handler",
               "Runtime": "nodejs18.x",
               "FunctionName": "cloud-log-api-dev-api",
               "MemorySize": 1024,
-              "Timeout": 6,
+              "Timeout": 20,
               "Role": {
                 "Fn::GetAtt": [
                   "IamRoleLambdaExecution",
@@ -223,14 +224,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersionPDgfYvG5nUtt8t4cDWDb4o9mLVGqXswOzPZE2586Oo": {
+          "ApiLambdaVersionpVKSNZ0RyktNSEtzLxXfW4RY7t97IA0ycDQUZbbdbMY": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "80y7VpSBLqDGD2r8N6y+CTEdtEGRPrhkCGzjF7Vbxlk="
+              "CodeSha256": "SqVvE8VwAXnk/33qt68n4OoRQzQUsfkm/ZlqfMGK04k="
             }
           },
           "ApiGatewayRestApi": {
@@ -351,7 +352,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1752318926665": {
+          "ApiGatewayDeployment1752321052296": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -414,7 +415,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionPDgfYvG5nUtt8t4cDWDb4o9mLVGqXswOzPZE2586Oo"
+              "Ref": "ApiLambdaVersionpVKSNZ0RyktNSEtzLxXfW4RY7t97IA0ycDQUZbbdbMY"
             },
             "Export": {
               "Name": "sls-cloud-log-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -564,10 +565,10 @@
         "name": "cloud-log-api-dev-api",
         "package": {},
         "memory": 1024,
-        "timeout": 6,
+        "timeout": 20,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersionPDgfYvG5nUtt8t4cDWDb4o9mLVGqXswOzPZE2586Oo"
+        "versionLogicalId": "ApiLambdaVersionpVKSNZ0RyktNSEtzLxXfW4RY7t97IA0ycDQUZbbdbMY"
       }
     },
     "configValidationMode": "warn",
@@ -586,7 +587,7 @@
     "artifact": "/Users/sebbygorgone/VSCODE projects/Cloud-Log/Server/.serverless/cloud-log-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752318929048-2025-07-12T11:15:29.048Z",
+    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752321054619-2025-07-12T11:50:54.619Z",
     "artifact": "cloud-log-api.zip"
   }
 }

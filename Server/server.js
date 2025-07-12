@@ -61,6 +61,7 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import helmet from 'helmet';
 import serverless from 'serverless-http';
+import cors from 'cors';
 
 
 const permittedTables = [
@@ -74,6 +75,17 @@ const permittedTables = [
   '10mb' }));
 
  app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Enable CORS for your Amplify front-end
+app.use(cors({
+  origin: 'https://main.d28k95mqep4uke.amplifyapp.com',
+  credentials: true
+}));
+// Preflight response for all routes
+app.options('*', cors({
+  origin: 'https://main.d28k95mqep4uke.amplifyapp.com',
+  credentials: true
+}));
 
 app.use(helmet());
 

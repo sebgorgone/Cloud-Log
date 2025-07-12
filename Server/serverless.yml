@@ -4,10 +4,11 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  timeout: 20
   environment:
   vpc:
     securityGroupIds:
-      - sg-01ad9de92d33418af 
+      - sg-0b18501d058f04fb3 
     subnetIds:
       - subnet-057acc8c585ba8059
 
