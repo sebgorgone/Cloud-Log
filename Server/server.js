@@ -57,12 +57,10 @@ if (missingEnv.length > 0) {
 
 import express from 'express';
 import mysql from 'mysql2';
-import cors from 'cors';
 import path from 'path';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
 import serverless from 'serverless-http';
 
 
@@ -76,33 +74,8 @@ const permittedTables = [
  app.use(express.json({ limit: 
   '10mb' }));
  app.use(express.urlencoded({ limit: '10mb', extended: true }));
- const allowedOrigins = (creds.CORS_ORIGINS || '')
-  .split(',')
-  .map(o => o.trim())
-  .filter(o => o);
-
-// General rate limiter: max 100 requests per 15 minutes per IP
-const generalLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, 
-  max: 800,
-  message: { error: 'Too many requests, please try again later.' }
-});
-
-// Login-specific brute-force limiter: max 5 attempts per 15 minutes per IP
-const loginLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 15 minutes
-  max: 7,
-  message: { 
-    ok: false,
-    message: 'Too many login attempts, please try again after 10 minutes.' 
-  }
-});
-
-
 
 app.use(helmet());
-
-app.use(generalLimiter);
 
 app.use(
   helmet.contentSecurityPolicy({
@@ -143,22 +116,6 @@ app.use(
 );
 
 app.disable('x-powered-by');
-
-
- app.use(express.static(path.join(__dirname, "public")));
- app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET','POST','PUT','DELETE'],
-  credentials: true,            // if you need to send cookies/auth headers
-}));
-
 
  const port = creds.PORT;
 
@@ -359,8 +316,8 @@ app.post('/changeemail', (req, res) => {
 });
 
 //login route
-app.post('/login', loginLimiter, (req, res) => {
-  console.log('login attempt')
+app.post('/login', (req, res) => {
+  console.log('login attempt');
   const { identifier, password } = req.body;
 
   const isEmail = identifier.includes('@');
@@ -369,29 +326,29 @@ app.post('/login', loginLimiter, (req, res) => {
     ? 'SELECT * FROM users WHERE email = ?'
     : 'SELECT * FROM users WHERE name = ?';
 
-db.query(query, [identifier], (err, results) => {
-  if (err) {
-    console.error("DB error:");
-    return res.status(500).json({ error: 'Login error' });
-  }
+  db.query(query, [identifier], (err, results) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).json({ error: 'Login error' });
+    }
 
-  if (results.length === 0) {
-    return res.status(401).json({ error: 'User not found' });
-  }
+    if (results.length === 0) {
+      return res.status(401).json({ error: 'User not found' });
+    }
 
-  const user = results[0];
+    const user = results[0];
+    const { hash } = hashPassword(password, user.salt);
 
-  const { hash } = hashPassword(password, user.salt);
+    if (hash !== user.password) {
+      console.log("❌ Bad password");
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
-  if (hash !== user.password) {
-    console.log("❌ Bad password");
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }
-  const payload = { id: user.id, name: user.name, email: user.email };
-  const token = jwt.sign(payload, creds.JWT_SECRET, { expiresIn: '30m' });
+    const payload = { id: user.id, name: user.name, email: user.email };
+    const token = jwt.sign(payload, creds.JWT_SECRET, { expiresIn: '30m' });
 
-  res.status(200).json({ message: 'Login successful', token , user: payload});
-});
+    res.status(200).json({ message: 'Login successful', token, user: payload });
+  });
 });
 
 //validate password
