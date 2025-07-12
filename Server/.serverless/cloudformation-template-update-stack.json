@@ -176,7 +176,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cloud-log-api/dev/1752286073811-2025-07-12T02:07:53.811Z/cloud-log-api.zip"
+          "S3Key": "serverless/cloud-log-api/dev/1752286549452-2025-07-12T02:15:49.452Z/cloud-log-api.zip"
         },
         "Handler": "app.handler",
         "Runtime": "nodejs18.x",
@@ -267,7 +267,7 @@
               "StatusCode": "200",
               "ResponseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'",
-                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,Accept'",
                 "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,GET,HEAD,PATCH,POST,PUT'"
               },
               "ResponseTemplates": {
@@ -330,7 +330,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1752286071495": {
+    "ApiGatewayDeployment1752286547128": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {

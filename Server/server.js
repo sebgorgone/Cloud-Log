@@ -103,6 +103,13 @@ app.use(helmet.frameguard({ action: 'deny' }));
 
 app.use(helmet.noSniff());
 
+app.options('*', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.status(200).send();
+});
+
 app.use(
   helmet.hsts({
     maxAge: 90 * 24 * 60 * 60, // 90 days in seconds
