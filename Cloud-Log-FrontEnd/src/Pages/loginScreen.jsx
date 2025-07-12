@@ -12,6 +12,8 @@ function LoginScreen () {
    // Vite automatically exposes variables prefixed with VITE_
    const svr = import.meta.env.VITE_SVR_URL;
 
+   console.log(svr)
+
    const domain = 'https://mycloudlog.netlify.app';
 
    const nav = useNavigate();

@@ -197,7 +197,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/cloud-log-api/dev/1752279918352-2025-07-12T00:25:18.352Z/cloud-log-api.zip"
+                "S3Key": "serverless/cloud-log-api/dev/1752280477305-2025-07-12T00:34:37.305Z/cloud-log-api.zip"
               },
               "Handler": "app.handler",
               "Runtime": "nodejs18.x",
@@ -306,7 +306,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1752279916062": {
+          "ApiGatewayDeployment1752280474959": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -523,7 +523,7 @@
     "artifact": "/Users/sebbygorgone/VSCODE projects/Cloud-Log/Server/.serverless/cloud-log-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752279918352-2025-07-12T00:25:18.352Z",
+    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752280477305-2025-07-12T00:34:37.305Z",
     "artifact": "cloud-log-api.zip"
   }
 }
