@@ -1,5 +1,3 @@
-service: cloud-log-api
-
 provider:
   name: aws
   runtime: nodejs18.x
@@ -13,22 +11,20 @@ provider:
     JWT_SECRET: '{{resolve:secretsmanager:CLDB:SecretString:JWT_SECRET}}'
     PORT: '{{resolve:secretsmanager:CLDB:SecretString:PORT}}'
     CORS_ORIGINS: '{{resolve:secretsmanager:CLDB:SecretString:CORS_ORIGINS}}'
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "secretsmanager:GetSecretValue"
+      Resource:
+        - "arn:aws:secretsmanager:us-east-1:*:secret:CLDB*"
 
 functions:
   api:
-    handler: server.handler
+    handler: your.handler
     events:
       - http:
           path: /{proxy+}
           method: any
-          cors: 
+          cors:
             origin: 'https://main.d28k95mqep4uke.amplifyapp.com'
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-              - Accept
-            allowCredentials: true
+            credentials: true
