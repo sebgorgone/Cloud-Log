@@ -18,6 +18,14 @@
         "PORT": "{{resolve:secretsmanager:CLDB:SecretString:PORT}}",
         "CORS_ORIGINS": "{{resolve:secretsmanager:CLDB:SecretString:CORS_ORIGINS}}"
       },
+      "vpc": {
+        "securityGroupIds": [
+          "sg-0b18501d058f04fb3"
+        ],
+        "subnetIds": [
+          "subnet-057acc8c585ba8059"
+        ]
+      },
       "iamRoleStatements": [
         {
           "Effect": "Allow",
@@ -186,7 +194,21 @@
                     "lambdaRole"
                   ]
                 ]
-              }
+              },
+              "ManagedPolicyArns": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+                    ]
+                  ]
+                }
+              ]
             }
           },
           "ApiLambdaFunction": {
@@ -196,9 +218,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/cloud-log-api/dev/1752352596104-2025-07-12T20:36:36.104Z/cloud-log-api.zip"
+                "S3Key": "serverless/cloud-log-api/dev/1752353513035-2025-07-12T20:51:53.035Z/cloud-log-api.zip"
               },
-              "Handler": "your.handler",
+              "Handler": "server.handler",
               "Runtime": "nodejs18.x",
               "FunctionName": "cloud-log-api-dev-api",
               "MemorySize": 1024,
@@ -219,13 +241,21 @@
                   "IamRoleLambdaExecution",
                   "Arn"
                 ]
+              },
+              "VpcConfig": {
+                "SecurityGroupIds": {
+                  "$ref": "$[\"service\"][\"provider\"][\"vpc\"][\"securityGroupIds\"]"
+                },
+                "SubnetIds": {
+                  "$ref": "$[\"service\"][\"provider\"][\"vpc\"][\"subnetIds\"]"
+                }
               }
             },
             "DependsOn": [
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersionoa5Xwz105h3k9fzfObMbWrze85Gz1Z4WyJMf6ZntLAc": {
+          "ApiLambdaVersionXI6JsO0XkwCtKLoBpag0VGBJyiOcQDdTjUkpcYQA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
@@ -273,7 +303,8 @@
                   "ResponseParameters": {
                     "method.response.header.Access-Control-Allow-Origin": true,
                     "method.response.header.Access-Control-Allow-Headers": true,
-                    "method.response.header.Access-Control-Allow-Methods": true
+                    "method.response.header.Access-Control-Allow-Methods": true,
+                    "method.response.header.Access-Control-Allow-Credentials": true
                   },
                   "ResponseModels": {}
                 }
@@ -291,7 +322,8 @@
                     "ResponseParameters": {
                       "method.response.header.Access-Control-Allow-Origin": "'https://main.d28k95mqep4uke.amplifyapp.com'",
                       "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
-                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,GET,HEAD,PATCH,POST,PUT'"
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,GET,HEAD,PATCH,POST,PUT'",
+                      "method.response.header.Access-Control-Allow-Credentials": "'true'"
                     },
                     "ResponseTemplates": {
                       "application/json": ""
@@ -353,7 +385,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1752352592893": {
+          "ApiGatewayDeployment1752353509827": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -402,6 +434,22 @@
                 ]
               }
             }
+          },
+          "SecretsManagerVpcEndpoint": {
+            "Type": "AWS::EC2::VPCEndpoint",
+            "Properties": {
+              "ServiceName": {
+                "Fn::Sub": "com.amazonaws.${AWS::Region}.secretsmanager"
+              },
+              "VpcId": "vpc-076853da424103843",
+              "SubnetIds": [
+                "subnet-057acc8c585ba8059"
+              ],
+              "SecurityGroupIds": [
+                "sg-0b18501d058f04fb3"
+              ],
+              "PrivateDnsEnabled": true
+            }
           }
         },
         "Outputs": {
@@ -416,7 +464,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionoa5Xwz105h3k9fzfObMbWrze85Gz1Z4WyJMf6ZntLAc"
+              "Ref": "ApiLambdaVersionXI6JsO0XkwCtKLoBpag0VGBJyiOcQDdTjUkpcYQA"
             },
             "Export": {
               "Name": "sls-cloud-log-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -531,13 +579,12 @@
             }
           }
         }
-      },
-      "vpc": {}
+      }
     },
     "pluginsData": {},
     "functions": {
       "api": {
-        "handler": "your.handler",
+        "handler": "server.handler",
         "events": [
           {
             "http": {
@@ -558,8 +605,7 @@
                   "X-Amz-User-Agent",
                   "X-Amzn-Trace-Id"
                 ],
-                "allowCredentials": false,
-                "credentials": true
+                "allowCredentials": true
               },
               "integration": "AWS_PROXY"
             }
@@ -571,8 +617,29 @@
         "timeout": 20,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersionoa5Xwz105h3k9fzfObMbWrze85Gz1Z4WyJMf6ZntLAc"
+        "versionLogicalId": "ApiLambdaVersionXI6JsO0XkwCtKLoBpag0VGBJyiOcQDdTjUkpcYQA"
       }
+    },
+    "resources": {
+      "Resources": {
+        "SecretsManagerVpcEndpoint": {
+          "Type": "AWS::EC2::VPCEndpoint",
+          "Properties": {
+            "ServiceName": {
+              "Fn::Sub": "com.amazonaws.${AWS::Region}.secretsmanager"
+            },
+            "VpcId": "vpc-076853da424103843",
+            "SubnetIds": [
+              "subnet-057acc8c585ba8059"
+            ],
+            "SecurityGroupIds": [
+              "sg-0b18501d058f04fb3"
+            ],
+            "PrivateDnsEnabled": true
+          }
+        }
+      },
+      "Outputs": {}
     },
     "configValidationMode": "warn",
     "serviceFilename": "serverless.yml",
@@ -583,6 +650,9 @@
       },
       "functions": {
         "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
       }
     },
     "layers": {},
@@ -590,7 +660,7 @@
     "artifact": "/Users/sebbygorgone/VSCODE projects/Cloud-Log/Server/.serverless/cloud-log-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752352596104-2025-07-12T20:36:36.104Z",
+    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752353513035-2025-07-12T20:51:53.035Z",
     "artifact": "cloud-log-api.zip"
   }
 }

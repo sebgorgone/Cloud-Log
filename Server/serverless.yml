@@ -12,6 +12,11 @@ provider:
     JWT_SECRET: '{{resolve:secretsmanager:CLDB:SecretString:JWT_SECRET}}'
     PORT: '{{resolve:secretsmanager:CLDB:SecretString:PORT}}'
     CORS_ORIGINS: '{{resolve:secretsmanager:CLDB:SecretString:CORS_ORIGINS}}'
+  vpc:
+    securityGroupIds:
+      - sg-0b18501d058f04fb3
+    subnetIds:
+      - subnet-057acc8c585ba8059
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -21,7 +26,7 @@ provider:
 
 functions:
   api:
-    handler: your.handler
+    handler: server.handler
     events:
       - http:
           path: /{proxy+}
@@ -29,3 +34,16 @@ functions:
           cors:
             origin: 'https://main.d28k95mqep4uke.amplifyapp.com'
             allowCredentials: true
+
+resources:
+  Resources:
+    SecretsManagerVpcEndpoint:
+      Type: AWS::EC2::VPCEndpoint
+      Properties:
+        ServiceName: !Sub com.amazonaws.${AWS::Region}.secretsmanager
+        VpcId: vpc-076853da424103843
+        SubnetIds:
+          - subnet-057acc8c585ba8059
+        SecurityGroupIds:
+          - sg-0b18501d058f04fb3
+        PrivateDnsEnabled: true
