@@ -5,16 +5,11 @@ provider:
   runtime: nodejs18.x
   region: us-east-1
   environment:
-    DB_HOST: 52.91.5.74
-    DB_USER: cloudlog
-    DB_PASS: yourpassword
-    DB_NAME: cloudlog
   vpc:
     securityGroupIds:
-      - sg-xxxxxxxx # must allow outbound to DB on port 3306
+      - sg-01ad9de92d33418af 
     subnetIds:
-      - subnet-xxxxxxxx
-      - subnet-yyyyyyyy
+      - subnet-057acc8c585ba8059
 
 functions:
   api:

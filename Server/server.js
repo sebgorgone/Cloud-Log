@@ -7,31 +7,6 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const requiredEnvVars = [
-  'DB_HOST',
-  'DB_USER',
-  'DB_PASSWORD',
-  'DB_NAME',
-  'JWT_SECRET',
-  'PORT',
-  'CORS_ORIGINS'
-];
-
-const missingEnv = requiredEnvVars.filter(name => !process.env[name]);
-if (missingEnv.length > 0) {
-  console.error('Missing required environment variables:', missingEnv.join(', '));
-  process.exit(1);
-}
-
-import express from 'express';
-import mysql from 'mysql2';
-import cors from 'cors';
-import path from 'path';
-import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import serverless from 'serverless-http';
 
 import {
   SecretsManagerClient,
@@ -64,6 +39,33 @@ const secret = response.SecretString;
 const creds = JSON.parse(secret);
 
 
+const requiredEnvVars = [
+  'DB_HOST',
+  'DB_USER',
+  'DB_PASSWORD',
+  'DB_NAME',
+  'JWT_SECRET',
+  'PORT',
+  'CORS_ORIGINS'
+];
+
+const missingEnv = requiredEnvVars.filter(name => !creds[name]);
+if (missingEnv.length > 0) {
+  console.error('Missing required environment variables:', missingEnv.join(', '));
+  process.exit(1);
+}
+
+import express from 'express';
+import mysql from 'mysql2';
+import cors from 'cors';
+import path from 'path';
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import serverless from 'serverless-http';
+
+
 const permittedTables = [
   'rigs',
   'planes',
@@ -74,7 +76,7 @@ const permittedTables = [
  app.use(express.json({ limit: 
   '10mb' }));
  app.use(express.urlencoded({ limit: '10mb', extended: true }));
- const allowedOrigins = (process.env.CORS_ORIGINS || '')
+ const allowedOrigins = (creds.CORS_ORIGINS || '')
   .split(',')
   .map(o => o.trim())
   .filter(o => o);
@@ -158,32 +160,22 @@ app.disable('x-powered-by');
 }));
 
 
- const port = process.env.PORT;
+ const port = creds.PORT;
 
- const urlDB = `mysql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${port}/${process.env.DB_NAME}`
+ const urlDB = `mysql://${creds.DB_USER}:${creds.DB_PASSWORD}@${creds.DB_HOST}:${port}/${creds.DB_NAME}`
 
 //local db
 
 const db = mysql.createPool({
-  host            : process.env.DB_HOST,
-  user            : process.env.DB_USER,
-  password        : process.env.DB_PASSWORD,
-  database        : process.env.DB_NAME,
+  host            : creds.DB_HOST,
+  user            : creds.DB_USER,
+  password        : creds.DB_PASSWORD,
+  database        : creds.DB_NAME,
   waitForConnections: true,
   connectionLimit : 10,
   queueLimit      : 0   
 });
 
-
-
-//production db
- 
-// const db = mysql.createPool({
-//   uri: urlDB,
-//   waitForConnections: true,
-//   connectionLimit : 10,
-//   queueLimit      : 0
-// });
 
 db.getConnection((err, conn) => {  if (err) {
     console.error('MySQL pool connection failed:', err);
@@ -396,7 +388,7 @@ db.query(query, [identifier], (err, results) => {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
   const payload = { id: user.id, name: user.name, email: user.email };
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30m' });
+  const token = jwt.sign(payload, creds.JWT_SECRET, { expiresIn: '30m' });
 
   res.status(200).json({ message: 'Login successful', token , user: payload});
 });
