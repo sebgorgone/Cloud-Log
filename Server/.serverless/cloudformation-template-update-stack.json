@@ -176,7 +176,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cloud-log-api/dev/1752288574989-2025-07-12T02:49:34.989Z/cloud-log-api.zip"
+          "S3Key": "serverless/cloud-log-api/dev/1752318929048-2025-07-12T11:15:29.048Z/cloud-log-api.zip"
         },
         "Handler": "server.handler",
         "Runtime": "nodejs18.x",
@@ -202,14 +202,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionY5wrysSgs3MWt3S3bcqZXz3Oi98UjVIW8mlEvMLss": {
+    "ApiLambdaVersionPDgfYvG5nUtt8t4cDWDb4o9mLVGqXswOzPZE2586Oo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "+NhKM5GGFeJPMI3NXvKSk2fJ5oEp2+YtY5TM0QsAyVA="
+        "CodeSha256": "80y7VpSBLqDGD2r8N6y+CTEdtEGRPrhkCGzjF7Vbxlk="
       }
     },
     "ApiGatewayRestApi": {
@@ -266,7 +266,7 @@
             {
               "StatusCode": "200",
               "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Origin": "'https://main.d28k95mqep4uke.amplifyapp.com'",
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,Accept'",
                 "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,GET,HEAD,PATCH,POST,PUT'"
               },
@@ -330,7 +330,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1752288572729": {
+    "ApiGatewayDeployment1752318926665": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -393,7 +393,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionY5wrysSgs3MWt3S3bcqZXz3Oi98UjVIW8mlEvMLss"
+        "Ref": "ApiLambdaVersionPDgfYvG5nUtt8t4cDWDb4o9mLVGqXswOzPZE2586Oo"
       },
       "Export": {
         "Name": "sls-cloud-log-api-dev-ApiLambdaFunctionQualifiedArn"
