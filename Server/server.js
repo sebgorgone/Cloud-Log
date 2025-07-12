@@ -7,52 +7,35 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-} from "@aws-sdk/client-secrets-manager";
+let creds;
+let db;
+let secretsLoaded = false;
 
-const secret_name = "CLDB";
+const smClient = new SecretsManagerClient({ region: "us-east-1" });
 
-const client = new SecretsManagerClient({
-  region: "us-east-1",
-});
-
-let response;
-
-try {
-  response = await client.send(
-    new GetSecretValueCommand({
-      SecretId: secret_name,
-      VersionStage: "AWSCURRENT", 
-    })
+async function loadSecretsAndDb() {
+  if (secretsLoaded) return;
+  const { SecretString } = await smClient.send(
+    new GetSecretValueCommand({ SecretId: "CLDB", VersionStage: "AWSCURRENT" })
   );
-} catch (error) {
-
-  throw error;
+  creds = JSON.parse(SecretString);
+  // initialize MySQL pool
+  db = mysql.createPool({
+    host: creds.DB_HOST,
+    user: creds.DB_USER,
+    password: creds.DB_PASSWORD,
+    database: creds.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
+  secretsLoaded = true;
 }
 
-const secret = response.SecretString;
 
-const creds = JSON.parse(secret);
-
-
-const requiredEnvVars = [
-  'DB_HOST',
-  'DB_USER',
-  'DB_PASSWORD',
-  'DB_NAME',
-  'JWT_SECRET',
-  'PORT',
-  'CORS_ORIGINS'
-];
-
-const missingEnv = requiredEnvVars.filter(name => !creds[name]);
-if (missingEnv.length > 0) {
-  console.error('Missing required environment variables:', missingEnv.join(', '));
-  process.exit(1);
-}
+// (Secrets and DB pool will be loaded at handler invocation)
 
 import express from 'express';
 import mysql from 'mysql2';
@@ -129,33 +112,12 @@ app.use(
 
 app.disable('x-powered-by');
 
- const port = creds.PORT;
-
- const urlDB = `mysql://${creds.DB_USER}:${creds.DB_PASSWORD}@${creds.DB_HOST}:${port}/${creds.DB_NAME}`
-
-//local db
-
-const db = mysql.createPool({
-  host            : creds.DB_HOST,
-  user            : creds.DB_USER,
-  password        : creds.DB_PASSWORD,
-  database        : creds.DB_NAME,
-  waitForConnections: true,
-  connectionLimit : 10,
-  queueLimit      : 0   
-});
-
-
-db.getConnection((err, conn) => {  if (err) {
-    console.error('MySQL pool connection failed:', err);
-  } else {
-    console.log('✅ MySQL pool connected');
-    conn.release();
-  }
-});
-
+// DB pool will be initialized after secrets are loaded
 // Health check endpoint for load balancers / uptime monitors
 app.get('/healthz', (req, res) => {
+  if (!db) {
+    return res.status(500).json({ status: 'fail', db: 'not_initialized' });
+  }
   db.getConnection((err, conn) => {
     if (err) {
       console.error('Health check DB connection failed:', err);
@@ -1169,4 +1131,10 @@ app.get('*', (req, res) => {
 });
 
 
-export const handler = serverless(app);
+const proxy = serverless(app);
+export const handler = async (event, context) => {
+  await loadSecretsAndDb();
+  // attach db to request object for handlers to use
+  app.locals.db = db;
+  return proxy(event, context);
+};

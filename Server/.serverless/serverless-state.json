@@ -198,7 +198,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/cloud-log-api/dev/1752351531130-2025-07-12T20:18:51.130Z/cloud-log-api.zip"
+                "S3Key": "serverless/cloud-log-api/dev/1752351721601-2025-07-12T20:22:01.601Z/cloud-log-api.zip"
               },
               "Handler": "server.handler",
               "Runtime": "nodejs18.x",
@@ -272,7 +272,8 @@
                   "ResponseParameters": {
                     "method.response.header.Access-Control-Allow-Origin": true,
                     "method.response.header.Access-Control-Allow-Headers": true,
-                    "method.response.header.Access-Control-Allow-Methods": true
+                    "method.response.header.Access-Control-Allow-Methods": true,
+                    "method.response.header.Access-Control-Allow-Credentials": true
                   },
                   "ResponseModels": {}
                 }
@@ -290,7 +291,8 @@
                     "ResponseParameters": {
                       "method.response.header.Access-Control-Allow-Origin": "'https://main.d28k95mqep4uke.amplifyapp.com'",
                       "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,Accept'",
-                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,GET,HEAD,PATCH,POST,PUT'"
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,GET,HEAD,PATCH,POST,PUT'",
+                      "method.response.header.Access-Control-Allow-Credentials": "'true'"
                     },
                     "ResponseTemplates": {
                       "application/json": ""
@@ -352,7 +354,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1752351527779": {
+          "ApiGatewayDeployment1752351718371": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -556,7 +558,7 @@
                   "X-Amz-User-Agent",
                   "Accept"
                 ],
-                "allowCredentials": false
+                "allowCredentials": true
               },
               "integration": "AWS_PROXY"
             }
@@ -587,7 +589,7 @@
     "artifact": "/Users/sebbygorgone/VSCODE projects/Cloud-Log/Server/.serverless/cloud-log-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752351531130-2025-07-12T20:18:51.130Z",
+    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752351721601-2025-07-12T20:22:01.601Z",
     "artifact": "cloud-log-api.zip"
   }
 }
