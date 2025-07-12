@@ -13,7 +13,7 @@ provider:
 
 functions:
   api:
-    handler: app.handler
+    handler: server.handler
     events:
       - http:
           path: /{proxy+}
