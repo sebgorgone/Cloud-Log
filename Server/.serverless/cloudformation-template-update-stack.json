@@ -152,21 +152,7 @@
               "lambdaRole"
             ]
           ]
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-              ]
-            ]
-          }
-        ]
+        }
       }
     },
     "ApiLambdaFunction": {
@@ -176,25 +162,28 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cloud-log-api/dev/1752352202243-2025-07-12T20:30:02.243Z/cloud-log-api.zip"
+          "S3Key": "serverless/cloud-log-api/dev/1752352310167-2025-07-12T20:31:50.167Z/cloud-log-api.zip"
         },
         "Handler": "server.handler",
         "Runtime": "nodejs18.x",
         "FunctionName": "cloud-log-api-dev-api",
         "MemorySize": 1024,
         "Timeout": 20,
+        "Environment": {
+          "Variables": {
+            "DB_HOST": "{{resolve:secretsmanager:CLDB:SecretString:DB_HOST}}",
+            "DB_USER": "{{resolve:secretsmanager:CLDB:SecretString:DB_USER}}",
+            "DB_PASSWORD": "{{resolve:secretsmanager:CLDB:SecretString:DB_PASSWORD}}",
+            "DB_NAME": "{{resolve:secretsmanager:CLDB:SecretString:DB_NAME}}",
+            "JWT_SECRET": "{{resolve:secretsmanager:CLDB:SecretString:JWT_SECRET}}",
+            "PORT": "{{resolve:secretsmanager:CLDB:SecretString:PORT}}",
+            "CORS_ORIGINS": "{{resolve:secretsmanager:CLDB:SecretString:CORS_ORIGINS}}"
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
             "Arn"
-          ]
-        },
-        "VpcConfig": {
-          "SecurityGroupIds": [
-            "sg-0b18501d058f04fb3"
-          ],
-          "SubnetIds": [
-            "subnet-057acc8c585ba8059"
           ]
         }
       },
@@ -202,7 +191,7 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersioneMYcp42Vs2ocWAYQ6435dfH0vlaSswzHWHIsrGLLOW0": {
+    "ApiLambdaVersionY7evCkrgLADq2cUY08LWTYjv2qLCR3JzF0rxizrh4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
@@ -332,7 +321,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1752352198996": {
+    "ApiGatewayDeployment1752352306893": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -395,7 +384,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersioneMYcp42Vs2ocWAYQ6435dfH0vlaSswzHWHIsrGLLOW0"
+        "Ref": "ApiLambdaVersionY7evCkrgLADq2cUY08LWTYjv2qLCR3JzF0rxizrh4"
       },
       "Export": {
         "Name": "sls-cloud-log-api-dev-ApiLambdaFunctionQualifiedArn"
