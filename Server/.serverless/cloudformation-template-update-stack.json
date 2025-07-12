@@ -176,7 +176,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cloud-log-api/dev/1752321054619-2025-07-12T11:50:54.619Z/cloud-log-api.zip"
+          "S3Key": "serverless/cloud-log-api/dev/1752351531130-2025-07-12T20:18:51.130Z/cloud-log-api.zip"
         },
         "Handler": "server.handler",
         "Runtime": "nodejs18.x",
@@ -202,14 +202,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionpVKSNZ0RyktNSEtzLxXfW4RY7t97IA0ycDQUZbbdbMY": {
+    "ApiLambdaVersionAnvBoDJbECSqn4qjrhqg5vLX9sQjpxrwnxPgYN38p4k": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "SqVvE8VwAXnk/33qt68n4OoRQzQUsfkm/ZlqfMGK04k="
+        "CodeSha256": "x+vbViGmhYDe+88vUlZ4XXP7ald0s1bQKSKgH/VeD84="
       }
     },
     "ApiGatewayRestApi": {
@@ -330,7 +330,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1752321052296": {
+    "ApiGatewayDeployment1752351527779": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -393,7 +393,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionpVKSNZ0RyktNSEtzLxXfW4RY7t97IA0ycDQUZbbdbMY"
+        "Ref": "ApiLambdaVersionAnvBoDJbECSqn4qjrhqg5vLX9sQjpxrwnxPgYN38p4k"
       },
       "Export": {
         "Name": "sls-cloud-log-api-dev-ApiLambdaFunctionQualifiedArn"
