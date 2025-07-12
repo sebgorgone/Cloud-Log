@@ -19,7 +19,7 @@ functions:
           path: /{proxy+}
           method: any
           cors: 
-            origin: '*'
+            origin: 'https://main.d28k95mqep4uke.amplifyapp.com'
             headers:
               - Content-Type
               - X-Amz-Date
