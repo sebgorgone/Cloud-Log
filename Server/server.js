@@ -86,7 +86,7 @@ app.use(
       ],
       imgSrc: ["'self'", 'data:'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-      connectSrc: ["'self'", 'https://api.yourdomain.com'], 
+      connectSrc: ["'self'", 'https://vwimoat905.execute-api.us-east-1.amazonaws.com'], 
       frameAncestors: ["'none'"],
       objectSrc: ["'none'"],
       upgradeInsecureRequests: [],
