@@ -1185,10 +1185,10 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       alert(responseData.message);
       setNextJump(newJumpNum + 1);
       setNewJumpCom('');
-      // setNewJumpSigUpload(null);
+      setNewJumpSigUpload(null);
       setNewJumpTagList([]);
-      // setNewJumpAlt('')
-      // setNewJumpDur('')
+      setNewJumpAlt('')
+      setNewJumpDur('')
       setTagsToFalse();
       setTagsPage(true);
       setDzPage(true);
@@ -1196,7 +1196,6 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
       setEqpmPage(true);
 
       props.add();
-      // Notify parent to reload after successful storage
     } else {
       alert(responseData.message);
       console.error(responseData.error)
