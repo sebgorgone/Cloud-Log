@@ -123,7 +123,6 @@ function HomePage(props) {
         body: JSON.stringify({ user_id: user.ID}),
       });
       const data = await response.json();
-      console.log('defaults results: ', data)
       if(response.ok){
         setDefaultRig(data.rig);
         setDefaultAircraft(data.aircraft);

@@ -126,7 +126,9 @@ function WelcomeForm (props) {
       minWidth: "65%",
       height: "2.3em",
       border: ".1em solid",
-    borderColor: pallette[0],
+      borderColor: pallette[0],
+      fontFamily: "L1",
+      color: pallette[4]
    }
 
    const textSection = {
@@ -186,27 +188,6 @@ function WelcomeForm (props) {
 
 
    //api
-  const getRigs = async () => {
-    try {
-      const response = await fetch(`${svr}/getrigs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: props.user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundRigs = [];
-        for (let rig of returnedData.results) {
-          foundRigs.push(rig.name);
-        }
-        setRigs([...foundRigs]);
-      } else{
-        console.error('no rigs imported', response);
-      }
-    } catch (err) {
-      console.error('client failed getting rigs', err);
-    }
-  };
 
    const storeRig = async () => {
     try {
@@ -221,28 +202,6 @@ function WelcomeForm (props) {
     } catch (err) {console.error('client failed storing rig', err);}
   };
 
-  const getPlanes = async () => {
-    try {
-      const response = await fetch(`${svr}/getplanes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: data.user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundPlanes = [];
-        for (let plane of returnedData.results) {
-          foundPlanes.push(plane.name);
-        }
-        setPlanes([...foundPlanes]);
-      } else{
-        console.error('no Planes imported', response);
-      }
-    } catch (err) {
-      console.error('client failed plane rigs', err)
-    }
-  };
-
   const storePlane = async () => {
     try {
       const response = await fetch(`${svr}/storeplanes`, {
@@ -255,28 +214,6 @@ function WelcomeForm (props) {
       } else {alert(returnedDATA.message)}
     } catch (err) {console.error('client failed storing plane', err);}
   }
-
-  const getDZs = async () => {
-    try {
-      const response = await fetch(`${svr}/getdzs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: data.user.ID}),
-      });
-      const returnedData = await response.json();
-      if(response.ok){
-        let foundDZs = [];
-        for (let dz of returnedData.results) {
-          foundDZs.push(dz.name);
-        }
-        setDZs([...foundDZs]);
-      } else{
-        console.error('no DZs imported', response);
-      }
-    } catch (err) {
-      console.error('client failed getting DZs', err);
-    }
-  };
 
   const storeDZ = async () => {
     try {

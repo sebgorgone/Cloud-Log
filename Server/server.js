@@ -49,12 +49,20 @@ const permittedTables = [
 
  app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
+// app.use(cors({
+//   origin: 'https://main.d28k95mqep4uke.amplifyapp.com',
+//   credentials: true
+// }));
 app.use(cors({
-  origin: 'https://main.d28k95mqep4uke.amplifyapp.com',
+  origin: 'http://localhost:5173',
   credentials: true
 }));
+// app.options('*', cors({
+//   origin: 'https://main.d28k95mqep4uke.amplifyapp.com',
+//   credentials: true
+// }));
 app.options('*', cors({
-  origin: 'https://main.d28k95mqep4uke.amplifyapp.com',
+  origin: 'http://localhost:5173',
   credentials: true
 }));
 
@@ -279,8 +287,6 @@ app.post('/changeemail', (req, res) => {
 //login route
 app.post('/login', (req, res) => {
   const { identifier, password } = req.body;
-  console.log('Login attempt:', { identifier });
-
   const isEmail = identifier.includes('@');
 
   const query = isEmail 
@@ -300,14 +306,11 @@ app.post('/login', (req, res) => {
 
     const user = results[0];
     const { hash } = hashPassword(password, user.salt);
-    console.log('Comparing computed hash to stored hash for user id:', user.id);
-
     if (hash !== user.password) {
       console.warn("Login failed — invalid password for identifier:", identifier);
       return res.status(401).json({ error: 'Invalid credentials', code: 'INVALID_PASSWORD' });
     }
 
-    console.log('Login successful — user authenticated:', { id: user.id, email: user.email });
     const payload = { id: user.id, name: user.name, email: user.email };
     const token = jwt.sign(payload, creds.JWT_SECRET, { expiresIn: '30m' });
 
@@ -1121,4 +1124,8 @@ app.get('*', (req, res) => {
 });
 
 
-export const handler = serverless(app);
+// export const handler = serverless(app);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
