@@ -183,13 +183,13 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cloud-log-api/dev/1752355593284-2025-07-12T21:26:33.284Z/cloud-log-api.zip"
+          "S3Key": "serverless/cloud-log-api/dev/1752429583120-2025-07-13T17:59:43.120Z/cloud-log-api.zip"
         },
         "Handler": "server.handler",
-        "Runtime": "nodejs18.x",
+        "Runtime": "nodejs20.x",
         "FunctionName": "cloud-log-api-dev-api",
         "MemorySize": 1024,
-        "Timeout": 20,
+        "Timeout": 30,
         "Environment": {
           "Variables": {
             "DB_HOST": "{{resolve:secretsmanager:CLDB:SecretString:DB_HOST}}",
@@ -197,7 +197,6 @@
             "DB_PASSWORD": "{{resolve:secretsmanager:CLDB:SecretString:DB_PASSWORD}}",
             "DB_NAME": "{{resolve:secretsmanager:CLDB:SecretString:DB_NAME}}",
             "JWT_SECRET": "{{resolve:secretsmanager:CLDB:SecretString:JWT_SECRET}}",
-            "PORT": "{{resolve:secretsmanager:CLDB:SecretString:PORT}}",
             "CORS_ORIGINS": "{{resolve:secretsmanager:CLDB:SecretString:CORS_ORIGINS}}"
           }
         },
@@ -220,14 +219,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersion9jXzF4lS3RyforwpnUiNkOsJkMpsUQZsOVy829AD0": {
+    "ApiLambdaVersion5P7NvavKBZ4ko6o2fu16lbeITiEkGBepV6Y5akPBlU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "utbB6MLCeIvKsH/ra7shRSelnhSvu+qpypWHbFIHclg="
+        "CodeSha256": "vPy81EMkOC4YB08FJOJngs/1DANXPE3zzDWn6MVjxhA="
       }
     },
     "ApiGatewayRestApi": {
@@ -286,8 +285,8 @@
               "StatusCode": "200",
               "ResponseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'https://main.d28k95mqep4uke.amplifyapp.com'",
-                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
-                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,GET,HEAD,PATCH,POST,PUT'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST,PUT,DELETE,PATCH,DELETE,GET,HEAD,PATCH,POST,PUT'",
                 "method.response.header.Access-Control-Allow-Credentials": "'true'"
               },
               "ResponseTemplates": {
@@ -350,7 +349,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1752355590923": {
+    "ApiGatewayDeployment1752429579913": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -430,7 +429,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersion9jXzF4lS3RyforwpnUiNkOsJkMpsUQZsOVy829AD0"
+        "Ref": "ApiLambdaVersion5P7NvavKBZ4ko6o2fu16lbeITiEkGBepV6Y5akPBlU"
       },
       "Export": {
         "Name": "sls-cloud-log-api-dev-ApiLambdaFunctionQualifiedArn"

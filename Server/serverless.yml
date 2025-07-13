@@ -1,9 +1,16 @@
 service: cloud-log-api
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   region: us-east-1
-  timeout: 30       
+  timeout: 30  
+  environment:
+    DB_HOST: '{{resolve:secretsmanager:CLDB:SecretString:DB_HOST}}'
+    DB_USER: '{{resolve:secretsmanager:CLDB:SecretString:DB_USER}}'
+    DB_PASSWORD: '{{resolve:secretsmanager:CLDB:SecretString:DB_PASSWORD}}'
+    DB_NAME: '{{resolve:secretsmanager:CLDB:SecretString:DB_NAME}}'
+    JWT_SECRET: '{{resolve:secretsmanager:CLDB:SecretString:JWT_SECRET}}'
+    CORS_ORIGINS: '{{resolve:secretsmanager:CLDB:SecretString:CORS_ORIGINS}}'     
   vpc:
     securityGroupIds:
       - sg-0b18501d058f04fb3

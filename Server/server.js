@@ -7,35 +7,25 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 
-let creds;
-let db;
-let secretsLoaded = false;
+const creds = {
+  DB_HOST: process.env.DB_HOST,
+  DB_USER: process.env.DB_USER,
+  DB_PASSWORD: process.env.DB_PASSWORD,
+  DB_NAME: process.env.DB_NAME,
+  JWT_SECRET: process.env.JWT_SECRET,
+  CORS_ORIGINS: process.env.CORS_ORIGINS.split(','),
+};
 
-const smClient = new SecretsManagerClient({ region: "us-east-1" });
-
-async function loadSecretsAndDb() {
-  if (secretsLoaded) return;
-  const { SecretString } = await smClient.send(
-    new GetSecretValueCommand({ SecretId: "CLDB", VersionStage: "AWSCURRENT" })
-  );
-  creds = JSON.parse(SecretString);
-  // initialize MySQL pool
-  db = mysql.createPool({
-    host: creds.DB_HOST,
-    user: creds.DB_USER,
-    password: creds.DB_PASSWORD,
-    database: creds.DB_NAME,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-  });
-  secretsLoaded = true;
-}
-
-
-// (Secrets and DB pool will be loaded at handler invocation)
+let db = mysql.createPool({
+  host: creds.DB_HOST,
+  user: creds.DB_USER,
+  password: creds.DB_PASSWORD,
+  database: creds.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
 import express from 'express';
 import mysql from 'mysql2';
@@ -59,12 +49,10 @@ const permittedTables = [
 
  app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-// Enable CORS for your Amplify front-end
 app.use(cors({
   origin: 'https://main.d28k95mqep4uke.amplifyapp.com',
   credentials: true
 }));
-// Preflight response for all routes
 app.options('*', cors({
   origin: 'https://main.d28k95mqep4uke.amplifyapp.com',
   credentials: true
@@ -112,7 +100,6 @@ app.use(
 
 app.disable('x-powered-by');
 
-// DB pool will be initialized after secrets are loaded
 // Health check endpoint for load balancers / uptime monitors
 app.get('/healthz', (req, res) => {
   if (!db) {
@@ -291,8 +278,8 @@ app.post('/changeemail', (req, res) => {
 
 //login route
 app.post('/login', (req, res) => {
-  console.log('login attempt');
   const { identifier, password } = req.body;
+  console.log('Login attempt:', { identifier });
 
   const isEmail = identifier.includes('@');
 
@@ -302,22 +289,25 @@ app.post('/login', (req, res) => {
 
   db.query(query, [identifier], (err, results) => {
     if (err) {
-      console.error("DB error:", err);
+      console.error("DB error during login:", err);
       return res.status(500).json({ error: 'Login error' });
     }
 
     if (results.length === 0) {
-      return res.status(401).json({ error: 'User not found' });
+      console.warn('Login failed — no user record found for identifier:', identifier);
+      return res.status(401).json({ error: 'User not found', code: 'USER_NOT_FOUND' });
     }
 
     const user = results[0];
     const { hash } = hashPassword(password, user.salt);
+    console.log('Comparing computed hash to stored hash for user id:', user.id);
 
     if (hash !== user.password) {
-      console.log("❌ Bad password");
-      return res.status(401).json({ error: 'Invalid credentials' });
+      console.warn("Login failed — invalid password for identifier:", identifier);
+      return res.status(401).json({ error: 'Invalid credentials', code: 'INVALID_PASSWORD' });
     }
 
+    console.log('Login successful — user authenticated:', { id: user.id, email: user.email });
     const payload = { id: user.id, name: user.name, email: user.email };
     const token = jwt.sign(payload, creds.JWT_SECRET, { expiresIn: '30m' });
 
@@ -1131,10 +1121,4 @@ app.get('*', (req, res) => {
 });
 
 
-const proxy = serverless(app);
-export const handler = async (event, context) => {
-  await loadSecretsAndDb();
-  // attach db to request object for handlers to use
-  app.locals.db = db;
-  return proxy(event, context);
-};
+export const handler = serverless(app);
