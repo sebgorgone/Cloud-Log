@@ -9,7 +9,6 @@ import { useAuth } from '../contexts/authContext';
 
 function LoginScreen () {
 
-   // Vite automatically exposes variables prefixed with VITE_
    const svr = import.meta.env.VITE_SVR_URL;
 
    const domain = 'https://mycloudlog.netlify.app';
@@ -110,7 +109,7 @@ function LoginScreen () {
           user: returnedData.user
         });
       } else {
-        console.error('❌ Login failed:', returnedData);
+        console.error('❌ Login failed:');
         alert(returnedData.error || returnedData.message || 'login failed')
       }
     } catch (err) {

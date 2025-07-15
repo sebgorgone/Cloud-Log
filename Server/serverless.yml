@@ -2,7 +2,7 @@ service: cloud-log-api
 provider:
   name: aws
   runtime: nodejs20.x
-  region: us-east-1
+  region: us-east-2
   timeout: 30  
   environment:
     DB_HOST: '{{resolve:secretsmanager:CLDB:SecretString:DB_HOST}}'
@@ -13,15 +13,15 @@ provider:
     CORS_ORIGINS: '{{resolve:secretsmanager:CLDB:SecretString:CORS_ORIGINS}}'     
   vpc:
     securityGroupIds:
-      - sg-0b18501d058f04fb3
+      - sg-06b4c181835350def
     subnetIds:
-      - subnet-057acc8c585ba8059
+      - subnet-048b31cc2b20b55c7
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - "secretsmanager:GetSecretValue"
       Resource:
-        - "arn:aws:secretsmanager:us-east-1:*:secret:CLDB*"
+        - "arn:aws:secretsmanager:us-east-2:*:secret:CLDB*"
 
 functions:
   api:
@@ -32,7 +32,7 @@ functions:
           method: any
           cors:
             origin:
-              - 'https://main.d28k95mqep4uke.amplifyapp.com'
+              - 'https://main.dmade3q40chsh.amplifyapp.com'
             allowCredentials: true
             headers:
               - Content-Type
@@ -52,9 +52,9 @@ resources:
       Properties:
         ServiceName: !Sub com.amazonaws.${AWS::Region}.secretsmanager
         VpcEndpointType: Interface
-        VpcId: vpc-076853da424103843
+        VpcId: vpc-04a901e4d43c1729d
         SubnetIds:
-          - subnet-057acc8c585ba8059
+          - subnet-048b31cc2b20b55c7
         SecurityGroupIds:
-          - sg-0b18501d058f04fb3
+          - sg-0f1753bbc3f41424c
         PrivateDnsEnabled: true
