@@ -27,6 +27,15 @@ let db = mysql.createPool({
   queueLimit: 0
 });
 
+db.getConnection((err, connection) => {
+  if (err) {
+    console.error('MySQL connection failed:', err);
+  } else {
+    console.log('MySQL connected successfully');
+    connection.release();
+  }
+});
+
 import express from 'express';
 import mysql from 'mysql2';
 import path from 'path';
@@ -289,25 +298,30 @@ app.post('/login', (req, res) => {
   const { identifier, password } = req.body;
   const isEmail = identifier.includes('@');
 
+  console.log("🔐 Login attempt with identifier:", identifier);
+
   const query = isEmail 
     ? 'SELECT * FROM users WHERE email = ?'
     : 'SELECT * FROM users WHERE name = ?';
 
   db.query(query, [identifier], (err, results) => {
     if (err) {
-      console.error("DB error during login:", err);
+      console.error("❌ DB error during login:", err);
       return res.status(500).json({ error: 'Login error' });
     }
 
+    console.log("📦 Query results:", results);
+
     if (results.length === 0) {
-      console.warn('Login failed — no user record found for identifier:', identifier);
+      console.warn('⚠️ Login failed — no user record found for identifier:', identifier);
       return res.status(401).json({ error: 'User not found', code: 'USER_NOT_FOUND' });
     }
 
     const user = results[0];
     const { hash } = hashPassword(password, user.salt);
+
     if (hash !== user.password) {
-      console.warn("Login failed — invalid password for identifier:", identifier);
+      console.warn("🚫 Login failed — invalid password for identifier:", identifier);
       return res.status(401).json({ error: 'Invalid credentials', code: 'INVALID_PASSWORD' });
     }
 

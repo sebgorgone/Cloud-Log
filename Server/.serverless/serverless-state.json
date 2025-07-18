@@ -217,7 +217,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/cloud-log-api/dev/1752579754554-2025-07-15T11:42:34.554Z/cloud-log-api.zip"
+                "S3Key": "serverless/cloud-log-api/dev/1752625372357-2025-07-16T00:22:52.357Z/cloud-log-api.zip"
               },
               "Handler": "server.handler",
               "Runtime": "nodejs20.x",
@@ -253,14 +253,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersionnuNSfYq9GKb0eoi2qItSBGlgxPUEvuKTiKxS4ACJaw": {
+          "ApiLambdaVersionJGLVM3vUlQ37lWqNZjYFcjySLu1LZO0TEtDVGMcvCE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "r7NIKwmZEOQHqftGdgoWO8HJKHEE9tFziRUq2lXe4fE="
+              "CodeSha256": "Vprlh6+SLnHPQbsY3fn7TBAB0g6CUl8QR4tQIgE+g+E="
             }
           },
           "ApiGatewayRestApi": {
@@ -383,7 +383,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1752579752090": {
+          "ApiGatewayDeployment1752625370019": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -463,7 +463,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionnuNSfYq9GKb0eoi2qItSBGlgxPUEvuKTiKxS4ACJaw"
+              "Ref": "ApiLambdaVersionJGLVM3vUlQ37lWqNZjYFcjySLu1LZO0TEtDVGMcvCE"
             },
             "Export": {
               "Name": "sls-cloud-log-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -616,7 +616,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersionnuNSfYq9GKb0eoi2qItSBGlgxPUEvuKTiKxS4ACJaw"
+        "versionLogicalId": "ApiLambdaVersionJGLVM3vUlQ37lWqNZjYFcjySLu1LZO0TEtDVGMcvCE"
       }
     },
     "resources": {
@@ -660,7 +660,7 @@
     "artifact": "/Users/sebbygorgone/VSCODE projects/Cloud-Log/Server/.serverless/cloud-log-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752579754554-2025-07-15T11:42:34.554Z",
+    "artifactDirectoryName": "serverless/cloud-log-api/dev/1752625372357-2025-07-16T00:22:52.357Z",
     "artifact": "cloud-log-api.zip"
   }
 }
