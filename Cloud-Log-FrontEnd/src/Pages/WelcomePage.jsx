@@ -29,7 +29,8 @@ function WelcomePage(props) {
    //handlers
 
    function handleBasket () {
-      setBasket(true)
+      setBasket(true);
+      window.location.reload();
    }
 
    //api
