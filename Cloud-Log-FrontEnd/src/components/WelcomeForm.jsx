@@ -245,7 +245,6 @@ function WelcomeForm (props) {
          data.skip();
       }
     } catch (err) {console.error('client failed to send basket', err);}
-    data.skip();
   };
 
   const getDefaults = async () => {

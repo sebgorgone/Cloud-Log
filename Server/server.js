@@ -757,6 +757,13 @@ app.post('/givebasket', (req, res) => {
           error: 'INSERT_FAILED',
           message: 'Failed to create basket'
         });
+
+      if (results.affectedRows === 1) {
+        return res.status(200).json({
+          message: 'Basket Given',
+          ok: true
+        })
+      }
       }
     }
   );
