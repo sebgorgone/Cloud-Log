@@ -1397,9 +1397,6 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     if (newJumpDur < 1){
       return alert('Free Fall Time is missing or invalid')
     };
-    if (newJumpSigUpload === null){
-      return alert('Signature PDF upload is missing or invalid')
-    };
     storeJump(newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList);
   }
 
