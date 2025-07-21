@@ -30,7 +30,6 @@ function WelcomePage(props) {
 
    function handleBasket () {
       setBasket(true);
-      window.location.reload();
    }
 
    //api
@@ -70,7 +69,7 @@ function WelcomePage(props) {
    }
    //useEffct
 
-   useEffect(() => {checkBasket()}, [])
+   useEffect(() => {checkBasket()}, [basket])
 
    return(
       <>
