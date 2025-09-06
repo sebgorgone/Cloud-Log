@@ -58,22 +58,22 @@ const permittedTables = [
 
  app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-app.use(cors({
-  origin: 'https://main.dmade3q40chsh.amplifyapp.com',
-  credentials: true
-}));
 // app.use(cors({
-//   origin: 'http://localhost:5173',
+//   origin: 'https://main.dmade3q40chsh.amplifyapp.com',
 //   credentials: true
 // }));
-app.options('*', cors({
-  origin: 'https://main.dmade3q40chsh.amplifyapp.com',
+app.use(cors({
+  origin: 'http://localhost:5173',
   credentials: true
 }));
 // app.options('*', cors({
-//   origin: 'http://localhost:5173',
+//   origin: 'https://main.dmade3q40chsh.amplifyapp.com',
 //   credentials: true
 // }));
+app.options('*', cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 
 app.use(helmet());
 
@@ -810,13 +810,13 @@ app.post('/storejump', (req, res) => {
 
       const insertJumpSql = `
         INSERT INTO jumps
-          (user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
       conn.query(
         insertJumpSql,
-        [user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig],
+        [user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes],
         (jumpErr, jumpResult) => {
           if (jumpErr) {
             return conn.rollback(() => {
@@ -1145,8 +1145,8 @@ app.get('*', (req, res) => {
 });
 
 
-export const handler = serverless(app);
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//   console.log(`Server listening on port ${PORT}`);
-// });
+// export const handler = serverless(app);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});

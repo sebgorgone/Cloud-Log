@@ -11,7 +11,7 @@ function LoginScreen () {
 
    const svr = import.meta.env.VITE_SVR_URL;
 
-   const domain = 'https://mycloudlog.netlify.app';
+   const domain = 'http:/localhost:5009/';
 
    const nav = useNavigate();
    const { login, user } = useAuth();
@@ -159,13 +159,13 @@ function LoginScreen () {
          <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center", marginBottom: "3vh"}}>
             <button type="submit" style={loginButton}>Log In</button>
 
-            {/* <a 
+            <a 
               className="registerLink"
               style={signupPageButton}
-              href={`${domain}/register`}
+              href={`/register`}
             >
               Create New Account
-            </a> */}
+            </a>
 
          </div>
          
