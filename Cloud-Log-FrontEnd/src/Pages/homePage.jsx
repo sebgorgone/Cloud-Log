@@ -408,7 +408,7 @@ function HomePage(props) {
    return(
       <div style={homePageShell}>
          {/* version */}
-         <p style={{position: "fixed", top: "0", right: "1em", fontFamily: "L1", color: pallette[0], fontSize: ".5em", zIndex: 5}}>Cloud log V 0.3</p>
+         <p style={{position: "fixed", top: "0", right: "1em", fontFamily: "L1", color: pallette[0], fontSize: ".5em", zIndex: 5}}>Cloud log V 0.4</p>
 
          <div style={headerBackground}></div>
 
