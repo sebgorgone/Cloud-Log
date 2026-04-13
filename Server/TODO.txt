@@ -1,0 +1,5 @@
+create a service to start the server
+verify db integrity with old dump files 
+configure a server to oranize and store back ups from other servers and dbs
+
+set up hosting for the frontend
