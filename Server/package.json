@@ -13,7 +13,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.844.0",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
@@ -21,10 +20,6 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
-    "nodemon": "^3.1.10",
-    "serverless-http": "^3.2.0"
-  },
-  "devDependencies": {
-    "serverless": "^4.17.2"
+    "nodemon": "^3.1.10"
   }
 }
