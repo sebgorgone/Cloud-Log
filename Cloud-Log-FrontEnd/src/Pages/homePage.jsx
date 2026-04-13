@@ -143,7 +143,7 @@ function HomePage(props) {
 
    async function handleNavToLedg (e) {
       e.preventDefault();
-      getJumpHist();
+      await getJumpHist();
       await getUserData();
       setRouter({
       welcome: false,
@@ -156,7 +156,7 @@ function HomePage(props) {
     })
    }
    async function callLedg () {
-      getJumpHist();
+      await getJumpHist();
       await getUserData();
       setRouter({
       welcome: false,
@@ -169,9 +169,9 @@ function HomePage(props) {
     })
    }
    async function handleNavToStats (e) {
-      getJumpHist();
-      await getUserData();
       e.preventDefault();
+      await getJumpHist();
+      await getUserData();
       setRouter({
       welcome: false,
       fullList: false,
@@ -183,7 +183,7 @@ function HomePage(props) {
     })
    }
    async function callStats () {
-      getJumpHist();
+      await getJumpHist();
       await getUserData();
       setRouter({
       welcome: false,
@@ -196,9 +196,9 @@ function HomePage(props) {
     })
    }
    async function handleNavToDownload (e) {
-      getJumpHist();
-      await getUserData();
       e.preventDefault();
+      await getJumpHist();
+      await getUserData();
       setRouter({
       welcome: false,
       fullList: false,
@@ -210,9 +210,9 @@ function HomePage(props) {
     })
    }
    async function handleNavToSettings (e) {
-      getJumpHist();
-      await getUserData();
       e.preventDefault();
+      await getJumpHist();
+      await getUserData();
       setRouter({
       welcome: false,
       fullList: false,
@@ -249,9 +249,9 @@ function HomePage(props) {
       setWcField(e.target.value)
     }
     async function handleNavToAdd(e) {
-      getJumpHist();
+         e.preventDefault();
+         await getJumpHist();
       await getUserData();
-      e.preventDefault();
       setRouter({
       welcome: false,
       fullList: false,

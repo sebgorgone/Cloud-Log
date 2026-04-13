@@ -82,7 +82,7 @@ function WelcomePage(props) {
 
 
             {/* {(props.jumps === 'loading' || props.defaults === 'loading...') ? <LoadPage /> : props.jumps.length === 0 && !basket ?<WelcomeForm user={user} skip={handleBasket} rigs={[...props.rigs]} planes={props.planes} dzs={props.dzs} defaults={{plane: props.defaults.plane, rig: props.defaults.rig, dz: props.defaults.dz}}/> : <NavForm logs={logbook} stats={statspage} />} */}
-            {(props.jumps === 'loading' || props.defaults === 'loading...') ? <LoadPage /> : <NavForm />}
+            {(props.jumps === 'loading' || props.defaults === 'loading...') ? <LoadPage /> : <NavForm logs={logbook} stats={statspage} />}
 
 
          </div>
