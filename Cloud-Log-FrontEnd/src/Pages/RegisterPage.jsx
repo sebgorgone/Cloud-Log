@@ -167,6 +167,8 @@ function RegisterPage () {
 
    const createUser = async () => {
     try {
+      //testing env
+      console.log(svr)
       const response = await fetch(`${svr}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
