@@ -62,7 +62,7 @@ const permittedTables = [
 //   credentials: true
 // }));
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://192.168.1.243:5174', 'http:192.168.1.243:5173'],
+  origin: ['http://localhost:5173', 'http://192.168.1.243:5174', 'http://192.168.1.243:5173'],
   credentials: true
 }));
 // app.options('*', cors({
