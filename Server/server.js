@@ -809,13 +809,13 @@ app.post('/storejump', (req, res) => {
 
       const insertJumpSql = `
         INSERT INTO jumps
-          (user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
       conn.query(
         insertJumpSql,
-        [user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes],
+        [user_id, jump_num, jump_date, dz, aircraft, equipment, alt, t, notes, pdfSig],
         (jumpErr, jumpResult) => {
           if (jumpErr) {
             return conn.rollback(() => {
