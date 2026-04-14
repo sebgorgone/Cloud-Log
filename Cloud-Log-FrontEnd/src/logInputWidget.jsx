@@ -1159,9 +1159,12 @@ useEffect(() => {
 
 //store jump route
 
-const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur,newJumpCom, newJumpSigUpload, newJumpTagList) => {
+const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur, newJumpCom, newJumpSigUpload, newJumpTagList) => {
   try {
-    const base64Signature = null
+    let base64Signature = null;
+    if (newJumpSigUpload) {
+      base64Signature = await fileToBase64(newJumpSigUpload);
+    }
     const response = await fetch(`${svr}/storejump`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1175,6 +1178,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
         alt: newJumpAlt,
         t: newJumpDur,
         notes: newJumpCom,
+        pdfSig: base64Signature,
         tags: newJumpTagList
       })
     });
