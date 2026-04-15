@@ -1086,69 +1086,158 @@ app.post('/askdbpos', (req, res) => {
 //search
 
 app.post('/search', (req, res) => {
-  const { wildCard: searchTerm, user_id, offset } = req.body;
+  const { wildCard: searchTerm, user_id, offset, requestId: incomingRequestId } = req.body;
   const term = String(searchTerm || '').trim();
   const likeTerm = `%${term}%`;
   const offsetNum = Number.isFinite(Number(offset)) ? Math.max(0, Number(offset)) : 0;
+  const requestId = (typeof incomingRequestId === 'string' && incomingRequestId.trim())
+    ? incomingRequestId.trim()
+    : `${String(user_id || 'anon')}-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
+  const startedAt = process.hrtime.bigint();
+
+  const elapsedMs = (start) => Number(process.hrtime.bigint() - start) / 1e6;
+  const logSearch = (event, payload = {}) => {
+    console.log(JSON.stringify({
+      scope: 'search',
+      event,
+      requestId,
+      timestamp: new Date().toISOString(),
+      ...payload,
+    }));
+  };
+
+  logSearch('search_start', {
+    user_id,
+    term,
+    offset: offsetNum,
+  });
 
   if (!user_id) {
+    logSearch('search_bad_request', { reason: 'user_id required' });
     return res
       .status(400)
-      .json({ message: 'user_id required', ok: false });
+      .json({ message: 'user_id required', ok: false, timing: { requestId } });
   }
 
   if (!term) {
+    const totalMs = elapsedMs(startedAt);
+    logSearch('search_empty_term', { totalMs });
     return res
       .status(200)
-      .json({ message: 'no results', results: [], ok: true });
+      .json({ message: 'no results', results: [], tags: {}, ok: true, timing: { requestId, totalMs } });
+  }
+
+  const searchClauses = [
+    'j.dz LIKE ?',
+    'j.equipment LIKE ?',
+    'j.notes LIKE ?',
+    'EXISTS (SELECT 1 FROM tags t WHERE t.jump_ref = j.jump_id AND t.name LIKE ?)',
+  ];
+  const searchParams = [likeTerm, likeTerm, likeTerm, likeTerm];
+
+  if (/^\d+$/.test(term)) {
+    const numericTerm = Number(term);
+    searchClauses.push('j.jump_num = ?');
+    searchParams.push(numericTerm);
+
+    if (numericTerm >= 1900 && numericTerm <= 3000) {
+      searchClauses.push('(j.jump_date >= ? AND j.jump_date < ?)');
+      searchParams.push(`${numericTerm}-01-01`, `${numericTerm + 1}-01-01`);
+    }
   }
 
   const sql = `
-    SELECT DISTINCT
+    SELECT
       j.jump_id, j.user_id, j.jump_num, j.jump_date,
       j.dz AS dropzone, j.equipment, j.notes, j.pdfSig, j.alt, j.t, j.aircraft
     FROM jumps AS j
-    LEFT JOIN tags AS t
-      ON j.jump_id = t.jump_ref
     WHERE j.user_id = ?
-      AND (
-        j.jump_num = CAST(? AS UNSIGNED)
-        OR YEAR(j.jump_date) = CAST(? AS UNSIGNED)
-        OR j.dz        LIKE ?
-        OR j.equipment LIKE ?
-        OR j.notes     LIKE ?
-        OR t.name      LIKE ?
-      )
+      AND (${searchClauses.join(' OR ')})
     ORDER BY j.jump_num DESC
     LIMIT 30
     OFFSET ?;
   `;
 
+  const queryStartedAt = process.hrtime.bigint();
   db.query(
-    { sql, timeout: 10000 },
-    [ user_id, term, term, likeTerm, likeTerm, likeTerm, likeTerm, offsetNum ],
+    { sql, timeout: Number(process.env.SEARCH_DB_TIMEOUT_MS) || 15000 },
+    [user_id, ...searchParams, offsetNum],
     (err, results) => {
+      const dbMs = elapsedMs(queryStartedAt);
+      logSearch('search_query_complete', { dbMs, resultCount: Array.isArray(results) ? results.length : 0 });
+
       if (err) {
         if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
-          console.error('DB search timed out');
+          const totalMs = elapsedMs(startedAt);
+          logSearch('search_timeout', { dbMs, totalMs, error: err.code });
           return res
             .status(504)
-            .json({ message: 'search timed out', ok: false });
+            .json({ message: 'search timed out', ok: false, timing: { requestId, dbMs, totalMs } });
         }
 
-        console.error('DB error fetching search results', err);
+        const totalMs = elapsedMs(startedAt);
+        logSearch('search_error', { dbMs, totalMs, error: err.code || err.message });
         return res
           .status(500)
-          .json({ message: 'could not retrieve search results', ok: false });
+          .json({ message: 'could not retrieve search results', ok: false, timing: { requestId, dbMs, totalMs } });
       }
-      if (results.length === 0) {
+
+      if (!Array.isArray(results) || results.length === 0) {
+        const totalMs = elapsedMs(startedAt);
+        logSearch('search_complete_empty', { dbMs, totalMs });
         return res
           .status(200)
-          .json({ message: 'no results', results, ok: true });
+          .json({ message: 'no results', results: [], tags: {}, ok: true, timing: { requestId, dbMs, tagsMs: 0, totalMs } });
       }
-      return res
-        .status(200)
-        .json({ message: 'loaded jumps', results, ok: true });
+
+      const jumpIds = results.map(row => row.jump_id);
+      const placeholders = jumpIds.map(() => '?').join(',');
+      const tagSql = `
+        SELECT name, cat, jump_ref
+        FROM tags
+        WHERE jump_ref IN (${placeholders})
+      `;
+
+      const tagsStartedAt = process.hrtime.bigint();
+      db.query(
+        { sql: tagSql, timeout: Number(process.env.SEARCH_DB_TIMEOUT_MS) || 15000 },
+        jumpIds,
+        (tagErr, tagRows) => {
+          const tagsMs = elapsedMs(tagsStartedAt);
+          if (tagErr) {
+            const totalMs = elapsedMs(startedAt);
+            logSearch('search_tags_error', { dbMs, tagsMs, totalMs, error: tagErr.code || tagErr.message });
+            return res
+              .status(200)
+              .json({
+                message: 'loaded jumps (tag load failed)',
+                results,
+                tags: {},
+                ok: true,
+                timing: { requestId, dbMs, tagsMs, totalMs },
+              });
+          }
+
+          const tags = {};
+          for (const row of tagRows) {
+            if (!tags[row.jump_ref]) tags[row.jump_ref] = [];
+            tags[row.jump_ref].push({ name: row.name, cat: row.cat });
+          }
+
+          const totalMs = elapsedMs(startedAt);
+          logSearch('search_complete_success', {
+            dbMs,
+            tagsMs,
+            totalMs,
+            resultCount: results.length,
+            tagCount: Array.isArray(tagRows) ? tagRows.length : 0,
+          });
+
+          return res
+            .status(200)
+            .json({ message: 'loaded jumps', results, tags, ok: true, timing: { requestId, dbMs, tagsMs, totalMs } });
+        }
+      );
     }
   );
 });

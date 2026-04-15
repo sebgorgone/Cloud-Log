@@ -31,6 +31,22 @@ function ResultsPage (props) {
    const [tagsArray, setTags] = useState(null)
 
 
+   function flattenTagsMap(map) {
+      if (!map || typeof map !== 'object') return [];
+      const flattened = [];
+      for (const [jumpRef, tags] of Object.entries(map)) {
+         if (!Array.isArray(tags)) continue;
+         for (const tag of tags) {
+            flattened.push({
+               name: tag.name,
+               cat: tag.cat,
+               jump_ref: Number(jumpRef),
+            });
+         }
+      }
+      return flattened;
+   }
+
    function getTags (jumpsArray) {
       let jumpsIdArray = [];
       if (Array.isArray(jumpsArray)) {
@@ -87,12 +103,19 @@ const tagsRoute = async (array) => {
    //useEffect 
    useEffect(() => {
       setJumps(props.jumps);
+
+      const flattenedFromServer = flattenTagsMap(props.tagsMap);
+      if (flattenedFromServer.length > 0 || (props.tagsMap && Object.keys(props.tagsMap).length === 0)) {
+         setTags(flattenedFromServer);
+         return;
+      }
+
       if (Array.isArray(props.jumps)) {
          getTags(props.jumps);
       } else {
          setTags(null);
       }
-   }, [props.jumps]);
+   }, [props.jumps, props.tagsMap]);
 
    
 
