@@ -84,7 +84,7 @@ function HomePage(props) {
    
 
    const getJumpHist = async () => { 
-      if (!gotHistory)
+      if (!gotHistory || !Array.isArray(userJumpHistory))
          {setUserJumpHistory(null);
          setUserJumpCount('loading...')
          console.log('getting user jump history')
@@ -228,8 +228,6 @@ function HomePage(props) {
       logout();
     }
     function handleSearch(e) {
-
-      setUserJumpHistory(null)
       e.preventDefault();
          setWildCard((wcField || '').trim());
       setRouter({
