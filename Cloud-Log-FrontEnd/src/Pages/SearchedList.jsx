@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import '../style/loginScreen.css';
 import ResultsPage from './ResultsPage';
 import { getPallette } from '../logInputWidget';
@@ -10,6 +10,7 @@ function SearchedList(props) {
    //environment
    const user = props.user;
    const wildCard = props.wildCard;
+   const SEARCH_TIMEOUT_MS = Number(import.meta.env.VITE_SEARCH_TIMEOUT_MS) || 10000;
 
    const pallette = getPallette();
 
@@ -19,40 +20,7 @@ function SearchedList(props) {
    const [results, setResults] = useState([]);
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState(null);
-
-   const getResults = async () => { 
-      setLoading(true);
-      setError(null);
-      const Offset = page * 30;
-      setResults([]);
-      try {
-         const response = await fetch(`${svr}/search`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({user_id: user.ID, wildCard: wildCard, offset: Offset}),
-         });
-         const data = await response.json();
-         if(data.ok){
-            let jumpHist = [];
-            for (let jump of data.results) {
-               jumpHist.push(jump);
-            }
-            setResults(jumpHist);
-            console.log(data.message)
-         }
-         else {
-            setError('No results found.');
-            setResults([]);
-            console.error('jumps not found', data)
-         }
-      } catch (err) {
-         setError('Failed to load user jumps.');
-         setResults([]);
-         console.error('client failed to load user jumps')
-      } finally {
-         setLoading(false);
-      }
-   }
+   const requestCounter = useRef(0);
 
    //handler 
 
@@ -140,10 +108,82 @@ function SearchedList(props) {
       setPage(0);
    }, [props.flag]);
 
-   // Fetch results when page or props.flag changes
+   // Fetch results when page, user, or search term changes
    useEffect(() => {
+      const term = (wildCard || '').trim();
+      const Offset = page * 30;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+         controller.abort();
+      }, SEARCH_TIMEOUT_MS);
+      const requestId = ++requestCounter.current;
+
+      const getResults = async () => {
+         if (!term) {
+            setResults([]);
+            setError('Enter a search term.');
+            setLoading(false);
+            clearTimeout(timeoutId);
+            return;
+         }
+
+         setLoading(true);
+         setError(null);
+         setResults([]);
+
+         try {
+            const response = await fetch(`${svr}/search`, {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json'},
+               body: JSON.stringify({user_id: user.ID, wildCard: term, offset: Offset}),
+               signal: controller.signal,
+            });
+
+            if (requestId !== requestCounter.current) {
+               return;
+            }
+
+            const data = await response.json();
+            if (data.ok) {
+               const jumpHist = Array.isArray(data.results) ? [...data.results] : [];
+               setResults(jumpHist);
+               if (jumpHist.length === 0) {
+                  setError('No results found.');
+               }
+               console.log(data.message)
+               return;
+            }
+
+            setError(data.message || 'No results found.');
+            setResults([]);
+            console.error('jumps not found', data)
+         } catch (err) {
+            if (requestId !== requestCounter.current) {
+               return;
+            }
+
+            if (err.name === 'AbortError') {
+               setError('Search timed out. Please try again.');
+            } else {
+               setError('Failed to load user jumps.');
+            }
+            setResults([]);
+            console.error('client failed to load user jumps', err)
+         } finally {
+            if (requestId === requestCounter.current) {
+               setLoading(false);
+            }
+            clearTimeout(timeoutId);
+         }
+      };
+
       getResults();
-   }, [page, props.flag]);
+
+      return () => {
+         clearTimeout(timeoutId);
+         controller.abort();
+      };
+   }, [page, props.flag, wildCard, user.ID, svr, SEARCH_TIMEOUT_MS]);
 
 
    console.log('in the Search Results', '  Search Term: ', props.wildCard, props.user, 'page: ', page);
@@ -164,7 +204,7 @@ function SearchedList(props) {
             {results.length >= 30 && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
          </div>}
 
-         {!loading && !error && (results.length > 0 ? <ResultsPage jumps={results} flag={flag} /> : <p style={textStyle}>no results</p>)}
+         {!loading && !error && (results.length > 0 ? <ResultsPage jumps={results} flag={props.flag} /> : <p style={textStyle}>no results</p>)}
 
          {!loading && !error && results.length > 0 && <div style ={pageNav}>
             {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}

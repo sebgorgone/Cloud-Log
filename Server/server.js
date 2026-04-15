@@ -1087,13 +1087,20 @@ app.post('/askdbpos', (req, res) => {
 
 app.post('/search', (req, res) => {
   const { wildCard: searchTerm, user_id, offset } = req.body;
-  const term     = searchTerm.trim();
+  const term = String(searchTerm || '').trim();
   const likeTerm = `%${term}%`;
+  const offsetNum = Number.isFinite(Number(offset)) ? Math.max(0, Number(offset)) : 0;
 
   if (!user_id) {
     return res
       .status(400)
-      .json({ message: 'user_id required' });
+      .json({ message: 'user_id required', ok: false });
+  }
+
+  if (!term) {
+    return res
+      .status(200)
+      .json({ message: 'no results', results: [], ok: true });
   }
 
   const sql = `
@@ -1118,14 +1125,21 @@ app.post('/search', (req, res) => {
   `;
 
   db.query(
-    sql,
-    [ user_id, term, term, likeTerm, likeTerm, likeTerm, likeTerm, offset ],
+    { sql, timeout: 10000 },
+    [ user_id, term, term, likeTerm, likeTerm, likeTerm, likeTerm, offsetNum ],
     (err, results) => {
       if (err) {
-        console.error('DB error fetching search results');
+        if (err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+          console.error('DB search timed out');
+          return res
+            .status(504)
+            .json({ message: 'search timed out', ok: false });
+        }
+
+        console.error('DB error fetching search results', err);
         return res
           .status(500)
-          .json({ message: 'could not retrieve search results' });
+          .json({ message: 'could not retrieve search results', ok: false });
       }
       if (results.length === 0) {
         return res

@@ -86,14 +86,13 @@ const tagsRoute = async (array) => {
 
    //useEffect 
    useEffect(() => {
-      Array.isArray(jumps) && getTags(jumps);
       setJumps(props.jumps);
-   }, [props.jumps]); 
-
-   useEffect(() => {
-      console.log('useffect')
-      Array.isArray(jumps) && getTags(jumps)
-   }, [props.flag, jumps])
+      if (Array.isArray(props.jumps)) {
+         getTags(props.jumps);
+      } else {
+         setTags(null);
+      }
+   }, [props.jumps]);
 
    
 

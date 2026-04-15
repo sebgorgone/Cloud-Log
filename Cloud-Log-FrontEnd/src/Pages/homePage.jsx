@@ -70,9 +70,9 @@ function HomePage(props) {
       return true
     }
 
-   const [wcField, setWcField] = useState();
+   const [wcField, setWcField] = useState('');
 
-   const [wildCard, setWildCard] = useState();
+   const [wildCard, setWildCard] = useState('');
 
    const [flag, setFlag]= useState(false);
 
@@ -231,7 +231,7 @@ function HomePage(props) {
 
       setUserJumpHistory(null)
       e.preventDefault();
-      setWildCard(wcField);
+         setWildCard((wcField || '').trim());
       setRouter({
          welcome: false,
          fullList: false,
@@ -387,7 +387,6 @@ function HomePage(props) {
 
 
    useEffect(() => {
-      (!router.searchedList) && getJumpHist();
       setRouter({
       welcome: true,
       fullList: false,
@@ -397,7 +396,13 @@ function HomePage(props) {
       settings: false,
       add: false
     });
-   }, [flag]);
+   }, []);
+
+   useEffect(() => {
+      if (!router.searchedList) {
+         getJumpHist();
+      }
+   }, [router.searchedList]);
 
    useEffect(() => {
       getUserData();
