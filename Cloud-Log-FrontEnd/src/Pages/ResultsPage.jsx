@@ -11,22 +11,6 @@ function ResultsPage (props) {
 
    const [jumps, setJumps] = useState(null);
 
-   //pdf
-   function unPackPdf(obj) {
-  const base64Bytes = new Uint8Array(obj.data);
-  const b64String = new TextDecoder().decode(base64Bytes);
-
-  const binaryString = atob(b64String);
-
-  const len = binaryString.length;
-  const pdfUint8 = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    pdfUint8[i] = binaryString.charCodeAt(i);
-  }
-
-  const pdfBlob = new Blob([pdfUint8], { type: 'application/pdf' });
-  return pdfBlob;
-   }
    //tags
    const [tagsArray, setTags] = useState(null)
 
@@ -136,7 +120,6 @@ const tagsRoute = async (array) => {
                   exitAlt={jump.alt}
                   time={jump.t}
                   notes={jump.notes}
-                  signature={unPackPdf(jump.pdfSig)}
                   jump_id={jump.jump_id}
                   tags={getThisJumpsTags(jump.jump_id)}
                   context={"gathered"}

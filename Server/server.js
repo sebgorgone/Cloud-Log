@@ -1149,7 +1149,7 @@ app.post('/search', (req, res) => {
   const sql = `
     SELECT
       j.jump_id, j.user_id, j.jump_num, j.jump_date,
-      j.dz AS dropzone, j.equipment, j.notes, j.pdfSig, j.alt, j.t, j.aircraft
+      j.dz AS dropzone, j.equipment, j.notes, j.alt, j.t, j.aircraft
     FROM jumps AS j
     WHERE j.user_id = ?
       AND (${searchClauses.join(' OR ')})
