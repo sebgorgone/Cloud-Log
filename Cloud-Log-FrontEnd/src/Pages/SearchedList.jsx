@@ -15,7 +15,6 @@ function SearchedList(props) {
 
    //state
 
-   const [flag, setFlag] = useState(false);
    const [page, setPage] = useState(0); 
    const [results, setResults] = useState([]);
    const [loading, setLoading] = useState(false);
@@ -134,17 +133,18 @@ function SearchedList(props) {
       height: "fit-content",
    }
 
-   //useEffect
 
+   //useEffect
+   // When props.flag changes, reset page to 0 and fetch results
    useEffect(() => {
       setPage(0);
-      getResults();
    }, [props.flag]);
 
+   // Fetch results when page or props.flag changes
    useEffect(() => {
-      setFlag(f => !f);
       getResults();
-   }, [page]);
+   }, [page, props.flag]);
+
 
    console.log('in the Search Results', '  Search Term: ', props.wildCard, props.user, 'page: ', page);
 
