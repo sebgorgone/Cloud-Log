@@ -16,16 +16,16 @@ function SearchedList(props) {
    //state
 
    const [flag, setFlag] = useState(false);
-
    const [page, setPage] = useState(0); 
-
-   const [results, setResults] = useState('loading...');
-
+   const [results, setResults] = useState([]);
+   const [loading, setLoading] = useState(false);
+   const [error, setError] = useState(null);
 
    const getResults = async () => { 
-      console.log('getting search results');
+      setLoading(true);
+      setError(null);
       const Offset = page * 30;
-      setResults([])
+      setResults([]);
       try {
          const response = await fetch(`${svr}/search`, {
             method: 'POST',
@@ -38,16 +38,20 @@ function SearchedList(props) {
             for (let jump of data.results) {
                jumpHist.push(jump);
             }
-
             setResults(jumpHist);
             console.log(data.message)
-               
          }
          else {
+            setError('No results found.');
+            setResults([]);
             console.error('jumps not found', data)
          }
       } catch (err) {
+         setError('Failed to load user jumps.');
+         setResults([]);
          console.error('client failed to load user jumps')
+      } finally {
+         setLoading(false);
       }
    }
 
@@ -131,40 +135,42 @@ function SearchedList(props) {
    }
 
    //useEffect
+
    useEffect(() => {
       setPage(0);
       getResults();
    }, [props.flag]);
 
    useEffect(() => {
-      setFlag(!flag)
+      setFlag(f => !f);
       getResults();
    }, [page]);
 
    console.log('in the Search Results', '  Search Term: ', props.wildCard, props.user, 'page: ', page);
 
+
    return(
       <div style={shell}>
-
-
          {wildCard !== "" ? <p style={headerStyle}>showing results for {props.wildCard}</p> : <p style={headerStyle}>enter searchd</p>}
-         {results.length > 0 && <p style={textStyle}>results: {results.length}</p>}
 
-         {results.length > 0 && <div style ={pageNav}>
+         {loading && <p style={textStyle}>Loading...</p>}
+         {error && <p style={{...textStyle, color: 'red'}}>{error}</p>}
+
+         {!loading && !error && results.length > 0 && <p style={textStyle}>results: {results.length}</p>}
+
+         {!loading && !error && results.length > 0 && <div style ={pageNav}>
             {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}
             <p style={pageNum}>Page {page + 1}</p>
             {results.length >= 30 && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
          </div>}
 
-         {Array.isArray(results) ? results.length > 0 ? <ResultsPage jumps={results} flag={flag} /> : <p style={textStyle}>no results</p>: <p style={textStyle}>loading</p>}
+         {!loading && !error && (results.length > 0 ? <ResultsPage jumps={results} flag={flag} /> : <p style={textStyle}>no results</p>)}
 
-         {results.length > 0 && <div style ={pageNav}>
+         {!loading && !error && results.length > 0 && <div style ={pageNav}>
             {page > 0 && <button style={pageButtonLeft} onClick={handlePrevPage}>Page {page}</button>}
             <p style={pageNum}>Page {page + 1}</p>
             {results.length === 30 && <button style={pageButtonRight} onClick={handleNextPage}>Page {page + 2}</button>}
          </div>}
-
-
       </div>
    )
 
