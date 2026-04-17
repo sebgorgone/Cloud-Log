@@ -735,7 +735,8 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[0]
+    color: pallette[0],
+    width: '90%'
   }
 
   const tagListButtonStyleJT1={
@@ -745,7 +746,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[4]
+    color: pallette[4],
+    width: '90%'
+
   }
 
   const tagListButtonStyleOC={
@@ -755,7 +758,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[0]
+    color: pallette[0],
+    width: '90%'
+
   }
 
   const tagListButtonStyleOC1={
@@ -765,7 +770,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[4]
+    color: pallette[4],
+    width: '90%'
+
   }
 
   const tagListButtonStyleLI={
@@ -775,7 +782,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[0]
+    color: pallette[0],
+    width: '90%'
+
   }
 
   const tagListButtonStyleLI1={
@@ -785,7 +794,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[4]
+    color: pallette[4],
+    width: '90%'
+
   }
 
   const tagListButtonStyleGRP = {
@@ -795,7 +806,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[0]
+    color: pallette[0],
+    width: '90%'
+
   }
 
   const tagListButtonStyleGRP1 = {
@@ -805,7 +818,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "14px",
     padding: "2px",
-    color: pallette[4]
+    color: pallette[4],
+    width: '90%'
+
   }
 
   const tagListButtonStyleCNPY = {
@@ -815,7 +830,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[0]
+    color: pallette[0],
+    width: '90%'
+
   }
 
   const tagListButtonStyleCNPY1 = {
@@ -825,7 +842,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[4]
+    color: pallette[4],
+    width: '90%'
+
   }
 
   const tagListButtonStyleEMER = {
@@ -835,7 +854,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[0]
+    color: pallette[0],
+    width: '90%'
+
   }
 
   const tagListButtonStyleEMER1 = {
@@ -845,7 +866,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[4]
+    color: pallette[4],
+    width: '90%'
+
   }
 
   const tagListButtonStyleMAL = {
@@ -855,7 +878,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[0]
+    color: pallette[0],
+    width: '90%'
+
   }
 
   const tagListButtonStyleMAL1 = {
@@ -865,7 +890,9 @@ function LogInputWidget(props) {
     border: "none",
     borderRadius: "1.5vw",
     padding: "2px",
-    color: pallette[4]
+    color: pallette[4],
+    width: '90%'
+
   }
 
   //inline styles ^^
@@ -1637,7 +1664,6 @@ function LogInputWidget(props) {
               display: 'flex',
               flexDirection: 'column',
               gap: '12px',
-              paddingLeft: '24px',
               overflowY: 'auto',
               minHeight: 0,
             }}
