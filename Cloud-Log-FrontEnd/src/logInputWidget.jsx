@@ -286,16 +286,16 @@ function LogInputWidget(props) {
   }
   const nestedButton = {
     border: "none",
-    fontSize: ".8em",
+    fontSize: "14px",
     fontFamily: "L1",
-    borderRadius: "1.5em",
+    borderRadius: "50vw",
     paddingBottom: ".4em",
     background: pallette[4],
     color: pallette[1],
     marginRight: ".6em",
     marginBottom: "0",
-    width: "3em",
-    height: "3em",
+    width: "44px",
+    height: "44px",
   }
   const planeList = planes.map((plane, index) => 
     <div key={index} style={listDiv}>
@@ -1227,14 +1227,14 @@ function LogInputWidget(props) {
   };
 
   const headerButtonStyleUpload = {
-    background: pallette[4],
+    background: pallette[3],
     border: "none",
-    borderRadius: "1em",
+    borderRadius: "18px",
     marginTop: ".5em",
-    padding: ".6vw",
+    padding: "16px",
     fontFamily: "L1",
     color: pallette[1],
-    marginLeft: "1em",
+    fontSize: '28px'
   };
 
   const headerButtonStyle1 = {
@@ -1541,7 +1541,6 @@ function LogInputWidget(props) {
               display: 'flex',
               flexDirection: 'column',
               overflowX: 'hidden',
-              flex: 1,
             }}
           >
             <form style={!dzPage ? {...formStyle, width: '100%'} : {display: "none"}}>
@@ -1628,7 +1627,7 @@ function LogInputWidget(props) {
             gridTemplateColumns: '30% 1fr',
             gap: '8px',
             minHeight: 0,
-            maxHeight: '400px', // adjust as needed
+            maxHeight: '700px', // adjust as needed
             boxSizing: 'border-box',
           }}
         >
