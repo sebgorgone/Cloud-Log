@@ -516,8 +516,8 @@ function HomePage(props) {
 
             {router.searchedList ? <SearchedList user={user} wildCard={wildCard} flag={flag} jump_num={userJumpCount}/> : null}
 
-            {router.add ? <div style={{display: "flex",justifyContent: "space-around", paddingLeft: "4em", marginTop: "3.25em", width: "100%"}}>
-               <div style={{width: '75%'}}>
+            {router.add ? <div style={{display: "flex", justifyContent: "flex-start", paddingLeft: "4em", marginTop: "3.25em", width: "100%"}}>
+               <div style={{width: '100%'}}>
                   <LogInputWidget add={() => setUserJumpCount(userJumpCount + 1)} rst={() => getJumpHist()} numOfJumps={Array.isArray(userJumpHistory) ? userJumpCount : null} set_false={() => setGotHistory(false)} rigs={rigs.map(n => n.name)} planes={planes.map(n => n.name)} DZs={DZs.map(n => n.name)} defaults={(defaultAircraft || defaultAircraft === null ) ? {plane: defaultAircraft, rig: defaultRig, dz: defaultDZ} : 'loading...'} />
                </div>
             </div> : null}

@@ -13,20 +13,20 @@ function LogInputWidget(props) {
 
   //state hooks vv
 
-//list states
+  //list states
   const [planes, setPlanes] = useState([]);
 
   const [rigs, setRigs] = useState([]);
 
   const [DZs, setDZs] = useState([]);
 
-//add States
+  //add States
   const [addJumpDZ, setAddJumpDZ] = useState(null);
   const [addJumpAircraft, setAddJumpAircraft] = useState(null);
   const [addJumpRig, setAddJumpRig] = useState(null);
 
 
-//dropdown states
+  //dropdown states
   const [eqpmPage, setEqpmPage] = useState(true);
 
   const [aircraftPage, setAircraftPage] = useState(true);
@@ -36,7 +36,7 @@ function LogInputWidget(props) {
   const [tagsPage, setTagsPage] = useState(true);
 
 
-              //tags dropdown
+  //tags dropdown
   const [jumpTypeTagsPage, setJumpTypeTagsPage] = useState(false);
 
   const [openCharTagsPage, setOpenCharTagsPage] = useState(false);
@@ -56,7 +56,7 @@ function LogInputWidget(props) {
   const [nextJump, setNextJump] = useState(props.numOfJumps + 1);
 
 
-//newjump variables
+  //newjump variables
   const [newJumpNum, setNewJumpNum] = useState(nextJump);
 
   const [newJumpDate, setNewJumpDate] = useState(new Date().toISOString().slice(0, 10));
@@ -84,11 +84,11 @@ function LogInputWidget(props) {
   const [defaultDZ, setDefaultDZ] = useState(null)  
 
   //state hooks ^^
-  
-  //functional elements vv
-//page elements
 
-  
+  //functional elements vv
+  //page elements
+
+
 
   function handleEquipmentForm() {
     setDzPage(true);
@@ -108,14 +108,8 @@ function LogInputWidget(props) {
     setDzPage(!dzPage);
   }
 
-  function handleTagsForm(e) {
-      e.preventDefault();
-      collapseAll();
-    setTagsPage(!tagsPage);
-  }
 
-
-        //tags pages
+  //tags pages
   function collapseAll() {
     setJumpTypeTagsPage(false);
     setOpenCharTagsPage(false);
@@ -129,45 +123,53 @@ function LogInputWidget(props) {
   function handleJumpTypeTagsForm(e) {
     e.preventDefault();
     collapseAll();
+    setTagsPage(false);
     setJumpTypeTagsPage(!jumpTypeTagsPage);
   }
   function handleOpenCharTagsForm(e) {
     e.preventDefault();
     collapseAll();
+    setTagsPage(false);
     setOpenCharTagsPage(!openCharTagsPage);
   }
   function handleLiscTagsForm(e) {
     e.preventDefault();
     collapseAll();
+    setTagsPage(false);
     setLiscTagsPage(!liscTagsPage);
   }
   function handleGroupTagsForm(e) {
     e.preventDefault();
     collapseAll();
+    setTagsPage(false);
     setGroupTagsPage(!groupTagsPage);
   }
   function handleCnpyTagsForm(e) {
     e.preventDefault();
     collapseAll();
+    setTagsPage(false);
     setCnpyTagsPage(!cnpyTagsPage);
   }
   function handleEmergencyTagsForm(e) {
     e.preventDefault();
     collapseAll();
+    setTagsPage(false);
     setEmergencyTagsPage(!emergencyTagsPage);
   }
   function handleMalfunctionTagsForm(e) {
     e.preventDefault();
     collapseAll();
+    setTagsPage(false);
     setMalfunctionTagsPage(!malfunctionTagsPage);
   }
   function handlePreReqTagsForm(e) {
     e.preventDefault();
     collapseAll();
+    setTagsPage(false);
     setPreReqTagsPage(!preReqTagsPage);
   }
 
-//string elements
+  //string elements
   function handleJumpNumChange (e) {
     setNewJumpNum(e.target.value);
   }
@@ -195,7 +197,7 @@ function LogInputWidget(props) {
   function handleComForm (e) {
     setNewJumpCom(e.target.value)
   }
-//buttons
+  //buttons
   async function handleDZInput (e) {
     e.preventDefault()
     for (let d of DZs){
@@ -232,7 +234,7 @@ function LogInputWidget(props) {
     }
   }
 
-//file upload
+  //file upload
 
   const handleSigFileUpload = (e) => {
     const file = e.target.files[0];
@@ -245,9 +247,8 @@ function LogInputWidget(props) {
 
     setNewJumpSigUpload(file)
 
-    console.log('uploaded PDF-', file)
-    
-    
+
+
   };
 
   //functional elements ^^
@@ -263,39 +264,39 @@ function LogInputWidget(props) {
     display: "flex", 
     alignItems: "center", 
     justifyContent: "space-between", 
-    width: "80%", 
-    borderRadius: "1em", 
+    width: "95%", 
+    borderRadius: "50vw", 
     background: pallette[0], 
     padding: "0", 
     margin: "1em"
   }
-   const rlStyle = {
-   fontFamily: "L1",
-   fontSize: "1.1em",
-   paddingLeft: ".7em",
-   paddingBottom: "0em",
-   color: pallette[3]
-   }
-   const dispStyle = {
-   fontFamily: "L1",
-   fontSize: ".6em",
-   paddingLeft: ".7em",
-   paddingRight: ".7em",
-   color: pallette[3]
-   }
-   const nestedButton = {
-      border: "none",
-      fontSize: ".8em",
-      fontFamily: "L1",
-      borderRadius: "1.5em",
-      paddingBottom: ".4em",
-      background: pallette[4],
-      color: pallette[1],
-      marginRight: ".6em",
-      marginBottom: "0",
-      width: "3em",
-      height: "3em",
-   }
+  const rlStyle = {
+    fontFamily: "L1",
+    fontSize: "20px",
+    paddingLeft: ".7em",
+    paddingBottom: "0em",
+    color: pallette[3]
+  }
+  const dispStyle = {
+    fontFamily: "L1",
+    fontSize: "16px",
+    paddingLeft: ".7em",
+    paddingRight: ".7em",
+    color: pallette[3]
+  }
+  const nestedButton = {
+    border: "none",
+    fontSize: ".8em",
+    fontFamily: "L1",
+    borderRadius: "1.5em",
+    paddingBottom: ".4em",
+    background: pallette[4],
+    color: pallette[1],
+    marginRight: ".6em",
+    marginBottom: "0",
+    width: "3em",
+    height: "3em",
+  }
   const planeList = planes.map((plane, index) => 
     <div key={index} style={listDiv}>
       <p style={rlStyle}>{plane === defaultPlane && <span><img style={{ width: '1em', marginRight: ".5em", border: 'none' }} src="/favorite-svgrepo-com.svg" /></span>}{plane}</p>
@@ -321,7 +322,7 @@ function LogInputWidget(props) {
   //states
 
 
-                      //JUMPTYPES
+  //JUMPTYPES
   const [tagBellyJTT, setTagBellyJTT] = useState(true);
   const [tagFreeFlyJTT, setTagFreeFlyJTT] = useState(true);
   const [tagWingsuitJTT, setTagWingsuitJTT] = useState(true);
@@ -343,7 +344,7 @@ function LogInputWidget(props) {
   const [tagHighJTT, setTagHighJTT] = useState(true);
 
 
-                    //OPENINGS
+  //OPENINGS
   const [tagGoodOC, setTagGoodOC] = useState(true);
   const [tagHardOC, setTagHardOC] = useState(true);
   const [tagOffHeadingOC, setTagOffHeadingOC] = useState(true);
@@ -351,7 +352,7 @@ function LogInputWidget(props) {
   const [tagLineBreakOC, setTagLineBreakOC] = useState(true);
   const [tagUnstableOC, setTagUnstableOC] = useState(true);
 
-                    //Liscensing and work 
+  //Liscensing and work 
   const [tagTILSC, setTagTILSC] = useState(true);
   const [tagVideoLSC, setTagVideoLSC] = useState(true);
   const [tagAffiLSC, setTagAffiLSC] = useState(true);
@@ -362,10 +363,10 @@ function LogInputWidget(props) {
   const [tagRecurrencyLSC, setTagRecurrencyLSC] = useState(true);
   const [tagStudentLSC, setTagStudentLSC] = useState(true);
 
-                      //groupsize
+  //groupsize
   const [tagGroupSize, setTagGroupSize] = useState(null);
 
-                    //Canopy and weather
+  //Canopy and weather
   const [tagHighWindWTHR, setTagHighWindWTHR] = useState(true);
   const [tagLowWindWTHR, setTagLowWindWTHR] = useState(true);
   const [tagDownWindWTHR, setTagDownWindWTHR] = useState(true);
@@ -375,14 +376,14 @@ function LogInputWidget(props) {
   const [tagSnowWTHR, setTagSnowWTHR] = useState(true);
 
 
-                    //Emergencies
+  //Emergencies
   const [tagCutAwayEMR, setTagCutAwayEMR] = useState(true);
   const [tagOffLandingEMR, setTagOffLandingEMR] = useState(true);
   const [tagAircraftEMR, setTagAircraftEMR] = useState(true);
   const [tagInjuryEMR, setTagInjuryEMR] = useState(true);
 
 
-                    //MAL
+  //MAL
   const [tagEvaMAL, setTagEvaMAL] = useState(true);
   const [tagBiPlaneMAL, setTagBiPlaneMAL] = useState(true);
   const [tagDownPlaneMAL, setTagDownPlaneMAL] = useState(true);
@@ -399,7 +400,7 @@ function LogInputWidget(props) {
   const [tagDivingLineTwistMAL, setTagDivingLineTwistMAL] = useState(true);
   const [tagTensionKnotMAL, setTagTensionKnotMAL] = useState(true);
 
-                    //Pre reqs
+  //Pre reqs
   const [tagAcc33REQ, setTagAcc33REQ] = useState(true);
   const [tagAcc7REQ, setTagAcc7REQ] = useState(true);
   const [tagDemoREQ, setTagDemoREQ] = useState(true);
@@ -407,7 +408,7 @@ function LogInputWidget(props) {
   const [tagNightREQ, setTagNightREQ] = useState(true);
 
 
-   //handlers
+  //handlers
 
   const tagHandler = { 
     JTbelly: (e) => {
@@ -672,32 +673,32 @@ function LogInputWidget(props) {
       setTagNightREQ(!tagNightREQ);
     },
   }
-  
+
   //button styles
   const tagButtonOff = {
     fontFamily: "L1",
-    padding: "1em",
-    fontSize: ".6em",
-    margin: "1vh",
+    padding: "12px",
+    fontSize: "16px",
+    margin: "16px",
     backgroundColor: pallette[4],
     color: pallette[0],
-    border: "solid .3vh",
-    borderRadius: "1em",
-    width: "fit-content",
-    
+    border: "solid 2px",
+    borderRadius: "8px",
+    width: "200px",
+
   }
 
   const tagButtonOn = {
     fontFamily: "L1",
-    padding: "1em",
-    fontSize: ".6em",
-    margin: "1vh",
+    padding: "12px",
+    fontSize: "16px",
+    margin: "16px",
     backgroundColor: pallette[1],
     color: pallette[4],
-    border: "solid .3vh",
+    border: "solid 2px",
     borderColor: pallette[4],
-    borderRadius: "1em",
-    width: "fit-content",
+    borderRadius: "8px",
+    width: "200px",
 
   }
   //tags and state logic ^^
@@ -705,7 +706,7 @@ function LogInputWidget(props) {
 
 
   //inline styles vv
-    
+
 
   const formHiddenStyle = {
     display: "none", 
@@ -727,158 +728,143 @@ function LogInputWidget(props) {
     width: "100%"
   }
 
-  const tagShellStyle= {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
-    borderRadius: "3vw",
-    margin: "1em",
-    background: pallette[3],
-  }
-
-  const tagListStyle = {
-    justifyContent: "left",
-    margin: "1em"
-
-  }
-  
   const tagListButtonStyleJT={
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[0]
   }
 
   const tagListButtonStyleJT1={
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[4]
   }
 
   const tagListButtonStyleOC={
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[0]
   }
 
   const tagListButtonStyleOC1={
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[4]
   }
 
   const tagListButtonStyleLI={
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[0]
   }
 
   const tagListButtonStyleLI1={
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[4]
   }
-  
+
   const tagListButtonStyleGRP = {
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[0]
   }
 
   const tagListButtonStyleGRP1 = {
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[0],
     border: "none",
-    borderRadius: "1.5vw",
-    padding: ".5vw",
+    borderRadius: "14px",
+    padding: "2px",
     color: pallette[4]
   }
 
   const tagListButtonStyleCNPY = {
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[0]
   }
 
   const tagListButtonStyleCNPY1 = {
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[4]
   }
 
   const tagListButtonStyleEMER = {
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[0]
   }
 
   const tagListButtonStyleEMER1 = {
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[4]
   }
 
   const tagListButtonStyleMAL = {
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[2],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[0]
   }
 
   const tagListButtonStyleMAL1 = {
     fontFamily: "L1",
-    fontSize: ".75em",
+    fontSize: "14px",
     background: pallette[0],
     border: "none",
     borderRadius: "1.5vw",
-    padding: ".5vw",
+    padding: "2px",
     color: pallette[4]
   }
 
@@ -886,237 +872,237 @@ function LogInputWidget(props) {
 
   //function to gather selected tags
 
-function tagBundler() {
-  const tagBundleAll = [
-    !tagBellyJTT       ? { name: 'Belly',                 cat: 'JTT' } : null,
-    !tagFreeFlyJTT     ? { name: 'FreeFly',               cat: 'JTT' } : null,
-    !tagWingsuitJTT    ? { name: 'Wingsuit',              cat: 'JTT' } : null,
-    !tagBaseJTT        ? { name: 'Base',                  cat: 'JTT' } : null,
-    !tagHnPJTT         ? { name: 'Hop and Pop',           cat: 'JTT' } : null,
-    !tagSwoopJTT       ? { name: 'Swoop',                 cat: 'JTT' } : null,
-    !tagCrwJTT         ? { name: 'CRW',                   cat: 'JTT' } : null,
-    !tagVfsJTT         ? { name: 'VFS',                   cat: 'JTT' } : null,
-    !tagMfsJTT         ? { name: 'MFS',                   cat: 'JTT' } : null,
-    !tagFsJTT          ? { name: 'FS',                    cat: 'JTT' } : null,
-    !tagAngleJTT       ? { name: 'Angle',                 cat: 'JTT' } : null,
-    !tagTrackingJTT    ? { name: 'Tracking',              cat: 'JTT' } : null,
-    !tagSoloJTT        ? { name: 'Solo',                  cat: 'JTT' } : null,
-    !tagTandemJTT      ? { name: 'Tandem Ride',           cat: 'JTT' } : null,
-    !tagBigwayJTT      ? { name: 'Big-Way',               cat: 'JTT' } : null,
-    !tagZooJTT         ? { name: 'Zoo',                   cat: 'JTT' } : null,
-    !tagNightJTT       ? { name: 'Night',                 cat: 'JTT' } : null,
-    !tagHighPullJTT    ? { name: 'High-Pull',             cat: 'JTT' } : null,
-    !tagHighJTT        ? { name: 'High-Altitude',         cat: 'JTT' } : null,
+  function tagBundler() {
+    const tagBundleAll = [
+      !tagBellyJTT       ? { name: 'Belly',                 cat: 'JTT' } : null,
+      !tagFreeFlyJTT     ? { name: 'FreeFly',               cat: 'JTT' } : null,
+      !tagWingsuitJTT    ? { name: 'Wingsuit',              cat: 'JTT' } : null,
+      !tagBaseJTT        ? { name: 'Base',                  cat: 'JTT' } : null,
+      !tagHnPJTT         ? { name: 'Hop and Pop',           cat: 'JTT' } : null,
+      !tagSwoopJTT       ? { name: 'Swoop',                 cat: 'JTT' } : null,
+      !tagCrwJTT         ? { name: 'CRW',                   cat: 'JTT' } : null,
+      !tagVfsJTT         ? { name: 'VFS',                   cat: 'JTT' } : null,
+      !tagMfsJTT         ? { name: 'MFS',                   cat: 'JTT' } : null,
+      !tagFsJTT          ? { name: 'FS',                    cat: 'JTT' } : null,
+      !tagAngleJTT       ? { name: 'Angle',                 cat: 'JTT' } : null,
+      !tagTrackingJTT    ? { name: 'Tracking',              cat: 'JTT' } : null,
+      !tagSoloJTT        ? { name: 'Solo',                  cat: 'JTT' } : null,
+      !tagTandemJTT      ? { name: 'Tandem Ride',           cat: 'JTT' } : null,
+      !tagBigwayJTT      ? { name: 'Big-Way',               cat: 'JTT' } : null,
+      !tagZooJTT         ? { name: 'Zoo',                   cat: 'JTT' } : null,
+      !tagNightJTT       ? { name: 'Night',                 cat: 'JTT' } : null,
+      !tagHighPullJTT    ? { name: 'High-Pull',             cat: 'JTT' } : null,
+      !tagHighJTT        ? { name: 'High-Altitude',         cat: 'JTT' } : null,
 
-    !tagGoodOC         ? { name: 'Good Opening',          cat: 'OC'  } : null,
-    !tagHardOC         ? { name: 'Hard Opening',          cat: 'OC'  } : null,
-    !tagOffHeadingOC   ? { name: 'Off Heading',           cat: 'OC'  } : null,
-    !tagPCDelayOC      ? { name: 'Piolot Chute Delay',    cat: 'OC'  } : null,
-    !tagLineBreakOC    ? { name: 'Line Break',            cat: 'OC'  } : null,
-    !tagUnstableOC     ? { name: 'Unstable Deployment',   cat: 'OC'  } : null,
+      !tagGoodOC         ? { name: 'Good Opening',          cat: 'OC'  } : null,
+      !tagHardOC         ? { name: 'Hard Opening',          cat: 'OC'  } : null,
+      !tagOffHeadingOC   ? { name: 'Off Heading',           cat: 'OC'  } : null,
+      !tagPCDelayOC      ? { name: 'Piolot Chute Delay',    cat: 'OC'  } : null,
+      !tagLineBreakOC    ? { name: 'Line Break',            cat: 'OC'  } : null,
+      !tagUnstableOC     ? { name: 'Unstable Deployment',   cat: 'OC'  } : null,
 
-    !tagTILSC          ? { name: 'TI Jump',               cat: 'LSC' } : null,
-    !tagVideoLSC       ? { name: 'Videogrpaher Jump',     cat: 'LSC' } : null,
-    !tagAffiLSC        ? { name: 'AFFI Jump',             cat: 'LSC' } : null,
-    !tagCoachLSC       ? { name: 'Coach Jump',            cat: 'LSC' } : null,
-    !tagOrganizerLSC   ? { name: 'Organizer Jump',        cat: 'LSC' } : null,
-    !tagJumpMasterLSC  ? { name: 'JumpMaster',            cat: 'LSC' } : null,
-    !tagCheckLSC       ? { name: 'Check Jump',            cat: 'LSC' } : null,
-    !tagRecurrencyLSC  ? { name: 'Recurrency Jump',       cat: 'LSC' } : null,
-    !tagStudentLSC     ? { name: 'Student Jump',          cat: 'LSC' } : null,
+      !tagTILSC          ? { name: 'TI Jump',               cat: 'LSC' } : null,
+      !tagVideoLSC       ? { name: 'Videogrpaher Jump',     cat: 'LSC' } : null,
+      !tagAffiLSC        ? { name: 'AFFI Jump',             cat: 'LSC' } : null,
+      !tagCoachLSC       ? { name: 'Coach Jump',            cat: 'LSC' } : null,
+      !tagOrganizerLSC   ? { name: 'Organizer Jump',        cat: 'LSC' } : null,
+      !tagJumpMasterLSC  ? { name: 'JumpMaster',            cat: 'LSC' } : null,
+      !tagCheckLSC       ? { name: 'Check Jump',            cat: 'LSC' } : null,
+      !tagRecurrencyLSC  ? { name: 'Recurrency Jump',       cat: 'LSC' } : null,
+      !tagStudentLSC     ? { name: 'Student Jump',          cat: 'LSC' } : null,
 
-    !tagHighWindWTHR   ? { name: 'High-Wind',             cat: 'WTHR'} : null,
-    !tagLowWindWTHR    ? { name: 'Low-Wind',              cat: 'WTHR'} : null,
-    !tagDownWindWTHR   ? { name: 'Down-Wind Landing',     cat: 'WTHR'} : null,
-    !tagCrossWindWTHR  ? { name: 'Cross-Wind Landing ',   cat: 'WTHR'} : null,
-    !tagLongSpotWTHR   ? { name: 'Long-Spot',             cat: 'WTHR'} : null,
-    !tagRainWTHR       ? { name: 'Rain',                  cat: 'WTHR'} : null,
-    !tagSnowWTHR       ? { name: 'Snow',                  cat: 'WTHR'} : null,
+      !tagHighWindWTHR   ? { name: 'High-Wind',             cat: 'WTHR'} : null,
+      !tagLowWindWTHR    ? { name: 'Low-Wind',              cat: 'WTHR'} : null,
+      !tagDownWindWTHR   ? { name: 'Down-Wind Landing',     cat: 'WTHR'} : null,
+      !tagCrossWindWTHR  ? { name: 'Cross-Wind Landing ',   cat: 'WTHR'} : null,
+      !tagLongSpotWTHR   ? { name: 'Long-Spot',             cat: 'WTHR'} : null,
+      !tagRainWTHR       ? { name: 'Rain',                  cat: 'WTHR'} : null,
+      !tagSnowWTHR       ? { name: 'Snow',                  cat: 'WTHR'} : null,
 
-    !tagCutAwayEMR     ? { name: 'Cut-Away',              cat: 'EMR' } : null,
-    !tagOffLandingEMR  ? { name: 'Off-Landing',           cat: 'EMR' } : null,
-    !tagAircraftEMR    ? { name: 'Aircraft Emergency',    cat: 'EMR' } : null,
-    !tagInjuryEMR      ? { name: 'Injury',                cat: 'EMR' } : null,
+      !tagCutAwayEMR     ? { name: 'Cut-Away',              cat: 'EMR' } : null,
+      !tagOffLandingEMR  ? { name: 'Off-Landing',           cat: 'EMR' } : null,
+      !tagAircraftEMR    ? { name: 'Aircraft Emergency',    cat: 'EMR' } : null,
+      !tagInjuryEMR      ? { name: 'Injury',                cat: 'EMR' } : null,
 
-    !tagEvaMAL         ? { name: 'Bag Lock',              cat: 'MAL' } : null,
-    !tagBiPlaneMAL     ? { name: '2 out (Bi-Plane)',      cat: 'MAL' } : null,
-    !tagDownPlaneMAL   ? { name: '2 out (Down-Plane)',    cat: 'MAL' } : null,
-    !tagLineOverMAL    ? { name: 'Line Over',             cat: 'MAL' } : null,
-    !tagSideBySideMAL  ? { name: 'Side By Side',          cat: 'MAL' } : null,
-    !tagStuckSliderMAL ? { name: 'Stuck Slider',          cat: 'MAL' } : null,
-    !tagPCInTowMAL     ? { name: 'Piolot Chute In Tow',   cat: 'MAL' } : null,
-    !tagStreamerMAL    ? { name: 'Streamer',              cat: 'MAL' } : null,
-    !tagHorshoeMAL     ? { name: 'Horshoe',               cat: 'MAL' } : null,
-    !tagPrematureMAL   ? { name: 'Premature Deployment',  cat: 'MAL' } : null,
-    !tagHardPullMAL    ? { name: 'Hard-Pull',             cat: 'MAL' } : null,
-    !tagToggleLockMAL  ? { name: 'Toggle Lock',           cat: 'MAL' } : null,
-    !tagToggleFireMAL  ? { name: 'Toggle Fire',           cat: 'MAL' } : null,
-    !tagDivingLineTwistMAL ? { name: 'Diving Line Twist', cat: 'MAL' } : null,
-    !tagTensionKnotMAL ? { name: 'Tension Knot',          cat: 'MAL' } : null,
+      !tagEvaMAL         ? { name: 'Bag Lock',              cat: 'MAL' } : null,
+      !tagBiPlaneMAL     ? { name: '2 out (Bi-Plane)',      cat: 'MAL' } : null,
+      !tagDownPlaneMAL   ? { name: '2 out (Down-Plane)',    cat: 'MAL' } : null,
+      !tagLineOverMAL    ? { name: 'Line Over',             cat: 'MAL' } : null,
+      !tagSideBySideMAL  ? { name: 'Side By Side',          cat: 'MAL' } : null,
+      !tagStuckSliderMAL ? { name: 'Stuck Slider',          cat: 'MAL' } : null,
+      !tagPCInTowMAL     ? { name: 'Piolot Chute In Tow',   cat: 'MAL' } : null,
+      !tagStreamerMAL    ? { name: 'Streamer',              cat: 'MAL' } : null,
+      !tagHorshoeMAL     ? { name: 'Horshoe',               cat: 'MAL' } : null,
+      !tagPrematureMAL   ? { name: 'Premature Deployment',  cat: 'MAL' } : null,
+      !tagHardPullMAL    ? { name: 'Hard-Pull',             cat: 'MAL' } : null,
+      !tagToggleLockMAL  ? { name: 'Toggle Lock',           cat: 'MAL' } : null,
+      !tagToggleFireMAL  ? { name: 'Toggle Fire',           cat: 'MAL' } : null,
+      !tagDivingLineTwistMAL ? { name: 'Diving Line Twist', cat: 'MAL' } : null,
+      !tagTensionKnotMAL ? { name: 'Tension Knot',          cat: 'MAL' } : null,
 
-    !tagAcc33REQ ? {name: 'Accuracy (Within 33ft)',       cat: 'REQ'} : null,
-    !tagAcc7REQ ? {name: 'Accuracy (Within 7ft)',         cat: 'REQ'} : null,
-    !tagDemoREQ ? {name: 'Demo Jump',                     cat: 'REQ'} : null,
-    !tagWaterREQ ? {name: 'Intentional Water Landing ',   cat: 'REQ'} : null,
-    !tagNightREQ ? {name: 'Night Jump',                   cat: 'REQ'} : null,
+      !tagAcc33REQ ? {name: 'Accuracy (Within 33ft)',       cat: 'REQ'} : null,
+      !tagAcc7REQ ? {name: 'Accuracy (Within 7ft)',         cat: 'REQ'} : null,
+      !tagDemoREQ ? {name: 'Demo Jump',                     cat: 'REQ'} : null,
+      !tagWaterREQ ? {name: 'Intentional Water Landing ',   cat: 'REQ'} : null,
+      !tagNightREQ ? {name: 'Night Jump',                   cat: 'REQ'} : null,
 
 
-    tagGroupSize > 1   ? { name: `${tagGroupSize}-Way`, value: tagGroupSize,        cat: 'GROUP' } : null
-  ];
-  const filteredNullBundle = tagBundleAll.filter(item => item !== null);
-  const filteredBundle = filteredNullBundle.map(item => item.name);
-  setNewJumpTagList([...tagBundleAll.filter(item => item !== null)]);
-  setTagsPreview(tagBundleAll.filter(item => item !== null).map((tag, idx) => {
-    return(
-      <div style={{margin: "0", fontSize: ".6em", padding: "0"}}key={idx}>
-        <p>{tag.name === 'GroupSize' && tagGroupSize > 1 && tagGroupSize + ' Way Group'}</p>
-        <p>{tag.name !== 'GroupSize' && tag.name}</p>
+      tagGroupSize > 1   ? { name: `${tagGroupSize}-Way`, value: tagGroupSize,        cat: 'GROUP' } : null
+    ];
+    const filteredNullBundle = tagBundleAll.filter(item => item !== null);
+    const filteredBundle = filteredNullBundle.map(item => item.name);
+    setNewJumpTagList([...tagBundleAll.filter(item => item !== null)]);
+    setTagsPreview(tagBundleAll.filter(item => item !== null).map((tag, idx) => {
+      return(
+        <div style={{margin: "0", fontSize: ".6em", padding: "0"}}key={idx}>
+          <p>{tag.name === 'GroupSize' && tagGroupSize > 1 && tagGroupSize + ' Way Group'}</p>
+          <p>{tag.name !== 'GroupSize' && tag.name}</p>
 
-      </div>
-    )
-  }))
-  return tagBundleAll.filter(item => item !== null);
-}
+        </div>
+      )
+    }))
+    return tagBundleAll.filter(item => item !== null);
+  }
 
-const [tagsPreview, setTagsPreview] = useState(null);
+  const [tagsPreview, setTagsPreview] = useState(null);
 
-      //useEffects
+  //useEffects
   useEffect(() => {
     tagBundler();
   },
-  [tagsPage,
-tagBellyJTT,
-tagFreeFlyJTT,
-tagWingsuitJTT,
-tagBaseJTT,
-tagHnPJTT,
-tagSwoopJTT,
-tagCrwJTT,
-tagVfsJTT,
-tagMfsJTT,
-tagFsJTT,
-tagAngleJTT,
-tagTrackingJTT,
-tagSoloJTT,
-tagTandemJTT,
-tagBigwayJTT,
-tagZooJTT,
-tagNightJTT,
-tagHighPullJTT,
-tagHighJTT,
-tagGoodOC,
-tagHardOC,
-tagOffHeadingOC,
-tagPCDelayOC,
-tagLineBreakOC,
-tagUnstableOC,
-tagTILSC,
-tagVideoLSC,
-tagAffiLSC,
-tagCoachLSC,
-tagOrganizerLSC,
-tagJumpMasterLSC,
-tagCheckLSC,
-tagRecurrencyLSC,
-tagStudentLSC,
-tagHighWindWTHR,
-tagLowWindWTHR,
-tagDownWindWTHR,
-tagCrossWindWTHR,
-tagLongSpotWTHR,
-tagRainWTHR,
-tagSnowWTHR,
-tagCutAwayEMR,
-tagOffLandingEMR,
-tagAircraftEMR,
-tagInjuryEMR,
-tagEvaMAL,
-tagBiPlaneMAL,
-tagDownPlaneMAL,
-tagLineOverMAL,
-tagSideBySideMAL,
-tagStuckSliderMAL,
-tagPCInTowMAL,
-tagStreamerMAL,
-tagHorshoeMAL,
-tagPrematureMAL,
-tagHardPullMAL,
-tagToggleLockMAL,
-tagToggleFireMAL,
-tagDivingLineTwistMAL,
-tagTensionKnotMAL,
-tagAcc7REQ,
-tagAcc33REQ,
-tagDemoREQ,
-tagWaterREQ,
-tagNightREQ,
-tagGroupSize,]);
+    [tagsPage,
+      tagBellyJTT,
+      tagFreeFlyJTT,
+      tagWingsuitJTT,
+      tagBaseJTT,
+      tagHnPJTT,
+      tagSwoopJTT,
+      tagCrwJTT,
+      tagVfsJTT,
+      tagMfsJTT,
+      tagFsJTT,
+      tagAngleJTT,
+      tagTrackingJTT,
+      tagSoloJTT,
+      tagTandemJTT,
+      tagBigwayJTT,
+      tagZooJTT,
+      tagNightJTT,
+      tagHighPullJTT,
+      tagHighJTT,
+      tagGoodOC,
+      tagHardOC,
+      tagOffHeadingOC,
+      tagPCDelayOC,
+      tagLineBreakOC,
+      tagUnstableOC,
+      tagTILSC,
+      tagVideoLSC,
+      tagAffiLSC,
+      tagCoachLSC,
+      tagOrganizerLSC,
+      tagJumpMasterLSC,
+      tagCheckLSC,
+      tagRecurrencyLSC,
+      tagStudentLSC,
+      tagHighWindWTHR,
+      tagLowWindWTHR,
+      tagDownWindWTHR,
+      tagCrossWindWTHR,
+      tagLongSpotWTHR,
+      tagRainWTHR,
+      tagSnowWTHR,
+      tagCutAwayEMR,
+      tagOffLandingEMR,
+      tagAircraftEMR,
+      tagInjuryEMR,
+      tagEvaMAL,
+      tagBiPlaneMAL,
+      tagDownPlaneMAL,
+      tagLineOverMAL,
+      tagSideBySideMAL,
+      tagStuckSliderMAL,
+      tagPCInTowMAL,
+      tagStreamerMAL,
+      tagHorshoeMAL,
+      tagPrematureMAL,
+      tagHardPullMAL,
+      tagToggleLockMAL,
+      tagToggleFireMAL,
+      tagDivingLineTwistMAL,
+      tagTensionKnotMAL,
+      tagAcc7REQ,
+      tagAcc33REQ,
+      tagDemoREQ,
+      tagWaterREQ,
+      tagNightREQ,
+      tagGroupSize,]);
 
 
-useEffect(() => {
-  if (props.defaults) {
-    setDefaultAircraft(props.defaults.plane);
-    setDefualtRig(props.defaults.rig);
-    setDefaultDZ(props.defaults.dz);
-  }
-  if (props.defaults) {
-    setDefaultAircraft(props.defaults.plane);
-    setDefualtRig(props.defaults.rig);
-    setDefaultDZ(props.defaults.dz);
-  }
+  useEffect(() => {
+    if (props.defaults) {
+      setDefaultAircraft(props.defaults.plane);
+      setDefualtRig(props.defaults.rig);
+      setDefaultDZ(props.defaults.dz);
+    }
+    if (props.defaults) {
+      setDefaultAircraft(props.defaults.plane);
+      setDefualtRig(props.defaults.rig);
+      setDefaultDZ(props.defaults.dz);
+    }
 
-  if (props.rigs) {
-    setRigs(props.rigs);
-  }
+    if (props.rigs) {
+      setRigs(props.rigs);
+    }
 
-  if (props.DZs) {
-    setDZs(props.DZs);
-  }
+    if (props.DZs) {
+      setDZs(props.DZs);
+    }
 
-  if (props.planes) {
-    setPlanes(props.planes);
-  }
-}, [])
+    if (props.planes) {
+      setPlanes(props.planes);
+    }
+  }, [])
 
-useEffect(() => {
-  setNextJump(props.numOfJumps + 1)
-}, [props.numOfJumps]);
+  useEffect(() => {
+    setNextJump(props.numOfJumps + 1)
+  }, [props.numOfJumps]);
 
-useEffect (() => {
-  setNewJumpNum(nextJump)
-}, [nextJump])
+  useEffect (() => {
+    setNewJumpNum(nextJump)
+  }, [nextJump])
 
-useEffect(() => {
-  if (newJumpNum - props.jump_num > 1) props.rst();
-}, [newJumpNum])
+  useEffect(() => {
+    if (newJumpNum - props.jump_num > 1) props.rst();
+  }, [newJumpNum])
 
-useEffect(() => {
-  setNewJumpDZ(defaultDZ);
-  setNewJumpRig(defaultRig);
-  setNewJumpAircraft(defaultPlane);
-}, [defaultDZ, defaultPlane, defaultRig])
+  useEffect(() => {
+    setNewJumpDZ(defaultDZ);
+    setNewJumpRig(defaultRig);
+    setNewJumpAircraft(defaultPlane);
+  }, [defaultDZ, defaultPlane, defaultRig])
 
-//api calls
+  //api calls
 
   function fileToBase64(pdfFile) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => {
-      reader.abort();
-      reject(new Error('Error reading file.'));
-    };
-    reader.onload = () => {
-      // reader.result is something like "data:application/pdf;base64,JVBERi0xLjcK..."
-      // If you only want the raw Base64 (no "data:...;base64," prefix),
-      // you can strip everything up to “,”.
-      const base64String = reader.result.split(',')[1];
-      resolve(base64String);
-    };
-    reader.readAsDataURL(pdfFile);
-  });
-}
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => {
+        reader.abort();
+        reject(new Error('Error reading file.'));
+      };
+      reader.onload = () => {
+        // reader.result is something like "data:application/pdf;base64,JVBERi0xLjcK..."
+        // If you only want the raw Base64 (no "data:...;base64," prefix),
+        // you can strip everything up to “,”.
+        const base64String = reader.result.split(',')[1];
+        resolve(base64String);
+      };
+      reader.readAsDataURL(pdfFile);
+    });
+  }
 
-//input info
+  //input info
 
   const storeRig = async (newRigString) => {
     try {
@@ -1157,71 +1143,75 @@ useEffect(() => {
     } catch (err) {console.error('client failed storing DZ', err);}
   };
 
-//store jump route
+  //store jump route
 
-const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur, newJumpCom, newJumpSigUpload, newJumpTagList) => {
-  try {
-    let base64Signature = null;
-    if (newJumpSigUpload) {
-      base64Signature = await fileToBase64(newJumpSigUpload);
-    }
-    const response = await fetch(`${svr}/storejump`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user_id: userData.user.id,
-        jump_num: newJumpNum,
-        jump_date: newJumpDate,
-        dz: newJumpDZ,
-        aircraft: newJumpAircraft,
-        equipment: newJumpRig,
-        alt: newJumpAlt,
-        t: newJumpDur,
-        notes: newJumpCom,
-        pdfSig: base64Signature,
-        tags: newJumpTagList
-      })
-    });
-    const responseData = await response.json();
-    if(responseData.ok){
-      props.set_false();
-      alert(responseData.message);
-      setNextJump(newJumpNum + 1);
-      setNewJumpCom('');
-      setNewJumpSigUpload(null);
-      setNewJumpTagList([]);
-      setNewJumpAlt('')
-      setNewJumpDur('')
-      setTagsToFalse();
-      setTagsPage(true);
-      setDzPage(true);
-      setAircraftPage(true);
-      setEqpmPage(true);
+  const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, newJumpRig, newJumpAlt, newJumpDur, newJumpCom, newJumpSigUpload, newJumpTagList) => {
+    try {
+      let base64Signature = null;
+      if (newJumpSigUpload) {
+        base64Signature = await fileToBase64(newJumpSigUpload);
+      }
+      const response = await fetch(`${svr}/storejump`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userData.user.id,
+          jump_num: newJumpNum,
+          jump_date: newJumpDate,
+          dz: newJumpDZ,
+          aircraft: newJumpAircraft,
+          equipment: newJumpRig,
+          alt: newJumpAlt,
+          t: newJumpDur,
+          notes: newJumpCom,
+          pdfSig: base64Signature,
+          tags: newJumpTagList
+        })
+      });
+      const responseData = await response.json();
+      if(responseData.ok){
+        props.set_false();
+        alert(responseData.message);
+        setNextJump(newJumpNum + 1);
+        setNewJumpCom('');
+        setNewJumpSigUpload(null);
+        setNewJumpTagList([]);
+        setNewJumpAlt('')
+        setNewJumpDur('')
+        setTagsToFalse();
+        setTagsPage(true);
+        setDzPage(true);
+        setAircraftPage(true);
+        setEqpmPage(true);
 
-      props.add();
-    } else {
-      alert(responseData.message);
-      console.error(responseData.error)
+        props.add();
+      } else {
+        alert(responseData.message);
+        console.error(responseData.error)
 
-    }
-  } catch (err) {console.error('client failed storing jump', err);}
-}
+      }
+    } catch (err) {console.error('client failed storing jump', err);}
+  }
 
   //revised Div Styles
 
   const shell = {
     background: pallette[1],
     borderRadius: "1em",
-    padding: "1em"
+    display: 'flex',
+    width: 'calc(100% - 7em)',
+    maxWidth: '100%',
+    boxSizing: 'border-box',
+    marginLeft: '2em',
   };
 
   const headerStyle = {
     fontFamily: "L1",
-    fontSize: "1.2em",
+    fontSize: "18px",
     color: pallette[0],
     background: pallette[4],
     borderRadius: "1em",
-    padding: ".3em",
+    padding: "8px",
   };
 
   const headerButtonStyle = {
@@ -1229,11 +1219,11 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     border: "none",
     borderRadius: "1em",
     marginTop: ".5em",
-    padding: ".6vw",
     fontFamily: "L1",
     color: pallette[0],
     marginLeft: "1em",
-    width: "10em",
+    width: "128px",
+    maxHeight: 'fit-content',
   };
 
   const headerButtonStyleUpload = {
@@ -1252,26 +1242,25 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     border: "none",
     borderRadius: "1em",
     marginTop: ".5em",
-    padding: ".6vw",
     fontFamily: "L1",
     color: pallette[4],
     marginLeft: "1em",
-    width: "10em",
+    width: "128px",
   };
 
   const inputButtonStyle = {
-      border: "0",
-      borderColor: pallette[4],
-      borderRadius: "1.5vw",
-      padding: "0",
-      margin: "0",
-      fontFamily: "L1",
-      color: pallette[4],
+    border: "0",
+    borderColor: pallette[4],
+    borderRadius: "1.5vw",
+    padding: "0",
+    margin: "0",
+    fontFamily: "L1",
+    color: pallette[4],
   };
 
   const formStyle = {
     display: "block", 
-    width: "80%",
+    width: "100%",
     textAlignLast: "center", 
     fontFamily: "L1", 
     color: pallette[4],
@@ -1301,7 +1290,7 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
     borderBottomLeftRadius: ".7em",
     borderBottomRightRadius: ".7em",
     paddingBottom: "1em",
-    
+
   };
 
   //jump upload
@@ -1406,376 +1395,384 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
 
   return(
     <div >
-    <br/>
-    <br/>
+      <br/>
+      <br/>
 
-    <div style={shell}>
+      <div style={shell}>
 
-      {/* title */}
-      <div style={{ display: "flex", justifyContent: "center", padding: ".5em", background: pallette[3], borderTopLeftRadius:".7em", borderTopRightRadius:".7em" }}>
-        <img style={{width: '5.5em', height: '5.5em', paddingTop: ".5em"}} src="/cloudLogIconWhite.svg" />
-        <h1 style={{fontFamily: "L1", padding: ".2em", color: pallette[0],fontSize: "2em"}}>Add Jump</h1>
-      </div>
 
-          {/* first row*/}
-          <div style={rowStyle}>
-            {/* jump num */}
-            <div style={inputSection}>
-              <h3 style={headerStyle}>Jump Number</h3>
-                <input 
-                  type="number" 
-                  placeholder="Jump #"
-                  value={newJumpNum}
-                  onChange={handleJumpNumChange}
-                />
-            </div>
+        {/* LEFT DIV */}
+        <div
+          style={{
+            width: '456px',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            boxSizing: 'border-box',
+            padding: '12px',
+          }}
+        >
+          {/* title */}
 
-          {/* jump date */}
+          <div style={{ display: "flex", justifyContent: "center", background: pallette[3], borderRadius:"16px", alignItems: 'center', width: '100%'}}>
+            <img style={{width: '128px', height: '128px', paddingTop: ".5em"}} src="/cloudLogIconWhite.svg" />
+            <h1 style={{fontFamily: "L1", color: pallette[0],fontSize: "24px"}}>Add Jump</h1>
+          </div>
+
           <div style={inputSection}>
+            <h3 style={headerStyle}>Jump Number</h3>
+            <input 
+              type="number" 
+              placeholder="Jump #"
+              value={newJumpNum}
+              onChange={handleJumpNumChange}
+            />
             <h3 style={headerStyle}>Jump Date</h3>
-              <input 
-                type="date" 
-                value={newJumpDate}
-                onChange={handleJumpDateChange}
-              />
-          </div>
-
-
-          </div>
-
-          {/* second row */}
-          <div style={rowStyle}>
-            {/* DZ */}
-          <div style={inputSection}>
-              <button onClick={handleDzForm}style={dzPage ? headerButtonStyle: headerButtonStyle1}>Drop-Zone<sub> change</sub></button>
-              {newJumpDZ ? <div style={listDiv}><p style={dispStyle}>{newJumpDZ}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
-          </div>
-
-
-            {/* Aircraft */}
-          <div style={inputSection}>
-          <button onClick={handleAircraftForm}style={aircraftPage ? headerButtonStyle: headerButtonStyle1}>Aircraft<sub> change</sub></button>
-          {newJumpAircraft ? <div style={listDiv}><p style={dispStyle}>{newJumpAircraft}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
-          </div>
-
-
-            {/* equipment */}
-          <div style={inputSection}>
-            <button style={eqpmPage ? headerButtonStyle: headerButtonStyle1} onClick={handleEquipmentForm}>Equipment<sub> change</sub></button>
-            {newJumpRig ? <div style={listDiv}><p style={dispStyle}>{newJumpRig}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
-          </div>
-
-
-
-          </div>
-
-          {/* intermediate */}
-
-          <div style={rowStyle}>
-
-            <form style={!dzPage ? formStyle : {display: "none"}}>
-                <p style={headerStyle}>Select Drop-Zone</p>
-                {DZList}
-                <input 
-                  id="newDZ"
-                  type="text" 
-                  placeholder="new DZ"
-                  value={addJumpDZ}
-                  onChange={handleAddJumpDZChange}
-                />
-              <button style={headerButtonStyle1} onClick={handleDZInput}>add DZ</button>
-            </form>
-
-            <form style={!aircraftPage ? formStyle : formHiddenStyle}>
-
-            <p style={headerStyle}>
-              select your aircraft 
-            </p>
-
-            {planeList}
-
-            <div>
-              <input 
-                type="text" 
-                placeholder="New Aircraft" 
-                value={addJumpAircraft}
-                onChange={handleAddJumpAircraftChange}
-              /> 
-              <button style={headerButtonStyle1} onClick={handleAircraftInput}>Add Aircraft</button>
-            </div>
-
-            </form>
-
-            <form style ={!eqpmPage ? formStyle : {display: "none"}}>
-            <p style={headerStyle}>select your rig </p>
-            {rigList}
-            <div>
-              <input 
-                type="text" 
-                placeholder="new rig"
-                value={addJumpRig}
-                onChange={handleAddJumpRigChange}
-              />
-              <button style={headerButtonStyle1} onClick={handleRigInput}>Add Rig</button>
-
-            </div>
-          </form>
-
-          </div>
-          {/* third row */}
-        <div style={rowStyle}>
-
-          {/*Exit alt*/}
-          <div>
+            <input 
+              type="date" 
+              value={newJumpDate}
+              onChange={handleJumpDateChange}
+            />
             <h3 style={headerStyle}>
               Exit Altitude
-            <sub>(ft)</sub>
-          </h3>
-          <input 
-            type="number" 
-            placeholder="altitutde"
-            value={newJumpAlt}
-            onChange={handleAddJumpAltChange}
-          />
-          </div>
-
-            {/* FF time */}
-          <div>
+              <sub>(ft)</sub>
+            </h3>
+            <input 
+              type="number" 
+              placeholder="altitutde"
+              value={newJumpAlt}
+              onChange={handleAddJumpAltChange}
+            />
             <h3 style={headerStyle}>
-            Freefall Time 
-            <sub>(s)</sub>
-          </h3>
-          <input 
-            type="number" 
-            placeholder="time"
-            value={newJumpDur} 
-            onChange={handleAddJumpDurChange}
-          />
-          </div>
-
-
-        </div>
-
-          
-          {/* fourth row */}
-        <div style={rowStyle}>
-          
-
-          {/* notes */}
-          <div style={inputSection}>
+              Freefall Time 
+              <sub>(s)</sub>
+            </h3>
+            <input 
+              type="number" 
+              placeholder="time"
+              value={newJumpDur} 
+              onChange={handleAddJumpDurChange}
+            />
             <h3 style={headerStyle}>
-            Notes
-          </h3>
-          <textarea 
-            style={{maxHeight: "2em"}}
-            type="number" 
-            placeholder="notes"
-            rows="10"
-            cols="25"
-            maxLength="250"
-            value={newJumpCom}
-            onChange={handleComForm}
-          />
-          </div>
-
-
-          {/* tags */}
-          <div style={inputSection}>
-            <button style={tagsPage ? headerButtonStyle: headerButtonStyle1} onClick={handleTagsForm}>Tags</button>
-          </div>
-
-
-        </div>
-
-        {/* intermediate */}
-
-        <div style={rowStyle}>
-          {!tagsPage && <form>
-          <h3 style={tagsHeaderStyle}>Select Tags for This Jump</h3>
-          <div style={tagShellStyle}>
-
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleJumpTypeTagsForm} style={jumpTypeTagsPage ? tagListButtonStyleJT1 : tagListButtonStyleJT}>Jump Types</button>
-            
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleOpenCharTagsForm} style={openCharTagsPage ? tagListButtonStyleOC1 : tagListButtonStyleOC}>Openings</button>
-
-            </div>
-
-            <div style={tagListStyle}>
-
-              <button onClick={handleLiscTagsForm} style={liscTagsPage ? tagListButtonStyleLI1 : tagListButtonStyleLI}>Liscensces and ratings</button>
-
-            </div> 
-
-           <div style={tagListStyle}>
-              <button onClick={handleGroupTagsForm} style={groupTagsPage ? tagListButtonStyleGRP1 : tagListButtonStyleGRP}>group Size</button>
-            </div>
-
-          <div style={tagListStyle}>
-              <button onClick={handleCnpyTagsForm} style={cnpyTagsPage ? tagListButtonStyleCNPY1 : tagListButtonStyleCNPY}>Canopy and weather</button> 
-          </div>
-
-          <div style={tagListStyle}>
-            <button onClick={handleEmergencyTagsForm} style={emergencyTagsPage ? tagListButtonStyleEMER1 : tagListButtonStyleEMER}>Emergencies</button>
-          </div>
-
-          <div style={tagListStyle}>
-              <button onClick={handleMalfunctionTagsForm} style={malfunctionTagsPage ? tagListButtonStyleMAL1 : tagListButtonStyleMAL}>Malfunctions</button> 
-          </div>
-
-          <div style={tagListStyle}>
-            <button onClick={handlePreReqTagsForm} style={preReqTagsPage ? tagListButtonStyleEMER1 : tagListButtonStyleEMER}>Prerequisites</button>             
-          </div>
-
-          </div>
-          
-        </form>}
-        </div>
-
-        {!tagsPage && <div style={rowStyle}>
-
-            <div style={preReqTagsPage ? rowStyle : {display: "none"}}>
-              <button style={tagAcc33REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc33}>Accuracy Landing (within 33ft)</button>
-              <button style={tagAcc7REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc7}>Accuracy Landing (within 7ft)</button>
-              <button style={tagDemoREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQDemo}>Demo Jump</button>
-              <button style={tagWaterREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQWater}>Intentional Water Landing</button>
-              <button style={tagNightREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQNight}>Night Jump</button>
-            </div>
-
-            <div style={malfunctionTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-                <button style={tagEvaMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALEva}>Bag Lock</button>
-                <button style={tagBiPlaneMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>2 out (bi-plane)</button>
-                <button style={tagLineOverMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>Line Over</button>
-                <button style={tagSideBySideMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALSideBySIde}>2 out (Side by Side)</button>
-                <button style={tagStuckSliderMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStuckSlider}>Hung Slider</button>
-                <button style={tagPCInTowMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPCInTow}>Piolot Chute in Tow</button>
-                <button style={tagStreamerMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStreamer}>Streamer</button>
-                <button style={tagHorshoeMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHorshoe}>Horshoe</button>
-                <button style={tagPrematureMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPremature}>Premature Deployment</button>
-                <button style={tagHardPullMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHardPull}>Hard Pull</button>
-                <button style={tagToggleLockMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleLock}>Toggle Lock</button>
-                <button style={tagToggleFireMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleFire}>Toggle Fire</button>
-                <button style={tagDivingLineTwistMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALDivingLineTwist}>Diving Line Twist</button>
-                <button style={tagTensionKnotMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALTensionKnot}>Tension knot</button>
-            </div>
-
-            <div style={emergencyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-              <button style={tagCutAwayEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRCutAway}>Cut Away</button>
-              <button style={tagOffLandingEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMROffLanding}>Off Landing</button>
-              <button style={tagAircraftEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRAircraft}>Aircraft Emergency</button>
-              <button style={tagInjuryEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRInjury}>Injury</button>
-            </div> 
-
-            <div style={cnpyTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-                <button style={tagHighWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRHighWind}>High Winds</button>
-                <button style={tagLowWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLowWind}>Low Winds</button>
-                <button style={tagDownWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRDownWind}>Down Wind Landing</button>
-                <button style={tagCrossWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRCrossWind}>Cross Wind Landing</button>
-                <button style={tagLongSpotWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLongSpot}>Long Spot</button>
-                <button style={tagRainWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRRain}>Rain</button>
-                <button style={tagSnowWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRSnow}>Snow</button>
-              </div>
-
-              <div style={groupTagsPage ? rowStyle : {display: "none"}}>
-              <input 
-                style={GsizeInpStye}
-                type="number" 
-                value={tagGroupSize} 
-                onChange={handleGroupSizeChange}
-                placeholder='enter group size'
-                />
-              </div>
-
-              <div style={liscTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-                <button style={tagTILSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCTI}>Tandem Instructor</button>
-                <button style={tagVideoLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCVideographer}>Videogrpaher</button>
-                <button style={tagAffiLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCAffi}>AFFI</button>
-                <button style={tagCoachLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCoach}>Coach </button>
-                <button style={tagOrganizerLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCOrganizer}>Organizer</button>
-                <button style={tagJumpMasterLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCJumpMaster}>Jump Master</button>
-                <button style={tagCheckLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCheck}>Check Dive</button>
-                <button style={tagRecurrencyLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCRecurrency}>Recurrency</button>
-                <button style={tagStudentLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCStudent}>Student</button>
-
-              </div>
-
-              <div style={openCharTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-
-                <button style={tagGoodOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCGood}>Good Opening</button>
-                <button style={tagHardOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCHard}>Hard Opening</button>
-                <button style={tagOffHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOffHeading}>Off Heading Opening</button>
-                <button style={tagPCDelayOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCPCDelay}>Pilot Chute Hesitation</button>
-                <button style={tagLineBreakOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCLineBreak}>Broken Line</button>
-                <button style={tagUnstableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCUnstable}>Unstable Opening</button>
-
-              </div>
-
-              <div style={jumpTypeTagsPage ? {marginTop: "1.8vh"} : {display: "none"}}>
-
-                <button style={tagBellyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTbelly}>Belly</button>
-                <button style={tagFreeFlyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFreeFly}>Freefly</button>
-                <button style={tagWingsuitJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTWingsuit}>Wingsuit</button>
-                <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Base</button>
-                <button style={tagHnPJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHnP}>Hop n Pop</button>
-                <button style={tagSwoopJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSwoop}>Swoop</button>
-                <button style={tagCrwJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTCrw}>CRW</button>
-                <button style={tagVfsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTVfs}>VFS</button>
-                <button style={tagMfsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTMfs}>MFS</button>
-                <button style={tagFsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFs}>FS</button>
-                <button style={tagAngleJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTAngle}>Angle</button>
-                <button style={tagTrackingJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTracking}>Tracking</button>
-                <button style={tagSoloJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSolo}>Solo</button>
-                <button style={tagTandemJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTandem}>Tandem</button>
-                <button style={tagBigwayJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBigway}>Big Way</button>
-                <button style={tagZooJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTZoo}>Zoo</button>
-                <button style={tagNightJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTNight}>Night</button>
-                <button style={tagHighPullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHighPull}>High Pull</button>
-                <button style={tagHighJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHigh}>High</button>
-              </div>
-
-        </div>}
-
-
-        {/* final */}
-        <div style={rowLastStyle}>
-
-
-          {/* LB signature */}
-          <div style={{marginRight: "1.5em"}}>
+              Notes
+            </h3>
+            <textarea 
+              style={{maxHeight: "2em"}}
+              type="number" 
+              placeholder="notes"
+              rows="10"
+              cols="25"
+              maxLength="250"
+              value={newJumpCom}
+              onChange={handleComForm}
+            />
             <h3 style={headerStyle}>
-            Log-book Signature Upload
-            <sub style={{display: "block", fontSize: ".5em"}}>(upload entire logbook entery for this jump)</sub>
-          </h3>
-          <input 
-            type="file" 
-            accept="application/pdf"
-            style={inputButtonStyle}
-            onChange={handleSigFileUpload}
+              Log-book Signature Upload
+              <sub style={{display: "block", fontSize: ".5em"}}>(upload entire logbook entery for this jump)</sub>
+            </h3>
+            <input 
+              type="file" 
+              accept="application/pdf"
+              style={inputButtonStyle}
+              onChange={handleSigFileUpload}
 
-          />
-          </div>
-
-          {/* upload skydive */}
-
-          <div style={inputSection}>
+            />
             <button style={headerButtonStyleUpload} onClick={handleJumpUpload}>Upload Skydive</button>
           </div>
 
 
         </div>
 
+
+        {/* RIGHT DIV */}
+        <div
+          style={{
+            flex: 1,
+            minHeight: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '12px',
+          }}
+        >
+
+          {/* top selection bar*/}
+          <div
+            style={{
+              width: '100%',
+              height: '120px',
+              padding: '4px',
+              boxSizing: 'border-box',
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '8px',
+              backgroundColor: pallette[4],
+              borderTopLeftRadius: '8px',
+              borderTopRightRadius: '8px',
+            }}
+          >
+            {/* DZ */}
+            <div style={inputSection}>
+              <button onClick={handleDzForm}style={dzPage ? headerButtonStyle: headerButtonStyle1}>Drop-Zone<sub> change</sub></button>
+              {newJumpDZ ? <div style={listDiv}><p style={dispStyle}>{newJumpDZ}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
+            </div>
+
+
+            {/* Aircraft */}
+            <div style={inputSection}>
+              <button onClick={handleAircraftForm}style={aircraftPage ? headerButtonStyle: headerButtonStyle1}>Aircraft<sub> change</sub></button>
+              {newJumpAircraft ? <div style={listDiv}><p style={dispStyle}>{newJumpAircraft}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
+            </div>
+
+
+            {/* equipment */}
+            <div style={inputSection}>
+              <button style={eqpmPage ? headerButtonStyle: headerButtonStyle1} onClick={handleEquipmentForm}>Equipment<sub> change</sub></button>
+              {newJumpRig ? <div style={listDiv}><p style={dispStyle}>{newJumpRig}</p></div> : <div style={listDiv}><p style={dispStyle}>none</p></div>}
+            </div>
+
+
+          </div>
+
+          <div
+            style={{
+              width: '100%',
+              padding: '4px',
+              boxSizing: 'border-box',
+              display: 'flex',
+              flexDirection: 'column',
+              overflowX: 'hidden',
+              flex: 1,
+            }}
+          >
+            <form style={!dzPage ? {...formStyle, width: '100%'} : {display: "none"}}>
+              <p style={headerStyle}>Select Drop-Zone</p>
+              
+              <input 
+                id="newDZ"
+                type="text" 
+                placeholder="new DZ"
+                value={addJumpDZ}
+                onChange={handleAddJumpDZChange}
+              />
+              <button style={headerButtonStyle1} onClick={handleDZInput}>add DZ</button>
+              {DZList}
+            </form>
+
+            <form style={!aircraftPage ? formStyle : formHiddenStyle}>
+
+              <p style={headerStyle}>
+                select your aircraft 
+              </p>
+
+              
+
+              <div>
+                <input 
+                  type="text" 
+                  placeholder="New Aircraft" 
+                  value={addJumpAircraft}
+                  onChange={handleAddJumpAircraftChange}
+                /> 
+                <button style={headerButtonStyle1} onClick={handleAircraftInput}>Add Aircraft</button>
+              </div>
+              
+              {planeList}
+
+            </form>
+
+            <form style ={!eqpmPage ? formStyle : {display: "none"}}>
+              <p style={headerStyle}>select your rig </p>
+              
+              <div>
+                <input 
+                  type="text" 
+                  placeholder="new rig"
+                  value={addJumpRig}
+                  onChange={handleAddJumpRigChange}
+                />
+                <button style={headerButtonStyle1} onClick={handleRigInput}>Add Rig</button>
+
+              </div>
+              {rigList}
+            </form>
+          </div>
+
+          <hr style={{color: 'white', fontSize: '4px', width: '95%'}}></hr>
+
+
+        <div
+            style={{
+              width: '100%',
+              height: '64px',
+              padding: '4px',
+              boxSizing: 'border-box',
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '8px',
+              backgroundColor: pallette[4],
+              alignItems: 'center'
+            }}
+          >
+
+            <h3 style={{fontFamily: "L1", color: pallette[0],fontSize: "30px"}}>Tags</h3>
+
+        </div>
+
+
+
+        <div
+          style={{
+            width: '100%',
+            flex: 1,
+            display: 'grid',
+            gridTemplateColumns: '30% 1fr',
+            gap: '8px',
+            minHeight: 0,
+            maxHeight: '400px', // adjust as needed
+            boxSizing: 'border-box',
+          }}
+        >
+          {/* Left column: Tag categories */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              paddingLeft: '24px',
+              overflowY: 'auto',
+              minHeight: 0,
+            }}
+          >
+            <h3 style={{ ...tagsHeaderStyle, margin: 0 }}>Select Tags for This Jump</h3>
+            <button onClick={handleJumpTypeTagsForm} style={jumpTypeTagsPage ? tagListButtonStyleJT1 : tagListButtonStyleJT}>Jump Types</button>
+            <button onClick={handleOpenCharTagsForm} style={openCharTagsPage ? tagListButtonStyleOC1 : tagListButtonStyleOC}>Openings</button>
+            <button onClick={handleLiscTagsForm} style={liscTagsPage ? tagListButtonStyleLI1 : tagListButtonStyleLI}>Liscensces and ratings</button>
+            <button onClick={handleGroupTagsForm} style={groupTagsPage ? tagListButtonStyleGRP1 : tagListButtonStyleGRP}>group Size</button>
+            <button onClick={handleCnpyTagsForm} style={cnpyTagsPage ? tagListButtonStyleCNPY1 : tagListButtonStyleCNPY}>Canopy and weather</button>
+            <button onClick={handleEmergencyTagsForm} style={emergencyTagsPage ? tagListButtonStyleEMER1 : tagListButtonStyleEMER}>Emergencies</button>
+            <button onClick={handleMalfunctionTagsForm} style={malfunctionTagsPage ? tagListButtonStyleMAL1 : tagListButtonStyleMAL}>Malfunctions</button>
+            <button onClick={handlePreReqTagsForm} style={preReqTagsPage ? tagListButtonStyleEMER1 : tagListButtonStyleEMER}>Prerequisites</button>
+          </div>
+
+          {/* Right column: Tag buttons */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              overflowY: 'auto',
+              minHeight: 0,
+              padding: '4px'
+            }}
+          >
+            {/* ...all your tag button groups, unchanged... */}
+            <div style={preReqTagsPage ? {} : { display: "none" }}>
+              <button style={tagAcc33REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc33}>Accuracy Landing (within 33ft)</button>
+              <button style={tagAcc7REQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQAcc7}>Accuracy Landing (within 7ft)</button>
+              <button style={tagDemoREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQDemo}>Demo Jump</button>
+              <button style={tagWaterREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQWater}>Intentional Water Landing</button>
+              <button style={tagNightREQ ? tagButtonOff : tagButtonOn} onClick={tagHandler.REQNight}>Night Jump</button>
+            </div>
+            <div style={malfunctionTagsPage ? {} : { display: "none" }}>
+              <button style={tagEvaMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALEva}>Bag Lock</button>
+              <button style={tagBiPlaneMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>2 out (bi-plane)</button>
+              <button style={tagLineOverMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALBiPlane}>Line Over</button>
+              <button style={tagSideBySideMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALSideBySIde}>2 out (Side by Side)</button>
+              <button style={tagStuckSliderMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStuckSlider}>Hung Slider</button>
+              <button style={tagPCInTowMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPCInTow}>Piolot Chute in Tow</button>
+              <button style={tagStreamerMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALStreamer}>Streamer</button>
+              <button style={tagHorshoeMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHorshoe}>Horshoe</button>
+              <button style={tagPrematureMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALPremature}>Premature Deployment</button>
+              <button style={tagHardPullMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALHardPull}>Hard Pull</button>
+              <button style={tagToggleLockMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleLock}>Toggle Lock</button>
+              <button style={tagToggleFireMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALToggleFire}>Toggle Fire</button>
+              <button style={tagDivingLineTwistMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALDivingLineTwist}>Diving Line Twist</button>
+              <button style={tagTensionKnotMAL ? tagButtonOff : tagButtonOn} onClick={tagHandler.MALTensionKnot}>Tension knot</button>
+            </div>
+            <div style={emergencyTagsPage ? {} : { display: "none" }}>
+              <button style={tagCutAwayEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRCutAway}>Cut Away</button>
+              <button style={tagOffLandingEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMROffLanding}>Off Landing</button>
+              <button style={tagAircraftEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRAircraft}>Aircraft Emergency</button>
+              <button style={tagInjuryEMR ? tagButtonOff : tagButtonOn} onClick={tagHandler.EMRInjury}>Injury</button>
+            </div>
+            <div style={cnpyTagsPage ? {} : { display: "none" }}>
+              <button style={tagHighWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRHighWind}>High Winds</button>
+              <button style={tagLowWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLowWind}>Low Winds</button>
+              <button style={tagDownWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRDownWind}>Down Wind Landing</button>
+              <button style={tagCrossWindWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRCrossWind}>Cross Wind Landing</button>
+              <button style={tagLongSpotWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRLongSpot}>Long Spot</button>
+              <button style={tagRainWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRRain}>Rain</button>
+              <button style={tagSnowWTHR ? tagButtonOff : tagButtonOn} onClick={tagHandler.WTHRSnow}>Snow</button>
+            </div>
+            <div style={groupTagsPage ? {} : { display: "none" }}>
+              <input
+                style={GsizeInpStye}
+                type="number"
+                value={tagGroupSize}
+                onChange={handleGroupSizeChange}
+                placeholder='enter group size'
+              />
+            </div>
+            <div style={liscTagsPage ? {} : { display: "none" }}>
+              <button style={tagTILSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCTI}>Tandem Instructor</button>
+              <button style={tagVideoLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCVideographer}>Videogrpaher</button>
+              <button style={tagAffiLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCAffi}>AFFI</button>
+              <button style={tagCoachLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCoach}>Coach </button>
+              <button style={tagOrganizerLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCOrganizer}>Organizer</button>
+              <button style={tagJumpMasterLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCJumpMaster}>Jump Master</button>
+              <button style={tagCheckLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCCheck}>Check Dive</button>
+              <button style={tagRecurrencyLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCRecurrency}>Recurrency</button>
+              <button style={tagStudentLSC ? tagButtonOff : tagButtonOn} onClick={tagHandler.LSCStudent}>Student</button>
+            </div>
+            <div style={openCharTagsPage ? {} : { display: "none" }}>
+              <button style={tagGoodOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCGood}>Good Opening</button>
+              <button style={tagHardOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCHard}>Hard Opening</button>
+              <button style={tagOffHeadingOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCOffHeading}>Off Heading Opening</button>
+              <button style={tagPCDelayOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCPCDelay}>Pilot Chute Hesitation</button>
+              <button style={tagLineBreakOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCLineBreak}>Broken Line</button>
+              <button style={tagUnstableOC ? tagButtonOff : tagButtonOn} onClick={tagHandler.OCUnstable}>Unstable Opening</button>
+            </div>
+            <div style={jumpTypeTagsPage ? {} : { display: "none" }}>
+              <button style={tagBellyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTbelly}>Belly</button>
+              <button style={tagFreeFlyJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFreeFly}>Freefly</button>
+              <button style={tagWingsuitJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTWingsuit}>Wingsuit</button>
+              <button style={tagBaseJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBase}>Base</button>
+              <button style={tagHnPJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHnP}>Hop n Pop</button>
+              <button style={tagSwoopJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSwoop}>Swoop</button>
+              <button style={tagCrwJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTCrw}>CRW</button>
+              <button style={tagVfsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTVfs}>VFS</button>
+              <button style={tagMfsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTMfs}>MFS</button>
+              <button style={tagFsJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTFs}>FS</button>
+              <button style={tagAngleJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTAngle}>Angle</button>
+              <button style={tagTrackingJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTracking}>Tracking</button>
+              <button style={tagSoloJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTSolo}>Solo</button>
+              <button style={tagTandemJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTTandem}>Tandem</button>
+              <button style={tagBigwayJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTBigway}>Big Way</button>
+              <button style={tagZooJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTZoo}>Zoo</button>
+              <button style={tagNightJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTNight}>Night</button>
+              <button style={tagHighPullJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHighPull}>High Pull</button>
+              <button style={tagHighJTT ? tagButtonOff : tagButtonOn} onClick={tagHandler.JTHigh}>High</button>
+            </div>
+          </div>
+        </div>
+
+
+        </div>
+
+        
+
+
         {/* output */}
 
-        <p style={headerStyle}>Output Preview</p>
+        
 
-          <div style={{width: "100%"}}>
-      <JumpWidgetPrev 
+
+
+
+
+      </div>
+
+      <div style={{width: "calc(100vw - 8.2em)", paddingLeft: "2em", marginTop: '16px'}}>
+          <JumpWidgetPrev 
             jumpNum={newJumpNum}
             jumpDate={newJumpDate}
             dz={newJumpDZ}
@@ -1787,17 +1784,11 @@ const storeJump = async (newJumpNum, newJumpDate, newJumpDZ, newJumpAircraft, ne
             signature={newJumpSigUpload}
             tags={tagsPreview}
             context={"preview"}
-        
+
           />
         </div>
-        
-
-    
 
 
-        </div>
-
-  
     </div>
 
 
@@ -1809,7 +1800,7 @@ export default LogInputWidget;
 
 export function getPallette(){
 
-    const pallette  = ["#22223b", "#4a4e69", "#9a8c98", "#c9ada7", "#f2e9e4"].reverse();  
+  const pallette  = ["#22223b", "#4a4e69", "#9a8c98", "#c9ada7", "#f2e9e4"].reverse();  
   return(pallette)
 }
 
