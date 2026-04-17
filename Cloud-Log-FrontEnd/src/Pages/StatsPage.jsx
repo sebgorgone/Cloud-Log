@@ -2,8 +2,6 @@ import {useState, useEffect} from 'react';
 import {getPallette} from "../logInputWidget";
 import '../style/loginScreen.css';
 
-//jumps={userJumpHistory} user={user} jump_num={userJumpCount}
-
 function StatsPage(props) {
 
    const svr = import.meta.env.VITE_SVR_URL;
@@ -15,100 +13,7 @@ function StatsPage(props) {
 
    const jumps = props.jumps
 
-   // const jumps= [{ 
-   //    jump_num: 9, 
-   //    jump_date: "2025-06-17", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Navigator 220", 
-   //    alt: 4, 
-   //    t: 7,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 8, 
-   //    jump_date: "2025-04-12", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Caravan", 
-   //    equipment: "Vector 3 Storm 190", 
-   //    alt: 5000, 
-   //    t: 30,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 7, 
-   //    jump_date: "2025-02-25", 
-   //    dz: "Jumptown", 
-   //    aircraft: "Cessna 182", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 10293, 
-   //    t: 56,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 6, 
-   //    jump_date: "2025-01-01", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 4000, 
-   //    t: 70,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 5, 
-   //    jump_date: "2025-01-01", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 4000, 
-   //    t: 70,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 4, 
-   //    jump_date: "2025-01-01", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 4000, 
-   //    t: 70,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 3, 
-   //    jump_date: "2025-01-01", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 4000, 
-   //    t: 70,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 2, 
-   //    jump_date: "2023-01-01", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 4000, 
-   //    t: 70,
-   //    notes: "hello retard" ,
-   // },
-   // { 
-   //    jump_num: 1, 
-   //    jump_date: "2022-01-01", 
-   //    dz: "Connecticut Parachutists", 
-   //    aircraft: "Cessna 206", 
-   //    equipment: "Tandem Harness!!", 
-   //    alt: 4000, 
-   //    t: 70,
-   //    notes: "hello retard" ,
-   // }]
-
    const user = props.user
-
-   // const user = { ID : 1 }
 
    const jump_num = props.jump_num
 
@@ -515,12 +420,12 @@ function StatsPage(props) {
          else return `${(jump_num / 50) * 100}%`;
       }
       if (lsc === 'c') {
-         if (jump_num >= 200) return 'complete';
-         else return `${(jump_num / 200) * 100}%`
+         if (jump_num >= 200) return '100%';
+         else return `${(jump_num / 200) * 100}%`;
       }
       if (lsc === 'd') {
-         if (jump_num >= 500) return 'complete';
-         else return `${(jump_num / 500) * 100}%`
+         if (jump_num >= 500) return '100%';
+         else return `${(jump_num / 500) * 100}%`;
       }
    }
 
