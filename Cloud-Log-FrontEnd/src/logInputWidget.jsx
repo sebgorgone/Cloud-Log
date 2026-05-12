@@ -1201,7 +1201,7 @@ function LogInputWidget(props) {
         alert(responseData.message);
         setNextJump(newJumpNum + 1);
         setNewJumpCom('');
-        setNewJumpSigUpload(null);
+        //setNewJumpSigUpload(null);
         setNewJumpTagList([]);
         setNewJumpAlt('')
         setNewJumpDur('')
